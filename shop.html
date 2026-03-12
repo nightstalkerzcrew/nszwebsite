@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightStalkerZ - Shop</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #0d1b3d, #050914 70%);
+      color: white;
+    }
+
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 15px rgba(57, 230, 255, 0.6);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 25px 0 40px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.12);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .hero h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #d5ddff;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .shop-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 24px rgba(0,0,0,0.22);
+    }
+
+    .shop-card h3 {
+      margin-top: 0;
+      color: #39e6ff;
+    }
+
+    .price {
+      font-size: 1.3rem;
+      color: #8ff4ff;
+      margin: 10px 0 14px;
+      font-weight: bold;
+    }
+
+    .shop-card p {
+      color: #dce4ff;
+      line-height: 1.5;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      margin-top: 14px;
+      text-decoration: none;
+      background: #39e6ff;
+      color: #07111f;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .buy-btn:hover {
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="topbar">
+      <h1>NightStalkerZ</h1>
+      <p>Clan Website</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="members.html">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html" class="active">Shop</a>
+      <a href="login.html">Login</a>
+    </div>
+
+    <div class="hero">
+      <h2>Shop</h2>
+      <p>Clan-interne Shop-Ansicht für Pakete, Belohnungen oder spätere digitale Inhalte.</p>
+    </div>
+
+    <div class="shop-grid">
+      <div class="shop-card">
+        <h3>Starter Pack</h3>
+        <div class="price">500 Credits</div>
+        <p>Einsteigerpaket mit Basisvorteilen, Crew-Zugangsinfos und kleiner Belohnung.</p>
+        <a href="#" class="buy-btn">Auswählen</a>
+      </div>
+
+      <div class="shop-card">
+        <h3>Elite Pack</h3>
+        <div class="price">1200 Credits</div>
+        <p>Für aktive Mitglieder mit erweiterten Vorteilen und zusätzlichem Status im Shop-System.</p>
+        <a href="#" class="buy-btn">Auswählen</a>
+      </div>
+
+      <div class="shop-card">
+        <h3>Event Pass</h3>
+        <div class="price">800 Credits</div>
+        <p>Spezieller Zugang für geplante Crew-Events, Challenges und interne Aktionen.</p>
+        <a href="#" class="buy-btn">Auswählen</a>
+      </div>
+
+      <div class="shop-card">
+        <h3>VIP Access</h3>
+        <div class="price">2000 Credits</div>
+        <p>Premium-Bereich für spätere Extras, besondere Rollen und exklusive Crew-Inhalte.</p>
+        <a href="#" class="buy-btn">Auswählen</a>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ Shop - Platzhalter für zukünftige Inhalte
+    </div>
+  </div>
+</body>
+</html>
