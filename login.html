@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightStalkerZ - Login</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #0d1b3d, #050914 70%);
+      color: white;
+      min-height: 100vh;
+    }
+
+    .page-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 15px rgba(57, 230, 255, 0.6);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 25px 0 40px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.12);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .hero h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #d5ddff;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .login-wrap {
+      display: flex;
+      justify-content: center;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 460px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 28px rgba(0,0,0,0.25);
+    }
+
+    .login-card h3 {
+      margin-top: 0;
+      margin-bottom: 18px;
+      color: #39e6ff;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #dce4ff;
+      font-size: 0.95rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      outline: none;
+    }
+
+    .form-group input::placeholder {
+      color: #aab7ea;
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 12px;
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-btn:hover {
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .login-note {
+      margin-top: 16px;
+      text-align: center;
+      color: #b9c5f0;
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="topbar">
+      <h1>NightStalkerZ</h1>
+      <p>Clan Website</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="members.html">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html">Shop</a>
+      <a href="login.html" class="active">Login</a>
+    </div>
+
+    <div class="hero">
+      <h2>Login</h2>
+      <p>Interner Zugang für Mitglieder, Verwaltung und spätere exklusive Crew-Bereiche.</p>
+    </div>
+
+    <div class="login-wrap">
+      <div class="login-card">
+        <h3>Mitgliederbereich</h3>
+
+        <form>
+          <div class="form-group">
+            <label for="username">Benutzername</label>
+            <input type="text" id="username" name="username" placeholder="Dein Benutzername">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Passwort</label>
+            <input type="password" id="password" name="password" placeholder="Dein Passwort">
+          </div>
+
+          <button type="submit" class="login-btn">Einloggen</button>
+        </form>
+
+        <div class="login-note">
+          Dies ist aktuell ein Platzhalter-Login ohne echte Anmeldung oder Datenbank.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ Login - Interner Bereich in Vorbereitung
+    </div>
+  </div>
+</body>
+</html>
