@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightStalkerZ - Members</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #0d1b3d, #050914 70%);
+      color: white;
+    }
+
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 15px rgba(57, 230, 255, 0.6);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 25px 0 40px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.12);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .hero h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #d5ddff;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .member-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .member-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 25px rgba(0,0,0,0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .member-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 25px rgba(57, 230, 255, 0.18);
+    }
+
+    .member-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #39e6ff, #1c77ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #04101d;
+      margin-bottom: 16px;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
+    }
+
+    .member-card h3 {
+      margin: 0 0 8px;
+      color: #39e6ff;
+    }
+
+    .member-role {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(57, 230, 255, 0.12);
+      color: #8ff4ff;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .member-card p {
+      margin: 8px 0;
+      color: #dce4ff;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="topbar">
+      <h1>NightStalkerZ</h1>
+      <p>Clan Website</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="members.html" class="active">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html">Shop</a>
+      <a href="login.html">Login</a>
+    </div>
+
+    <div class="hero">
+      <h2>Members</h2>
+      <p>Hier findest du die aktuellen Mitglieder der NightStalkerZ Crew mit Rollen, Schwerpunkten und kurzer Übersicht.</p>
+    </div>
+
+    <div class="member-grid">
+      <div class="member-card">
+        <div class="member-avatar">NH</div>
+        <h3>NightHunter</h3>
+        <div class="member-role">Leader</div>
+        <p>Leitet die Crew, organisiert Events und hält die Struktur der Gruppe zusammen.</p>
+        <p>Status: Aktiv</p>
+        <p>Spezialgebiet: Taktik, Führung, Event-Planung</p>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">SR</div>
+        <h3>ShadowRider</h3>
+        <div class="member-role">Co-Leader</div>
+        <p>Unterstützt die Leitung und koordiniert Einsätze, Builds und interne Abläufe.</p>
+        <p>Status: Aktiv</p>
+        <p>Spezialgebiet: PvP, Support, Teamkoordination</p>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">GZ</div>
+        <h3>GhostZ</h3>
+        <div class="member-role">Veteran</div>
+        <p>Erfahrener Spieler mit hoher Aktivität und starkem Einfluss im Team.</p>
+        <p>Status: Aktiv</p>
+        <p>Spezialgebiet: Rennen, Event-Support, Builds</p>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">SA</div>
+        <h3>SilentAce</h3>
+        <div class="member-role">Member</div>
+        <p>Zuverlässiges Crew-Mitglied mit Fokus auf Missionen und taktischem Spielstil.</p>
+        <p>Status: Aktiv</p>
+        <p>Spezialgebiet: Missionen, Verteidigung, Support</p>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">RX</div>
+        <h3>ReaperX</h3>
+        <div class="member-role">Member</div>
+        <p>Konzentriert sich auf schnelle Reaktion, gute Performance und Eventteilnahme.</p>
+        <p>Status: Aktiv</p>
+        <p>Spezialgebiet: PvP, Fahrzeuge, Reaktion</p>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">DV</div>
+        <h3>DarkVolt</h3>
+        <div class="member-role">Recruit</div>
+        <p>Neues Mitglied der Crew mit Potenzial und hoher Lernbereitschaft.</p>
+        <p>Status: In Prüfung</p>
+        <p>Spezialgebiet: Freemode, Support, Teamplay</p>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ Members - Übersicht der Crew-Struktur
+    </div>
+  </div>
+</body>
+</html>

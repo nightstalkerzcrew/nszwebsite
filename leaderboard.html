@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightStalkerZ - Leaderboard</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #0d1b3d, #050914 70%);
+      color: white;
+    }
+
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 15px rgba(57, 230, 255, 0.6);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 25px 0 40px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.12);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .hero h2 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #d5ddff;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .table-box {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.25);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    th {
+      color: #39e6ff;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background: rgba(57, 230, 255, 0.08);
+    }
+
+    .rank {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .gold { color: #ffd700; }
+    .silver { color: #d6d6d6; }
+    .bronze { color: #cd7f32; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 0 18px rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stat-card h3 {
+      color: #39e6ff;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="topbar">
+      <h1>NightStalkerZ</h1>
+      <p>Clan Website</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+      <a href="members.html">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html">Shop</a>
+      <a href="login.html">Login</a>
+    </div>
+
+    <div class="hero">
+      <h2>Leaderboard</h2>
+      <p>Hier findest du die aktuellen Top-Spieler der NSZ Crew mit Punkten, Aktivität, Siegen und Spezialwerten.</p>
+    </div>
+
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Platz</th>
+            <th>Spieler</th>
+            <th>Rang</th>
+            <th>Punkte</th>
+            <th>Siege</th>
+            <th>Events</th>
+            <th>Letzte Aktivität</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank gold">#1</td>
+            <td>NightHunter</td>
+            <td>Leader</td>
+            <td>12.450</td>
+            <td>189</td>
+            <td>42</td>
+            <td>Heute</td>
+          </tr>
+          <tr>
+            <td class="rank silver">#2</td>
+            <td>ShadowRider</td>
+            <td>Co-Leader</td>
+            <td>10.980</td>
+            <td>164</td>
+            <td>36</td>
+            <td>Heute</td>
+          </tr>
+          <tr>
+            <td class="rank bronze">#3</td>
+            <td>GhostZ</td>
+            <td>Veteran</td>
+            <td>9.740</td>
+            <td>151</td>
+            <td>29</td>
+            <td>Gestern</td>
+          </tr>
+          <tr>
+            <td class="rank">#4</td>
+            <td>SilentAce</td>
+            <td>Member</td>
+            <td>8.920</td>
+            <td>133</td>
+            <td>27</td>
+            <td>Gestern</td>
+          </tr>
+          <tr>
+            <td class="rank">#5</td>
+            <td>ReaperX</td>
+            <td>Member</td>
+            <td>8.410</td>
+            <td>126</td>
+            <td>24</td>
+            <td>Vor 2 Tagen</td>
+          </tr>
+          <tr>
+            <td class="rank">#6</td>
+            <td>DarkVolt</td>
+            <td>Recruit</td>
+            <td>7.860</td>
+            <td>111</td>
+            <td>20</td>
+            <td>Vor 2 Tagen</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Top Score</h3>
+        <p>NightHunter führt aktuell mit 12.450 Punkten das Gesamt-Ranking an.</p>
+      </div>
+      <div class="stat-card">
+        <h3>Meiste Siege</h3>
+        <p>Mit 189 Siegen hält NightHunter auch den Spitzenwert bei den Wins.</p>
+      </div>
+      <div class="stat-card">
+        <h3>Aktivster Spieler</h3>
+        <p>ShadowRider gehört zu den aktivsten Spielern der letzten Tage und Events.</p>
+      </div>
+      <div class="stat-card">
+        <h3>Letztes Update</h3>
+        <p>Die Leaderboard-Daten können manuell angepasst und regelmäßig aktualisiert werden.</p>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ Leaderboard - Stand der aktuellen Crew-Werte
+    </div>
+  </div>
+</body>
+</html>
