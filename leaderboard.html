@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NightStalkerZ - NFS Heat Leaderboard</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -16,26 +20,26 @@
     }
 
     .page-container {
-      max-width: 1350px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 30px 20px 60px;
     }
 
     .topbar {
       text-align: center;
-      margin-bottom: 26px;
+      margin-bottom: 24px;
     }
 
     .topbar h1 {
-      color: #39e6ff;
-      font-size: 3rem;
       margin: 0 0 8px;
+      font-size: 3rem;
+      color: #39e6ff;
       text-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
     }
 
     .topbar p {
-      color: #cfd8ff;
       margin: 0;
+      color: #cfd8ff;
     }
 
     .nav {
@@ -43,7 +47,7 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 12px;
-      margin: 24px 0 36px;
+      margin: 24px 0 34px;
     }
 
     .nav a {
@@ -52,7 +56,7 @@
       background: rgba(255,255,255,0.10);
       padding: 12px 18px;
       border-radius: 12px;
-      transition: 0.3s ease;
+      transition: 0.25s ease;
       backdrop-filter: blur(8px);
       box-shadow: 0 0 12px rgba(255,255,255,0.06);
     }
@@ -68,7 +72,7 @@
     .hero {
       text-align: center;
       padding: 38px 20px;
-      margin-bottom: 30px;
+      margin-bottom: 26px;
       background: rgba(255,255,255,0.06);
       border-radius: 24px;
       border: 1px solid rgba(255,255,255,0.08);
@@ -93,14 +97,16 @@
       font-size: 1.05rem;
     }
 
-    .search-box {
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
       margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
     }
 
-    .search-box input {
-      width: min(100%, 700px);
+    .toolbar input,
+    .toolbar select {
+      width: 100%;
       padding: 14px 16px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
@@ -110,11 +116,15 @@
       font-size: 1rem;
     }
 
-    .search-box input::placeholder {
+    .toolbar select option {
+      color: black;
+    }
+
+    .toolbar input::placeholder {
       color: #aab7ea;
     }
 
-    .track-tabs {
+    .race-tabs {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
@@ -122,7 +132,7 @@
       margin-bottom: 28px;
     }
 
-    .track-tab {
+    .race-tab {
       border: 1px solid rgba(255,255,255,0.14);
       background: rgba(255,255,255,0.08);
       color: white;
@@ -133,8 +143,8 @@
       font-size: 0.95rem;
     }
 
-    .track-tab:hover,
-    .track-tab.active {
+    .race-tab:hover,
+    .race-tab.active {
       background: #39e6ff;
       color: #07111f;
       font-weight: bold;
@@ -143,7 +153,7 @@
 
     .leaderboard-layout {
       display: grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 330px 1fr;
       gap: 24px;
       align-items: start;
     }
@@ -159,11 +169,11 @@
     .side-card {
       padding: 22px;
       position: sticky;
-      top: 20px;
+      top: 18px;
     }
 
     .track-image {
-      height: 180px;
+      height: 190px;
       border-radius: 18px;
       background:
         linear-gradient(135deg, rgba(57, 230, 255, 0.25), rgba(0,0,0,0.15)),
@@ -350,7 +360,7 @@
       outline: none;
     }
 
-    .form-group option {
+    .form-group select option {
       color: black;
     }
 
@@ -397,7 +407,7 @@
 
     .rank-row {
       display: grid;
-      grid-template-columns: 70px 1fr 140px 140px;
+      grid-template-columns: 70px 1fr 150px 140px;
       gap: 12px;
       align-items: center;
       background: rgba(255,255,255,0.04);
@@ -454,6 +464,10 @@
     }
 
     @media (max-width: 1000px) {
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
       .leaderboard-layout {
         grid-template-columns: 1fr;
       }
@@ -485,7 +499,7 @@
   <div class="page-container">
     <div class="topbar">
       <h1>NightStalkerZ</h1>
-      <p>NFS Heat Renn-Leaderboard</p>
+      <p>NFS Heat Endversion Leaderboard</p>
     </div>
 
     <div class="nav">
@@ -500,23 +514,32 @@
     </div>
 
     <div class="hero">
-      <h2>NFS HEAT <span>LEADERBOARD</span></h2>
-      <p>Alle wichtigen Rennen der Crew in deutscher Bezeichnung mit Bestzeiten, Podium und Einreichungssystem.</p>
+      <h2>NFS HEAT <span>ENDVERSION</span></h2>
+      <p>NightStalkerZ Renn-Hub mit Kategorien, Rennsuche, Podium, Crew-Zeiten und kompletter Rangliste.</p>
     </div>
 
-    <div class="search-box">
-      <input type="text" id="trackSearch" placeholder="Rennen suchen...">
+    <div class="toolbar">
+      <input type="text" id="raceSearch" placeholder="Rennen suchen..." />
+      <select id="categoryFilter">
+        <option value="all">Alle Kategorien</option>
+        <option value="Straßenrennen">Straßenrennen</option>
+        <option value="Sprint">Sprint</option>
+        <option value="Rundkurs">Rundkurs</option>
+        <option value="Nacht">Nacht</option>
+        <option value="Drift">Drift</option>
+        <option value="Offroad">Offroad</option>
+      </select>
     </div>
 
-    <div class="track-tabs" id="trackTabs"></div>
+    <div class="race-tabs" id="raceTabs"></div>
 
     <div class="leaderboard-layout">
       <div class="side-card">
         <div class="track-image"></div>
-        <div class="badge" id="trackDifficulty">Sprint</div>
-        <h3 id="trackName">Die Resorts-Runde</h3>
-        <p id="trackCar">Empfohlen: Straßenrennen</p>
-        <p id="trackType">Palm City / Asphalt / Tag</p>
+        <div class="badge" id="raceDifficulty">Sprint</div>
+        <h3 id="raceName">Die Resorts-Runde</h3>
+        <p id="raceCar">Empfohlen: Straßenrennen</p>
+        <p id="raceType">Palm City / Asphalt / Tag</p>
 
         <div class="target-box">
           <strong>Zielzeit</strong>
@@ -529,7 +552,7 @@
           <p id="beatCount">Unter Zielzeit: 0</p>
         </div>
 
-        <button class="reset-btn" id="resetTrackBtn">Rennen zurücksetzen</button>
+        <button class="reset-btn" id="resetRaceBtn">Aktuelles Rennen zurücksetzen</button>
       </div>
 
       <div class="main-card">
@@ -545,12 +568,12 @@
 
             <div class="form-group">
               <label for="timeInput">Zeit</label>
-              <input type="text" id="timeInput" placeholder="z. B. 2:43.15">
+              <input type="text" id="timeInput" placeholder="z. B. 2:43.15" />
             </div>
 
             <div class="form-group">
               <label for="countryInput">Land / Kürzel</label>
-              <input type="text" id="countryInput" placeholder="z. B. DE">
+              <input type="text" id="countryInput" placeholder="z. B. DE" />
             </div>
           </div>
 
@@ -569,7 +592,7 @@
     </div>
 
     <div class="footer-note">
-      NightStalkerZ - NFS Heat Rennzeiten und Crew-Rankings
+      NightStalkerZ - Need for Speed Heat Leaderboard
     </div>
   </div>
 
@@ -588,6 +611,7 @@
     const raceConfig = {
       resortsrunde: {
         name: "Die Resorts-Runde",
+        category: "Sprint",
         difficulty: "Sprint",
         car: "Empfohlen: Straßenrennen",
         type: "Palm City / Asphalt / Tag",
@@ -600,6 +624,7 @@
       },
       bahnhofssprint: {
         name: "Bahnhofs-Sprint",
+        category: "Sprint",
         difficulty: "Sprint",
         car: "Empfohlen: Straßenrennen",
         type: "Downtown / Asphalt / Tag",
@@ -612,7 +637,8 @@
       },
       palmcityrunde: {
         name: "Palm City Runde",
-        difficulty: "Circuit",
+        category: "Rundkurs",
+        difficulty: "Rundkurs",
         car: "Empfohlen: High-Speed Build",
         type: "Palm City / Rundkurs / Tag",
         target: "3:12.00",
@@ -624,6 +650,7 @@
       },
       hafenlinie: {
         name: "Hafenlinie",
+        category: "Straßenrennen",
         difficulty: "Sprint",
         car: "Empfohlen: Beschleunigungs-Setup",
         type: "Hafen / Industrie / Tag",
@@ -636,7 +663,8 @@
       },
       innenstadtkurs: {
         name: "Innenstadtkurs",
-        difficulty: "Circuit",
+        category: "Rundkurs",
+        difficulty: "Rundkurs",
         car: "Empfohlen: Grip Build",
         type: "Downtown / Kurvenreich / Nacht",
         target: "2:58.00",
@@ -648,6 +676,7 @@
       },
       brueckenschlag: {
         name: "Brückenschlag",
+        category: "Straßenrennen",
         difficulty: "Sprint",
         car: "Empfohlen: Top-Speed Build",
         type: "Brückenroute / Schnell / Tag",
@@ -660,7 +689,8 @@
       },
       bergring: {
         name: "Bergring",
-        difficulty: "Circuit",
+        category: "Rundkurs",
+        difficulty: "Rundkurs",
         car: "Empfohlen: Allround Build",
         type: "Bergregion / Asphalt / Tag",
         target: "3:24.00",
@@ -672,6 +702,7 @@
       },
       tunneljagd: {
         name: "Tunneljagd",
+        category: "Nacht",
         difficulty: "Sprint",
         car: "Empfohlen: Night Build",
         type: "Tunnel / Schnell / Nacht",
@@ -684,6 +715,7 @@
       },
       kuestenlauf: {
         name: "Küstenlauf",
+        category: "Straßenrennen",
         difficulty: "Sprint",
         car: "Empfohlen: Top-Speed Build",
         type: "Küste / Lange Geraden / Tag",
@@ -696,7 +728,8 @@
       },
       flughafenrunde: {
         name: "Flughafenrunde",
-        difficulty: "Circuit",
+        category: "Rundkurs",
+        difficulty: "Rundkurs",
         car: "Empfohlen: High-Speed Build",
         type: "Flughafen / Offen / Tag",
         target: "2:52.00",
@@ -708,6 +741,7 @@
       },
       dockduell: {
         name: "Dock-Duell",
+        category: "Nacht",
         difficulty: "Sprint",
         car: "Empfohlen: Beschleunigungs-Setup",
         type: "Docks / Eng / Nacht",
@@ -720,7 +754,8 @@
       },
       palmringnacht: {
         name: "Palmring bei Nacht",
-        difficulty: "Circuit",
+        category: "Nacht",
+        difficulty: "Rundkurs",
         car: "Empfohlen: Night Race Build",
         type: "Palm City / Rundkurs / Nacht",
         target: "3:06.00",
@@ -732,6 +767,7 @@
       },
       industriepassage: {
         name: "Industriepassage",
+        category: "Straßenrennen",
         difficulty: "Sprint",
         car: "Empfohlen: Straßen-Setup",
         type: "Industrie / Technisch / Tag",
@@ -744,6 +780,7 @@
       },
       stromleitung: {
         name: "Stromleitung",
+        category: "Nacht",
         difficulty: "Sprint",
         car: "Empfohlen: Beschleunigung + Grip",
         type: "Vorstadt / Schnell / Nacht",
@@ -756,7 +793,8 @@
       },
       spiegelufer: {
         name: "Spiegelufer",
-        difficulty: "Circuit",
+        category: "Straßenrennen",
+        difficulty: "Rundkurs",
         car: "Empfohlen: Präzisions-Build",
         type: "Ufer / Mittlere Distanz / Tag",
         target: "2:48.00",
@@ -768,6 +806,7 @@
       },
       nachtspange: {
         name: "Nachtspange",
+        category: "Nacht",
         difficulty: "Sprint",
         car: "Empfohlen: Night Sprint Build",
         type: "Palm City / Schnell / Nacht",
@@ -780,7 +819,8 @@
       },
       kuppelkurve: {
         name: "Kuppelkurve",
-        difficulty: "Circuit",
+        category: "Rundkurs",
+        difficulty: "Rundkurs",
         car: "Empfohlen: Grip / Race Setup",
         type: "Stadtrand / Rundkurs / Tag",
         target: "2:34.00",
@@ -792,7 +832,8 @@
       },
       westhafenloop: {
         name: "Westhafen-Loop",
-        difficulty: "Circuit",
+        category: "Nacht",
+        difficulty: "Rundkurs",
         car: "Empfohlen: Stabilitäts-Build",
         type: "Westhafen / Rundkurs / Nacht",
         target: "2:59.00",
@@ -804,6 +845,7 @@
       },
       ostkuestesprint: {
         name: "Ostküsten-Sprint",
+        category: "Straßenrennen",
         difficulty: "Sprint",
         car: "Empfohlen: High-Speed",
         type: "Küste / Lang / Tag",
@@ -816,6 +858,7 @@
       },
       palmexpress: {
         name: "Palm Express",
+        category: "Straßenrennen",
         difficulty: "Sprint",
         car: "Empfohlen: Top-Speed / Race",
         type: "Palm City / Expressroute / Tag",
@@ -825,21 +868,100 @@
           { member: "NightHunter", country: "DE", time: "2:23.20", date: "10.03.2026" },
           { member: "DriftRogue", country: "CH", time: "2:24.14", date: "11.03.2026" }
         ]
+      },
+      driftpark: {
+        name: "Driftpark",
+        category: "Drift",
+        difficulty: "Drift",
+        car: "Empfohlen: Drift Build",
+        type: "Industriegebiet / Drift / Tag",
+        target: "1:58.00",
+        defaultEntries: [
+          { member: "AshFang", country: "DE", time: "1:53.48", date: "13.03.2026" },
+          { member: "SilentKrush", country: "DE", time: "1:54.11", date: "12.03.2026" },
+          { member: "VexShadow", country: "AT", time: "1:55.30", date: "11.03.2026" }
+        ]
+      },
+      driftdok: {
+        name: "Drift-Dok",
+        category: "Drift",
+        difficulty: "Drift",
+        car: "Empfohlen: Control Drift",
+        type: "Docks / Drift / Nacht",
+        target: "2:05.00",
+        defaultEntries: [
+          { member: "DriftRogue", country: "DE", time: "1:59.60", date: "14.03.2026" },
+          { member: "AshFang", country: "AT", time: "2:00.18", date: "13.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:01.44", date: "12.03.2026" }
+        ]
+      },
+      canyondrift: {
+        name: "Canyon Drift",
+        category: "Drift",
+        difficulty: "Drift",
+        car: "Empfohlen: High Angle Build",
+        type: "Canyon / Drift / Nacht",
+        target: "2:16.00",
+        defaultEntries: [
+          { member: "VexShadow", country: "DE", time: "2:11.08", date: "10.03.2026" },
+          { member: "DriftRogue", country: "CH", time: "2:12.44", date: "11.03.2026" },
+          { member: "BlazeLock", country: "AT", time: "2:13.90", date: "12.03.2026" }
+        ]
+      },
+      sandpfad: {
+        name: "Sandpfad",
+        category: "Offroad",
+        difficulty: "Offroad",
+        car: "Empfohlen: Offroad Build",
+        type: "Sand / Offroad / Tag",
+        target: "2:42.00",
+        defaultEntries: [
+          { member: "NovaKade", country: "DE", time: "2:37.85", date: "12.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:38.50", date: "13.03.2026" },
+          { member: "RavenByte", country: "AT", time: "2:39.91", date: "14.03.2026" }
+        ]
+      },
+      schlammroute: {
+        name: "Schlammroute",
+        category: "Offroad",
+        difficulty: "Offroad",
+        car: "Empfohlen: Rally Build",
+        type: "Wald / Schlamm / Tag",
+        target: "3:08.00",
+        defaultEntries: [
+          { member: "BlazeLock", country: "DE", time: "3:02.44", date: "15.03.2026" },
+          { member: "NovaKade", country: "CH", time: "3:03.10", date: "14.03.2026" },
+          { member: "AshFang", country: "AT", time: "3:04.66", date: "13.03.2026" }
+        ]
+      },
+      steinbruchlinie: {
+        name: "Steinbruchlinie",
+        category: "Offroad",
+        difficulty: "Offroad",
+        car: "Empfohlen: Rallycross Build",
+        type: "Steinbruch / Offroad / Nacht",
+        target: "2:51.00",
+        defaultEntries: [
+          { member: "RavenByte", country: "DE", time: "2:46.72", date: "11.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:47.40", date: "12.03.2026" },
+          { member: "SilentKrush", country: "AT", time: "2:49.12", date: "13.03.2026" }
+        ]
       }
     };
 
-    const storageKey = "nsz_nfs_heat_leaderboard_v1";
+    const storageKey = "nsz_nfs_heat_endversion_v1";
     let leaderboardData = loadData();
     let currentRace = Object.keys(raceConfig)[0];
 
-    const trackTabs = document.getElementById("trackTabs");
+    const raceTabs = document.getElementById("raceTabs");
     const memberSelect = document.getElementById("memberSelect");
     const timeInput = document.getElementById("timeInput");
     const countryInput = document.getElementById("countryInput");
     const submitTimeBtn = document.getElementById("submitTimeBtn");
-    const resetTrackBtn = document.getElementById("resetTrackBtn");
+    const resetRaceBtn = document.getElementById("resetRaceBtn");
     const statusMessage = document.getElementById("statusMessage");
-    const trackSearch = document.getElementById("trackSearch");
+    const raceSearch = document.getElementById("raceSearch");
+    const categoryFilter = document.getElementById("categoryFilter");
 
     function loadData() {
       const saved = localStorage.getItem(storageKey);
@@ -868,8 +990,8 @@
       const seconds = parseInt(match[2], 10);
       let millis = match[3];
 
-      if (millis.length === 1) millis = millis + "00";
-      if (millis.length === 2) millis = millis + "0";
+      if (millis.length === 1) millis += "00";
+      if (millis.length === 2) millis += "0";
       millis = parseInt(millis, 10);
 
       return (minutes * 60 * 1000) + (seconds * 1000) + millis;
@@ -879,22 +1001,42 @@
       return entries.sort((a, b) => parseTimeToMs(a.time) - parseTimeToMs(b.time));
     }
 
-    function createTabs(filter = "") {
-      trackTabs.innerHTML = "";
-      const search = filter.toLowerCase().trim();
+    function getFilteredRaceKeys() {
+      const search = raceSearch.value.toLowerCase().trim();
+      const category = categoryFilter.value;
 
-      for (const key in raceConfig) {
+      return Object.keys(raceConfig).filter(key => {
         const race = raceConfig[key];
-        if (search && !race.name.toLowerCase().includes(search)) continue;
+        const matchSearch = !search || race.name.toLowerCase().includes(search);
+        const matchCategory = category === "all" || race.category === category;
+        return matchSearch && matchCategory;
+      });
+    }
 
+    function ensureCurrentRaceVisible() {
+      const filtered = getFilteredRaceKeys();
+      if (!filtered.includes(currentRace)) {
+        currentRace = filtered.length ? filtered[0] : Object.keys(raceConfig)[0];
+      }
+    }
+
+    function createTabs() {
+      raceTabs.innerHTML = "";
+      const filtered = getFilteredRaceKeys();
+
+      filtered.forEach(key => {
         const btn = document.createElement("button");
-        btn.className = "track-tab" + (key === currentRace ? " active" : "");
-        btn.textContent = race.name;
+        btn.className = "race-tab" + (key === currentRace ? " active" : "");
+        btn.textContent = raceConfig[key].name;
         btn.addEventListener("click", () => {
           currentRace = key;
-          renderAll(trackSearch.value);
+          renderAll();
         });
-        trackTabs.appendChild(btn);
+        raceTabs.appendChild(btn);
+      });
+
+      if (filtered.length === 0) {
+        raceTabs.innerHTML = '<div class="empty-state">Keine Rennen gefunden.</div>';
       }
     }
 
@@ -918,13 +1060,13 @@
 
     function renderRaceInfo() {
       const cfg = raceConfig[currentRace];
-      document.getElementById("trackDifficulty").textContent = cfg.difficulty;
-      document.getElementById("trackName").textContent = cfg.name;
-      document.getElementById("trackCar").textContent = cfg.car;
-      document.getElementById("trackType").textContent = cfg.type;
+      document.getElementById("raceDifficulty").textContent = cfg.category;
+      document.getElementById("raceName").textContent = cfg.name;
+      document.getElementById("raceCar").textContent = cfg.car;
+      document.getElementById("raceType").textContent = cfg.type;
       document.getElementById("targetTime").textContent = cfg.target;
 
-      const entries = sortEntries([...leaderboardData[currentRace]]);
+      const entries = sortEntries([...(leaderboardData[currentRace] || [])]);
       document.getElementById("entryCount").textContent = "Einträge: " + entries.length;
 
       const targetMs = parseTimeToMs(cfg.target);
@@ -937,7 +1079,7 @@
       const podium = document.getElementById("podium");
       podium.innerHTML = "";
 
-      const entries = sortEntries([...leaderboardData[currentRace]]);
+      const entries = sortEntries([...(leaderboardData[currentRace] || [])]);
       const topThree = [entries[1], entries[0], entries[2]];
       const classes = ["silver", "gold", "bronze"];
       const ranks = [2, 1, 3];
@@ -973,7 +1115,7 @@
 
       const cfg = raceConfig[currentRace];
       const targetMs = parseTimeToMs(cfg.target);
-      const entries = sortEntries([...leaderboardData[currentRace]]);
+      const entries = sortEntries([...(leaderboardData[currentRace] || [])]);
 
       if (entries.length === 0) {
         rankList.innerHTML = '<div class="empty-state">Noch keine Zeiten eingetragen.</div>';
@@ -1001,8 +1143,9 @@
       });
     }
 
-    function renderAll(filter = "") {
-      createTabs(filter);
+    function renderAll() {
+      ensureCurrentRaceVisible();
+      createTabs();
       renderRaceInfo();
       renderPodium();
       renderRankings();
@@ -1012,7 +1155,7 @@
     submitTimeBtn.addEventListener("click", () => {
       const member = memberSelect.value.trim();
       const time = timeInput.value.trim();
-      const country = countryInput.value.trim() || "DE";
+      const country = (countryInput.value.trim() || "DE").toUpperCase();
 
       if (!member || !time) {
         statusMessage.textContent = "Bitte Mitglied und Zeit ausfüllen.";
@@ -1024,30 +1167,33 @@
         return;
       }
 
+      if (!leaderboardData[currentRace]) {
+        leaderboardData[currentRace] = [];
+      }
+
       leaderboardData[currentRace].push({
         member,
-        country: country.toUpperCase(),
+        country,
         time,
         date: getTodayDate()
       });
 
       saveData();
-      renderAll(trackSearch.value);
       timeInput.value = "";
       countryInput.value = "";
+      renderAll();
       statusMessage.textContent = "Zeit erfolgreich eingetragen.";
     });
 
-    resetTrackBtn.addEventListener("click", () => {
+    resetRaceBtn.addEventListener("click", () => {
       leaderboardData[currentRace] = [...raceConfig[currentRace].defaultEntries];
       saveData();
-      renderAll(trackSearch.value);
-      statusMessage.textContent = "Rennen wurde zurückgesetzt.";
+      renderAll();
+      statusMessage.textContent = "Aktuelles Rennen wurde zurückgesetzt.";
     });
 
-    trackSearch.addEventListener("input", () => {
-      renderAll(trackSearch.value);
-    });
+    raceSearch.addEventListener("input", renderAll);
+    categoryFilter.addEventListener("change", renderAll);
 
     fillMembers();
     renderAll();
