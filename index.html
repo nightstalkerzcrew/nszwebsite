@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightStalkerZ - Home</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(25, 60, 140, 0.55), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(57, 230, 255, 0.12), transparent 25%),
+        linear-gradient(180deg, #050914 0%, #091327 45%, #050914 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    .page-container {
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 26px;
+      animation: fadeDown 0.8s ease;
+    }
+
+    .logo-circle {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(57, 230, 255, 0.08);
+      border: 2px solid rgba(57, 230, 255, 0.35);
+      box-shadow: 0 0 25px rgba(57, 230, 255, 0.25);
+      font-size: 2rem;
+      font-weight: bold;
+      color: #39e6ff;
+      letter-spacing: 2px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3.2rem;
+      margin: 0 0 8px;
+      text-shadow: 0 0 18px rgba(57, 230, 255, 0.55);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 24px 0 38px;
+      animation: fadeUp 0.9s ease;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.10);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s ease;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.06);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 46px 24px;
+      margin-bottom: 35px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 26px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 32px rgba(0,0,0,0.25);
+      animation: fadeUp 1s ease;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .hero p {
+      color: #d5ddff;
+      max-width: 850px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-discord {
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s ease;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #39e6ff;
+      color: #07111f;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-discord {
+      background: #5865f2;
+      color: white;
+      box-shadow: 0 0 18px rgba(88, 101, 242, 0.3);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-discord:hover {
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 22px;
+      color: #39e6ff;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 24px rgba(0,0,0,0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: fadeUp 0.8s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 24px rgba(57, 230, 255, 0.18);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #39e6ff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #dce4ff;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card a {
+      color: #8ff4ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .highlight-box {
+      background: rgba(255,255,255,0.06);
+      border-radius: 22px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 35px;
+      box-shadow: 0 0 26px rgba(0,0,0,0.2);
+      animation: fadeUp 1s ease;
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+      color: #39e6ff;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mini-card strong {
+      display: block;
+      color: #8ff4ff;
+      margin-bottom: 8px;
+    }
+
+    .mini-card span {
+      color: #dce4ff;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero h2 {
+        font-size: 2rem;
+      }
+
+      .logo-circle {
+        width: 90px;
+        height: 90px;
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="topbar">
+      <div class="logo-circle">NSZ</div>
+      <h1>NightStalkerZ</h1>
+      <p>Offizielle Clan Website</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="members.html">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html">Shop</a>
+      <a href="login.html">Login</a>
+    </div>
+
+    <div class="hero">
+      <h2>Willkommen bei NightStalkerZ</h2>
+      <p>
+        NightStalkerZ steht für Aktivität, Loyalität, Teamplay und einen starken gemeinsamen Auftritt.
+        Hier findest du Rankings, Mitglieder, Crew-News, Builds und weitere Inhalte rund um unsere Community.
+      </p>
+      <div class="hero-buttons">
+        <a href="members.html" class="btn-primary">Crew ansehen</a>
+        <a href="leaderboard.html" class="btn-secondary">Ranking öffnen</a>
+        <a href="https://discord.com/" target="_blank" class="btn-discord">Discord</a>
+      </div>
+    </div>
+
+    <h2 class="section-title">Bereiche der Website</h2>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Leaderboard</h3>
+        <p>Die stärksten Spieler der Crew mit Aktivität, Erfolgen und Ranking-Status.</p>
+        <a href="leaderboard.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Members</h3>
+        <p>Mitgliederübersicht mit Rollen, Status und individuellen Spezialisierungen.</p>
+        <a href="members.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Gallery</h3>
+        <p>Screenshots, Sessions, Highlights und besondere Crew-Momente.</p>
+        <a href="gallery.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>News</h3>
+        <p>Aktuelle Updates, Ankündigungen und Hinweise zu kommenden Events.</p>
+        <a href="news.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Builds</h3>
+        <p>Setups und Empfehlungen für PvP, Rennen, Events und Freemode.</p>
+        <a href="builds.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Shop</h3>
+        <p>Platzhalter für spätere interne Inhalte, Pakete und Crew-Belohnungen.</p>
+        <a href="shop.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Login</h3>
+        <p>Vorbereiteter Zugang für spätere Mitgliederfunktionen und exklusive Inhalte.</p>
+        <a href="login.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Community</h3>
+        <p>NightStalkerZ verbindet Stil, Aktivität und Zusammenhalt in einer starken Crew.</p>
+        <a href="members.html">Mehr sehen</a>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Crew Highlights</h3>
+      <div class="highlight-grid">
+        <div class="mini-card">
+          <strong>Top Aktivität</strong>
+          <span>Die Crew wird laufend erweitert und mit neuen Seiten, Ideen und Inhalten ausgebaut.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Mitglieder</strong>
+          <span>Mehrere Rollenprofile und stylische Fake-Accounts geben der Crew eine starke Optik.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Community Fokus</strong>
+          <span>Im Mittelpunkt stehen Zusammenhalt, Präsenz und ein professioneller Außenauftritt.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Nächster Ausbau</strong>
+          <span>Als Nächstes können echte Bilder, ein richtiges Logo und Social-Links ergänzt werden.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ - Zusammenhalt, Stil und Aktivität auf einer modernen Crew-Seite
+    </div>
+  </div>
+</body>
+</html>
