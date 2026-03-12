@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NightStalkerZ - NFS Heat Builds Pro</title>
+  <title>NightStalkerZ - NFS Heat Builds Vollversion</title>
   <style>
     * { box-sizing: border-box; }
 
@@ -498,7 +498,7 @@
   <div class="page-container">
     <div class="topbar">
       <h1>NightStalkerZ</h1>
-      <p>NFS Heat Car Builds Pro</p>
+      <p>NFS Heat Car Builds Vollversion</p>
     </div>
 
     <div class="nav">
@@ -513,8 +513,8 @@
     </div>
 
     <div class="hero">
-      <h2>NFS HEAT <span>BUILDS PRO</span></h2>
-      <p>Fahrzeug auswählen, Popup öffnen und zwischen mehreren Setup-Arten umschalten. Grip, Drift, Max Geschwindigkeit, Sprint, Offroad oder Balanced lassen sich pro Fahrzeug separat pflegen.</p>
+      <h2>NFS HEAT <span>BUILDS VOLLVERSION</span></h2>
+      <p>Großer Build-Katalog mit mehreren Setup-Arten pro Fahrzeug. Alle Details werden erst im Popup angezeigt, damit der Katalog sauber und modern bleibt.</p>
     </div>
 
     <div class="toolbar">
@@ -542,7 +542,7 @@
     </div>
 
     <div class="footer-note">
-      NightStalkerZ - NFS Heat Multi-Build Katalog
+      NightStalkerZ - NFS Heat Multi-Build Vollversion
     </div>
   </div>
 
@@ -572,7 +572,7 @@
               </div>
               <div class="spec-item">
                 <span>Leistung</span>
-                <b id="modalPower">Stark</b>
+                <b id="modalPower">Sehr hoch</b>
               </div>
               <div class="spec-item">
                 <span>Einsatz</span>
@@ -580,7 +580,7 @@
               </div>
               <div class="spec-item">
                 <span>Handling</span>
-                <b id="modalHandling">Stabil</b>
+                <b id="modalHandling">Präzise</b>
               </div>
             </div>
           </div>
@@ -614,422 +614,257 @@
   <script>
     const placeholderImage = "images/cars/placeholder.jpg";
 
+    const defaultRoadBuilds = {
+      "Grip": {
+        setup: {
+          motor: "Performance Motor-Swap oder maxed Serienmotor",
+          parts: "Elite+ Race",
+          induction: "Elite+ Twin Turbo",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Elite+"
+        },
+        tuning: {
+          handlingStyle: "Grip",
+          downforce: "Mittel bis hoch",
+          steeringSensitivity: "Mittel",
+          tractionControl: "Aus",
+          nitrous: "5x kleine Flaschen"
+        },
+        tip: "Sehr stark für Rundkurse und kontrollierte Kurvenfahrten."
+      },
+      "Sprint": {
+        setup: {
+          motor: "Performance Motor-Swap oder maxed Serienmotor",
+          parts: "Elite+ Road",
+          induction: "Elite+ Twin Turbo",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Elite+"
+        },
+        tuning: {
+          handlingStyle: "Road",
+          downforce: "Mittel",
+          steeringSensitivity: "Mittel bis hoch",
+          tractionControl: "Aus",
+          nitrous: "5x kleine Flaschen"
+        },
+        tip: "Ideal für Stadt-Sprints und technische Strecken."
+      },
+      "Max Geschwindigkeit": {
+        setup: {
+          motor: "High-Speed orientierter Build",
+          parts: "Elite+ Speed",
+          induction: "Elite+ Twin Turbo",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Elite+"
+        },
+        tuning: {
+          handlingStyle: "On-Road",
+          downforce: "Niedrig",
+          steeringSensitivity: "Mittel",
+          tractionControl: "Aus",
+          nitrous: "2x große Flaschen"
+        },
+        tip: "Stärker auf Geraden und High-Speed-Sprints als auf engen Rundkursen."
+      },
+      "Balanced": {
+        setup: {
+          motor: "Maxed Serienmotor oder ausgewogener Swap",
+          parts: "Elite+ Mixed Setup",
+          induction: "Elite+ Turbo / Twin Turbo",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Elite+"
+        },
+        tuning: {
+          handlingStyle: "Mixed",
+          downforce: "Mittel",
+          steeringSensitivity: "Mittel",
+          tractionControl: "Aus",
+          nitrous: "3x mittlere Flaschen"
+        },
+        tip: "Sehr gutes Allround-Setup für Spieler, die flexibel bleiben wollen."
+      }
+    };
+
+    const defaultDriftBuilds = {
+      "Drift": {
+        setup: {
+          motor: "Drehmomentstarker Swap",
+          parts: "Elite+ Drift",
+          induction: "Elite+ Supercharger",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Optional"
+        },
+        tuning: {
+          handlingStyle: "Drift",
+          downforce: "Niedrig",
+          steeringSensitivity: "Hoch",
+          tractionControl: "Aus",
+          nitrous: "5x kleine Flaschen"
+        },
+        tip: "Optimal für lange Drifts, schnelle Übergänge und hohe Style-Punkte."
+      },
+      "Balanced": {
+        setup: {
+          motor: "Drehmomentstarker Swap",
+          parts: "Elite+ Road / Drift Hybrid",
+          induction: "Elite+ Supercharger",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Optional"
+        },
+        tuning: {
+          handlingStyle: "Road/Drift Mix",
+          downforce: "Niedrig bis mittel",
+          steeringSensitivity: "Mittel bis hoch",
+          tractionControl: "Aus",
+          nitrous: "3x mittlere Flaschen"
+        },
+        tip: "Gute Mischung aus Street-Fahrbarkeit und Drift-Faktor."
+      }
+    };
+
+    const defaultOffroadBuilds = {
+      "Offroad": {
+        setup: {
+          motor: "Drehmomentstarker Offroad-Build",
+          parts: "Elite+ Offroad",
+          induction: "Elite+ Turbo",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Elite+"
+        },
+        tuning: {
+          handlingStyle: "Offroad",
+          downforce: "Mittel",
+          steeringSensitivity: "Mittel",
+          tractionControl: "Aus",
+          nitrous: "2x große Flaschen"
+        },
+        tip: "Sehr gut für Schotter, Sprünge und Rally-artige Events."
+      },
+      "Balanced": {
+        setup: {
+          motor: "Ausgewogener Offroad-Swap",
+          parts: "Elite+ Mixed Offroad",
+          induction: "Elite+ Turbo",
+          ecu: "Elite+",
+          fuel: "Elite+",
+          exhaust: "Elite+",
+          turbo: "Elite+"
+        },
+        tuning: {
+          handlingStyle: "Road/Offroad Mix",
+          downforce: "Mittel",
+          steeringSensitivity: "Mittel",
+          tractionControl: "Aus",
+          nitrous: "3x mittlere Flaschen"
+        },
+        tip: "Für Spieler, die Offroad fahren möchten, ohne nur auf ein Eventformat festgelegt zu sein."
+      }
+    };
+
     const cars = [
       {
-        id: "porsche-911-rsr-73",
+        id: "porsche-911-carrera-rsr-28-73",
         brand: "Porsche",
         name: "911 Carrera RSR 2.8 '73",
         year: "1973",
-        image: "images/cars/porsche-911-rsr-73.jpg",
-        summary: "Sehr starkes Straßenfahrzeug für Grip-, Sprint- und Max-Speed-Setups.",
+        image: "images/cars/porsche-911-carrera-rsr-28-73.jpg",
+        summary: "Meta-nahes Beispiel für extrem starke Straßen-Builds in NFS Heat.",
         baseStats: {
           engine: "3.5L V6",
           power: "Sehr hoch",
-          usage: "Race / Sprint / High Speed",
+          usage: "Grip / Sprint / High Speed",
           handling: "Präzise"
         },
-        builds: {
-          "Grip": {
-            setup: {
-              motor: "3.5L V6 Swap",
-              parts: "Elite+ Track / Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel bis hoch",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr stark für Rundkurse und saubere Linien. Hohe Kurvengeschwindigkeit und stabiles Herausbeschleunigen."
-          },
-          "Sprint": {
-            setup: {
-              motor: "3.5L V6 Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel bis hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Optimal für technische Sprintstrecken mit kurzen Beschleunigungsphasen."
-          },
-          "Max Geschwindigkeit": {
-            setup: {
-              motor: "3.5L V6 Swap",
-              parts: "Elite+ Speed Setup",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "On-Road",
-              downforce: "Niedrig",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Für lange Geraden und maximale Endgeschwindigkeit. Weniger ideal für sehr enge Kurvenfolgen."
-          }
-        }
+        builds: defaultRoadBuilds
       },
       {
-        id: "mazda-rx7-spirit-r",
-        brand: "Mazda",
-        name: "RX-7 Spirit R",
-        year: "2002",
-        image: "images/cars/mazda-rx7-spirit-r.jpg",
-        summary: "Top-Fahrzeug für Drift und auch als agiler Straßenumbau sehr interessant.",
+        id: "porsche-911-turbo-s-exclusive-series-18",
+        brand: "Porsche",
+        name: "911 Turbo S Exclusive Series",
+        year: "2018",
+        image: "images/cars/porsche-911-turbo-s-exclusive-series-18.jpg",
+        summary: "Sehr starkes modernes Porsche-Setup für Straße und Sprint.",
         baseStats: {
-          engine: "3.8L V8",
-          power: "Hoch",
-          usage: "Drift / Street",
-          handling: "Sehr agil"
+          engine: "Flat-6 Turbo",
+          power: "Sehr hoch",
+          usage: "Grip / Sprint",
+          handling: "Stabil"
         },
-        builds: {
-          "Drift": {
-            setup: {
-              motor: "3.8L V8 Swap",
-              parts: "Elite+ Drift",
-              induction: "Elite+ Supercharger",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Optional"
-            },
-            tuning: {
-              handlingStyle: "Drift",
-              downforce: "Niedrig",
-              steeringSensitivity: "Hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr gut für lange Driftketten und kontrollierbare Übergänge."
-          },
-          "Grip": {
-            setup: {
-              motor: "3.8L V8 Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Alternative Straßenabstimmung für schnelle Stadt- und Sprint-Rennen."
-          },
-          "Balanced": {
-            setup: {
-              motor: "3.8L V8 Swap",
-              parts: "Elite+ Road / Drift Hybrid",
-              induction: "Elite+ Supercharger",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Optional"
-            },
-            tuning: {
-              handlingStyle: "Road/Drift Mix",
-              downforce: "Niedrig bis mittel",
-              steeringSensitivity: "Mittel bis hoch",
-              tractionControl: "Aus",
-              nitrous: "3x mittlere Flaschen"
-            },
-            tip: "Guter Kompromiss für Fahrer, die sowohl quer als auch schnell fahren wollen."
-          }
-        }
+        builds: defaultRoadBuilds
       },
       {
-        id: "ferrari-f40",
+        id: "porsche-cayman-gt4-15",
+        brand: "Porsche",
+        name: "Cayman GT4",
+        year: "2015",
+        image: "images/cars/porsche-cayman-gt4-15.jpg",
+        summary: "Agiles Mid-Engine-Auto für präzise Race-Setups.",
+        baseStats: {
+          engine: "Flat-6",
+          power: "Hoch",
+          usage: "Grip / Balanced",
+          handling: "Sehr direkt"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "ferrari-f40-87",
         brand: "Ferrari",
         name: "F40",
         year: "1987",
-        image: "images/cars/ferrari-f40.jpg",
-        summary: "Sehr stark auf Sprint- und High-Speed-Strecken mit aggressiver Leistungsentfaltung.",
+        image: "images/cars/ferrari-f40-87.jpg",
+        summary: "Klassischer High-Speed- und Sprint-Favorit.",
         baseStats: {
           engine: "4.4L V8",
           power: "Sehr hoch",
-          usage: "Sprint / High Speed",
+          usage: "Sprint / Max Geschwindigkeit",
           handling: "Direkt"
         },
-        builds: {
-          "Max Geschwindigkeit": {
-            setup: {
-              motor: "4.4L V8 Swap",
-              parts: "Elite+ Speed",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "On-Road",
-              downforce: "Niedrig",
-              steeringSensitivity: "Hoch",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Auf langen Geraden und schnellen Sprints eine der stärkeren Optionen."
-          },
-          "Sprint": {
-            setup: {
-              motor: "4.4L V8 Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Niedrig bis mittel",
-              steeringSensitivity: "Hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Besser kontrollierbar als das reine Topspeed-Setup und stark auf Stadt-Sprints."
-          }
-        }
+        builds: defaultRoadBuilds
       },
       {
-        id: "subaru-impreza-wrx-sti-06",
-        brand: "Subaru",
-        name: "Impreza WRX STI '06",
-        year: "2006",
-        image: "images/cars/subaru-impreza-wrx-sti-06.jpg",
-        summary: "Sehr guter Offroad-Allrounder mit stabiler Traktion und guter Kontrolle.",
+        id: "ferrari-488-gtb-15",
+        brand: "Ferrari",
+        name: "488 GTB",
+        year: "2015",
+        image: "images/cars/ferrari-488-gtb-15.jpg",
+        summary: "Sehr starkes Straßenfahrzeug mit hoher Pace.",
         baseStats: {
-          engine: "Flat-4 Turbo",
-          power: "Ausgewogen",
-          usage: "Offroad / Rally",
-          handling: "Sehr stabil"
-        },
-        builds: {
-          "Offroad": {
-            setup: {
-              motor: "Rally-orientierter Swap oder Serienmotor maxed",
-              parts: "Elite+ Offroad",
-              induction: "Elite+ Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Offroad",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Sehr sicher fahrbar auf Schotter, Dreck und Offroad-Sprints."
-          },
-          "Balanced": {
-            setup: {
-              motor: "Serienmotor maxed",
-              parts: "Elite+ Offroad / Road Hybrid",
-              induction: "Elite+ Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road/Offroad Mix",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "3x mittlere Flaschen"
-            },
-            tip: "Für Spieler, die ein vielseitiges Setup wollen und nicht ständig umbauen möchten."
-          }
-        }
-      },
-      {
-        id: "bmw-m3-06",
-        brand: "BMW",
-        name: "M3 '06",
-        year: "2006",
-        image: "images/cars/bmw-m3-06.jpg",
-        summary: "Starker Sprint-Wagen mit sauberem Einlenken und hoher Kontrolle.",
-        baseStats: {
-          engine: "4.0L V8",
-          power: "Stark",
-          usage: "Sprint / Straße",
-          handling: "Präzise"
-        },
-        builds: {
-          "Sprint": {
-            setup: {
-              motor: "4.0L V8 Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel bis hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr gut auf technischen Strecken mit vielen Wechselkurven."
-          },
-          "Grip": {
-            setup: {
-              motor: "4.0L V8 Swap",
-              parts: "Elite+ Track",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel bis hoch",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Die kontrolliertere Variante für Rundkurse und saubere Apex-Linien."
-          }
-        }
-      },
-      {
-        id: "nissan-180sx-type-x-96",
-        brand: "Nissan",
-        name: "180SX Type X '96",
-        year: "1996",
-        image: "images/cars/nissan-180sx-type-x-96.jpg",
-        summary: "Sehr beliebt für Drift, aber auch als leichter Straßenumbau interessant.",
-        baseStats: {
-          engine: "3.8L V8",
-          power: "Hoch",
-          usage: "Drift / Street Style",
-          handling: "Spielerisch"
-        },
-        builds: {
-          "Drift": {
-            setup: {
-              motor: "3.8L V8 Swap",
-              parts: "Elite+ Drift",
-              induction: "Elite+ Roots Supercharger",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Optional"
-            },
-            tuning: {
-              handlingStyle: "Drift",
-              downforce: "Niedrig",
-              steeringSensitivity: "Hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Top für lange Slides und Style-Runs."
-          },
-          "Balanced": {
-            setup: {
-              motor: "3.8L V8 Swap",
-              parts: "Elite+ Road / Drift Hybrid",
-              induction: "Elite+ Supercharger",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Optional"
-            },
-            tuning: {
-              handlingStyle: "Road/Drift Mix",
-              downforce: "Niedrig bis mittel",
-              steeringSensitivity: "Hoch",
-              tractionControl: "Aus",
-              nitrous: "3x mittlere Flaschen"
-            },
-            tip: "Spaßiges Hybrid-Setup für Street-Events und Freeroam."
-          }
-        }
-      },
-      {
-        id: "ford-gt-17",
-        brand: "Ford",
-        name: "GT",
-        year: "2017",
-        image: "images/cars/ford-gt-17.jpg",
-        summary: "Starker High-Speed-Wagen mit gutem Race-Potenzial.",
-        baseStats: {
-          engine: "V6 EcoBoost",
+          engine: "V8 Turbo",
           power: "Sehr hoch",
-          usage: "Race / High Speed",
+          usage: "Grip / Sprint / High Speed",
           handling: "Scharf"
         },
-        builds: {
-          "Max Geschwindigkeit": {
-            setup: {
-              motor: "Max Performance Build",
-              parts: "Elite+ Speed",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "On-Road",
-              downforce: "Niedrig bis mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Sehr stark auf offenen Schnellstrecken."
-          },
-          "Grip": {
-            setup: {
-              motor: "Max Performance Build",
-              parts: "Elite+ Race",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Bessere Balance für High-End-Rundkurse."
-          }
-        }
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "ferrari-laferrari-13",
+        brand: "Ferrari",
+        name: "LaFerrari",
+        year: "2013",
+        image: "images/cars/ferrari-laferrari-13.jpg",
+        summary: "High-End-Hypercar für späte Race-Setups.",
+        baseStats: {
+          engine: "Hybrid V12",
+          power: "Extrem hoch",
+          usage: "Grip / Max Geschwindigkeit",
+          handling: "Präzise"
+        },
+        builds: defaultRoadBuilds
       },
       {
         id: "lamborghini-huracan-coupe-18",
@@ -1037,233 +872,244 @@
         name: "Huracán Coupé",
         year: "2018",
         image: "images/cars/lamborghini-huracan-coupe-18.jpg",
-        summary: "Sehr schneller Straßen- und Rundkurswagen mit starker Gesamtperformance.",
+        summary: "Schnell, aggressiv und sehr effektiv auf Straße.",
         baseStats: {
           engine: "V10",
           power: "Sehr hoch",
-          usage: "Race / Sprint",
+          usage: "Grip / Sprint",
           handling: "Aggressiv"
         },
-        builds: {
-          "Grip": {
-            setup: {
-              motor: "Max Performance Build",
-              parts: "Elite+ Race",
-              induction: "Elite+ Dual Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel bis hoch",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr stark auf gemischten Kursen mit viel Traktion."
-          },
-          "Sprint": {
-            setup: {
-              motor: "Max Performance Build",
-              parts: "Elite+ Road",
-              induction: "Elite+ Dual Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel bis hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Schnell und aggressiv auf Sprints mit schnellen Kurven."
-          }
-        }
+        builds: defaultRoadBuilds
       },
       {
-        id: "mclaren-p1-gtr",
+        id: "lamborghini-aventador-s-roadster-17",
+        brand: "Lamborghini",
+        name: "Aventador S Roadster",
+        year: "2017",
+        image: "images/cars/lamborghini-aventador-s-roadster-17.jpg",
+        summary: "Brutales Topspeed- und Showcar mit viel Leistung.",
+        baseStats: {
+          engine: "V12",
+          power: "Extrem hoch",
+          usage: "Sprint / Max Geschwindigkeit",
+          handling: "Kraftvoll"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "mclaren-p1-gtr-15",
         brand: "McLaren",
         name: "P1 GTR",
         year: "2015",
-        image: "images/cars/mclaren-p1-gtr.jpg",
-        summary: "Endgame-Fahrzeug für maximale Performance auf Race-Strecken.",
+        image: "images/cars/mclaren-p1-gtr-15.jpg",
+        summary: "Sehr starkes Endgame-Fahrzeug für Race-Events.",
         baseStats: {
           engine: "Hybrid V8",
           power: "Extrem hoch",
-          usage: "Race / Endgame",
+          usage: "Grip / Max Geschwindigkeit",
           handling: "Sehr präzise"
         },
-        builds: {
-          "Grip": {
-            setup: {
-              motor: "Max Performance Build",
-              parts: "Elite+ Race",
-              induction: "Elite+ Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Hoch",
-              steeringSensitivity: "Mittel bis hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Eine sehr starke Wahl für High-End-Rundkurse."
-          },
-          "Max Geschwindigkeit": {
-            setup: {
-              motor: "Max Performance Build",
-              parts: "Elite+ Speed",
-              induction: "Elite+ Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "On-Road",
-              downforce: "Mittel bis niedrig",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Stark auf Strecken mit höherem Vollgasanteil."
-          }
-        }
+        builds: defaultRoadBuilds
       },
       {
-        id: "chevrolet-bel-air-55",
-        brand: "Chevrolet",
-        name: "Bel Air '55",
-        year: "1955",
-        image: "images/cars/chevrolet-bel-air-55.jpg",
-        summary: "Ungewöhnlicher, spaßiger Offroad-Umbau mit Charakter.",
+        id: "mclaren-570s-15",
+        brand: "McLaren",
+        name: "570S",
+        year: "2015",
+        image: "images/cars/mclaren-570s-15.jpg",
+        summary: "Leichter, schneller Straßenwagen mit guter Balance.",
+        baseStats: {
+          engine: "V8 Twin Turbo",
+          power: "Sehr hoch",
+          usage: "Grip / Balanced",
+          handling: "Agil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "ford-gt-17",
+        brand: "Ford",
+        name: "GT",
+        year: "2017",
+        image: "images/cars/ford-gt-17.jpg",
+        summary: "Sehr stark auf schnellen Strecken und offenen Layouts.",
+        baseStats: {
+          engine: "V6 EcoBoost",
+          power: "Sehr hoch",
+          usage: "Grip / Max Geschwindigkeit",
+          handling: "Scharf"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "ford-focus-rs-16",
+        brand: "Ford",
+        name: "Focus RS",
+        year: "2016",
+        image: "images/cars/ford-focus-rs-16.jpg",
+        summary: "Kompakter Allrounder für technische Straßenrennen.",
+        baseStats: {
+          engine: "Turbo 4-Zylinder",
+          power: "Hoch",
+          usage: "Sprint / Balanced",
+          handling: "Agil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "ford-mustang-gt-15",
+        brand: "Ford",
+        name: "Mustang GT",
+        year: "2015",
+        image: "images/cars/ford-mustang-gt-15.jpg",
+        summary: "Kraftvoller Muskelwagen für Sprint und Drift-Umbauten.",
         baseStats: {
           engine: "V8",
-          power: "Stark",
-          usage: "Offroad / Fun",
+          power: "Hoch",
+          usage: "Sprint / Drift / Balanced",
           handling: "Roh"
         },
         builds: {
-          "Offroad": {
-            setup: {
-              motor: "Starker V8 Swap",
-              parts: "Elite+ Offroad",
-              induction: "Elite+ Supercharger",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Optional"
-            },
-            tuning: {
-              handlingStyle: "Offroad",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Mehr Spaß als Meta, aber sehr cool für spezielle Builds."
-          },
-          "Balanced": {
-            setup: {
-              motor: "V8 Swap",
-              parts: "Elite+ Mixed Setup",
-              induction: "Elite+ Supercharger",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Optional"
-            },
-            tuning: {
-              handlingStyle: "Mixed",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "3x mittlere Flaschen"
-            },
-            tip: "Guter Kompromiss zwischen Kontrolle und Showfaktor."
-          }
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
         }
       },
       {
         id: "nissan-gt-r-premium-17",
         brand: "Nissan",
-        name: "GT-R Premium '17",
+        name: "GT-R Premium",
         year: "2017",
-        image: "images/cars/nissan-gtr-premium-17.jpg",
-        summary: "Sehr starkes Allround-Auto für Grip, Sprint und High-Speed.",
+        image: "images/cars/nissan-gt-r-premium-17.jpg",
+        summary: "Sehr starkes Allround-Auto für Grip, Sprint und Speed.",
         baseStats: {
           engine: "V6 Twin Turbo",
           power: "Sehr hoch",
-          usage: "Race / Sprint / High Speed",
+          usage: "Grip / Sprint / High Speed",
+          handling: "Stabil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "nissan-180sx-type-x-96",
+        brand: "Nissan",
+        name: "180SX Type X",
+        year: "1996",
+        image: "images/cars/nissan-180sx-type-x-96.jpg",
+        summary: "Legendär für Drift-Builds und Street-Style.",
+        baseStats: {
+          engine: "3.8L V8",
+          power: "Hoch",
+          usage: "Drift / Balanced",
+          handling: "Spielerisch"
+        },
+        builds: defaultDriftBuilds
+      },
+      {
+        id: "nissan-skyline-2000-gt-r-71",
+        brand: "Nissan",
+        name: "Skyline 2000 GT-R",
+        year: "1971",
+        image: "images/cars/nissan-skyline-2000-gtr-71.jpg",
+        summary: "Klassischer JDM-Umbau für Straße und Style.",
+        baseStats: {
+          engine: "Reihensechser",
+          power: "Mittel bis hoch",
+          usage: "Balanced / Sprint",
+          handling: "Leicht"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "nissan-skyline-gt-r-v-spec-99",
+        brand: "Nissan",
+        name: "Skyline GT-R V-Spec",
+        year: "1999",
+        image: "images/cars/nissan-skyline-gtr-v-spec-99.jpg",
+        summary: "Sehr beliebtes JDM-Auto für Straße und Umbauten.",
+        baseStats: {
+          engine: "RB26 Twin Turbo",
+          power: "Sehr hoch",
+          usage: "Grip / Sprint / Balanced",
           handling: "Stabil"
         },
         builds: {
-          "Grip": {
-            setup: {
-              motor: "Maxed Serienmotor oder starker Swap",
-              parts: "Elite+ Race",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel bis hoch",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr stabil und schnell aus Kurven heraus."
-          },
-          "Sprint": {
-            setup: {
-              motor: "Maxed Serienmotor oder starker Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr gutes Paket für schnelle Straßen-Sprints."
-          },
-          "Max Geschwindigkeit": {
-            setup: {
-              motor: "Starker High-Speed Build",
-              parts: "Elite+ Speed",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "On-Road",
-              downforce: "Niedrig",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Sehr schnell bei langen Vollgaspassagen."
-          }
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "nissan-370z-nismo-15",
+        brand: "Nissan",
+        name: "370Z Nismo",
+        year: "2015",
+        image: "images/cars/nissan-370z-nismo-15.jpg",
+        summary: "Starker Straßen- und Drift-Allrounder.",
+        baseStats: {
+          engine: "V6",
+          power: "Hoch",
+          usage: "Grip / Drift / Sprint",
+          handling: "Agil"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "mazda-rx7-spirit-r-02",
+        brand: "Mazda",
+        name: "RX-7 Spirit R",
+        year: "2002",
+        image: "images/cars/mazda-rx7-spirit-r-02.jpg",
+        summary: "Eines der bekanntesten Drift-Autos mit starkem Street-Potenzial.",
+        baseStats: {
+          engine: "3.8L V8",
+          power: "Hoch",
+          usage: "Drift / Grip / Balanced",
+          handling: "Sehr agil"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "mazda-mx5-15",
+        brand: "Mazda",
+        name: "MX-5",
+        year: "2015",
+        image: "images/cars/mazda-mx5-15.jpg",
+        summary: "Leichtes, wendiges Auto mit gutem Drift- und Sprint-Faktor.",
+        baseStats: {
+          engine: "4-Zylinder",
+          power: "Mittel",
+          usage: "Drift / Sprint / Balanced",
+          handling: "Sehr agil"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "bmw-m3-06",
+        brand: "BMW",
+        name: "M3",
+        year: "2006",
+        image: "images/cars/bmw-m3-06.jpg",
+        summary: "Sehr stark auf Sprints und kontrollierten Straßen-Builds.",
+        baseStats: {
+          engine: "4.0L V8",
+          power: "Stark",
+          usage: "Grip / Sprint",
+          handling: "Präzise"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
         }
       },
       {
@@ -1272,107 +1118,32 @@
         name: "M4 Coupé",
         year: "2018",
         image: "images/cars/bmw-m4-coupe-18.jpg",
-        summary: "Modernes, starkes Straßenfahrzeug mit gutem Sprint- und Grip-Potenzial.",
+        summary: "Modernes Straßenauto mit sehr gutem Race- und Sprint-Potenzial.",
         baseStats: {
           engine: "I6 Twin Turbo",
           power: "Hoch",
-          usage: "Sprint / Grip",
+          usage: "Grip / Sprint",
           handling: "Direkt"
         },
         builds: {
-          "Grip": {
-            setup: {
-              motor: "Leistungsstarker Motor-Swap",
-              parts: "Elite+ Race",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Stark und präzise in schnellen Kurven."
-          },
-          "Sprint": {
-            setup: {
-              motor: "Leistungsstarker Motor-Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel bis niedrig",
-              steeringSensitivity: "Mittel bis hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr gut auf mittelschnellen Sprint-Strecken."
-          }
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
         }
       },
       {
-        id: "ford-focus-rs-16",
-        brand: "Ford",
-        name: "Focus RS",
-        year: "2016",
-        image: "images/cars/ford-focus-rs-16.jpg",
-        summary: "Starkes Kompaktfahrzeug für technische Kurse und gemischte Setups.",
+        id: "bmw-i8-coupe-18",
+        brand: "BMW",
+        name: "i8 Coupé",
+        year: "2018",
+        image: "images/cars/bmw-i8-coupe-18.jpg",
+        summary: "Ungewöhnliche, moderne Wahl mit starkem Style-Faktor.",
         baseStats: {
-          engine: "Turbo 4-Zylinder",
+          engine: "Hybrid",
           power: "Hoch",
-          usage: "Sprint / Balanced",
-          handling: "Agil"
+          usage: "Balanced / Sprint",
+          handling: "Glatt"
         },
-        builds: {
-          "Sprint": {
-            setup: {
-              motor: "Performance Swap",
-              parts: "Elite+ Road",
-              induction: "Elite+ Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Road",
-              downforce: "Mittel",
-              steeringSensitivity: "Hoch",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr stark auf engen und technischen Stadtkursen."
-          },
-          "Balanced": {
-            setup: {
-              motor: "Performance Swap",
-              parts: "Elite+ Mixed Setup",
-              induction: "Elite+ Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Mixed",
-              downforce: "Mittel",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "3x mittlere Flaschen"
-            },
-            tip: "Gute Mischung aus Kontrolle, Beschleunigung und Alltagstauglichkeit."
-          }
-        }
+        builds: defaultRoadBuilds
       },
       {
         id: "mercedes-amg-gtr-17",
@@ -1380,53 +1151,410 @@
         name: "AMG GT R",
         year: "2017",
         image: "images/cars/mercedes-amg-gtr-17.jpg",
-        summary: "Leistungsstarkes High-End-Auto für Race, Sprint und High-Speed.",
+        summary: "Sehr leistungsstarker Race-Wagen mit guter Stabilität.",
         baseStats: {
           engine: "V8 Biturbo",
           power: "Sehr hoch",
-          usage: "Race / Sprint / High Speed",
+          usage: "Grip / Sprint / Max Geschwindigkeit",
           handling: "Stark"
         },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "mercedes-c63-amg-coupe-18",
+        brand: "Mercedes-AMG",
+        name: "C 63 AMG Coupé",
+        year: "2018",
+        image: "images/cars/mercedes-c63-amg-coupe-18.jpg",
+        summary: "Kraftvoller Straßenwagen mit starker Beschleunigung.",
+        baseStats: {
+          engine: "V8 Biturbo",
+          power: "Sehr hoch",
+          usage: "Sprint / Balanced",
+          handling: "Kraftvoll"
+        },
         builds: {
-          "Grip": {
-            setup: {
-              motor: "Starker Performance-Build",
-              parts: "Elite+ Race",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "Grip",
-              downforce: "Mittel bis hoch",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "5x kleine Flaschen"
-            },
-            tip: "Sehr gute Kontrolle bei gleichzeitig hoher Leistung."
-          },
-          "Max Geschwindigkeit": {
-            setup: {
-              motor: "High-Speed Build",
-              parts: "Elite+ Speed",
-              induction: "Elite+ Twin Turbo",
-              ecu: "Elite+",
-              fuel: "Elite+",
-              exhaust: "Elite+",
-              turbo: "Elite+"
-            },
-            tuning: {
-              handlingStyle: "On-Road",
-              downforce: "Niedrig",
-              steeringSensitivity: "Mittel",
-              tractionControl: "Aus",
-              nitrous: "2x große Flaschen"
-            },
-            tip: "Sehr stark auf langen Vollgasstrecken."
-          }
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
         }
+      },
+      {
+        id: "audi-r8-v10-performance-19",
+        brand: "Audi",
+        name: "R8 V10 Performance",
+        year: "2019",
+        image: "images/cars/audi-r8-v10-performance-19.jpg",
+        summary: "Sehr starkes AWD-Hypercar für Race und Sprint.",
+        baseStats: {
+          engine: "5.2L V10",
+          power: "Sehr hoch",
+          usage: "Grip / Sprint / High Speed",
+          handling: "Sehr stabil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "audi-s5-sportback-17",
+        brand: "Audi",
+        name: "S5 Sportback",
+        year: "2017",
+        image: "images/cars/audi-s5-sportback-17.jpg",
+        summary: "Solider Straßen-Allrounder mit guter Kontrolle.",
+        baseStats: {
+          engine: "V6 Turbo",
+          power: "Hoch",
+          usage: "Balanced / Sprint",
+          handling: "Stabil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "subaru-impreza-wrx-sti-06",
+        brand: "Subaru",
+        name: "Impreza WRX STI",
+        year: "2006",
+        image: "images/cars/subaru-impreza-wrx-sti-06.jpg",
+        summary: "Sehr guter Offroad- und Rally-Allrounder.",
+        baseStats: {
+          engine: "Flat-4 Turbo",
+          power: "Ausgewogen",
+          usage: "Offroad / Balanced",
+          handling: "Sehr stabil"
+        },
+        builds: defaultOffroadBuilds
+      },
+      {
+        id: "subaru-brz-premium-14",
+        brand: "Subaru",
+        name: "BRZ Premium",
+        year: "2014",
+        image: "images/cars/subaru-brz-premium-14.jpg",
+        summary: "Beliebtes Tuning-Auto für Drift und Straße.",
+        baseStats: {
+          engine: "Boxer 4",
+          power: "Mittel bis hoch",
+          usage: "Drift / Balanced / Sprint",
+          handling: "Agil"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "mitsubishi-lancer-evolution-ix-07",
+        brand: "Mitsubishi",
+        name: "Lancer Evolution IX",
+        year: "2007",
+        image: "images/cars/mitsubishi-lancer-evolution-ix-07.jpg",
+        summary: "Sehr starkes AWD-Auto für Straße und Rally-Umbauten.",
+        baseStats: {
+          engine: "Turbo 4-Zylinder",
+          power: "Hoch",
+          usage: "Grip / Sprint / Offroad",
+          handling: "Sicher"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultOffroadBuilds
+        }
+      },
+      {
+        id: "mitsubishi-lancer-evolution-x-08",
+        brand: "Mitsubishi",
+        name: "Lancer Evolution X",
+        year: "2008",
+        image: "images/cars/mitsubishi-lancer-evolution-x-08.jpg",
+        summary: "Moderner Evo mit starkem Allround-Potenzial.",
+        baseStats: {
+          engine: "Turbo 4-Zylinder",
+          power: "Hoch",
+          usage: "Grip / Sprint / Offroad",
+          handling: "Stabil"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultOffroadBuilds
+        }
+      },
+      {
+        id: "honda-civic-type-r-15",
+        brand: "Honda",
+        name: "Civic Type-R",
+        year: "2015",
+        image: "images/cars/honda-civic-type-r-15.jpg",
+        summary: "Agiler Kompaktsportler für technische Rennstrecken.",
+        baseStats: {
+          engine: "Turbo 4-Zylinder",
+          power: "Hoch",
+          usage: "Sprint / Grip",
+          handling: "Sehr agil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "honda-nsx-type-r-92",
+        brand: "Honda",
+        name: "NSX Type-R",
+        year: "1992",
+        image: "images/cars/honda-nsx-type-r-92.jpg",
+        summary: "Klassischer Mid-Engine-Sportwagen mit sehr guter Balance.",
+        baseStats: {
+          engine: "V6",
+          power: "Hoch",
+          usage: "Grip / Balanced",
+          handling: "Präzise"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "chevrolet-corvette-grand-sport-17",
+        brand: "Chevrolet",
+        name: "Corvette Grand Sport",
+        year: "2017",
+        image: "images/cars/chevrolet-corvette-grand-sport-17.jpg",
+        summary: "Leistungsstarker amerikanischer Race-Wagen.",
+        baseStats: {
+          engine: "V8",
+          power: "Sehr hoch",
+          usage: "Grip / Sprint / Max Geschwindigkeit",
+          handling: "Aggressiv"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "chevrolet-camaro-z28-14",
+        brand: "Chevrolet",
+        name: "Camaro Z/28",
+        year: "2014",
+        image: "images/cars/chevrolet-camaro-z28-14.jpg",
+        summary: "Starker Muskelwagen für Straße und Drift.",
+        baseStats: {
+          engine: "V8",
+          power: "Sehr hoch",
+          usage: "Sprint / Drift / Balanced",
+          handling: "Roh"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "chevrolet-bel-air-55",
+        brand: "Chevrolet",
+        name: "Bel Air",
+        year: "1955",
+        image: "images/cars/chevrolet-bel-air-55.jpg",
+        summary: "Spaßiger Oldschool-Umbau für Offroad und Fun-Builds.",
+        baseStats: {
+          engine: "V8",
+          power: "Stark",
+          usage: "Offroad / Balanced",
+          handling: "Roh"
+        },
+        builds: defaultOffroadBuilds
+      },
+      {
+        id: "dodge-challenger-srt8-14",
+        brand: "Dodge",
+        name: "Challenger SRT8",
+        year: "2014",
+        image: "images/cars/dodge-challenger-srt8-14.jpg",
+        summary: "Brutaler Muskelwagen mit viel Drehmoment.",
+        baseStats: {
+          engine: "V8",
+          power: "Sehr hoch",
+          usage: "Sprint / Drift",
+          handling: "Schwer"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "dodge-viper-gts-14",
+        brand: "Dodge",
+        name: "SRT Viper GTS",
+        year: "2014",
+        image: "images/cars/dodge-viper-gts-14.jpg",
+        summary: "Sehr starkes, anspruchsvolles Straßenfahrzeug mit brutaler Leistung.",
+        baseStats: {
+          engine: "V10",
+          power: "Extrem hoch",
+          usage: "Grip / Max Geschwindigkeit",
+          handling: "Anspruchsvoll"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "aston-martin-db11-volante-18",
+        brand: "Aston Martin",
+        name: "DB11 Volante",
+        year: "2018",
+        image: "images/cars/aston-martin-db11-volante-18.jpg",
+        summary: "Luxuriöser High-Speed-GT mit starker Straßenperformance.",
+        baseStats: {
+          engine: "V8 Biturbo",
+          power: "Sehr hoch",
+          usage: "Sprint / Max Geschwindigkeit",
+          handling: "Souverän"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "aston-martin-vulcan-16",
+        brand: "Aston Martin",
+        name: "Vulcan",
+        year: "2016",
+        image: "images/cars/aston-martin-vulcan-16.jpg",
+        summary: "Track-Monster für späte Race-Builds.",
+        baseStats: {
+          engine: "V12",
+          power: "Extrem hoch",
+          usage: "Grip / Max Geschwindigkeit",
+          handling: "Scharf"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "jaguar-f-type-r-coupe-16",
+        brand: "Jaguar",
+        name: "F-Type R Coupé",
+        year: "2016",
+        image: "images/cars/jaguar-f-type-r-coupe-16.jpg",
+        summary: "Schneller britischer Straßenwagen mit starkem Sprint-Fokus.",
+        baseStats: {
+          engine: "V8 Supercharged",
+          power: "Sehr hoch",
+          usage: "Sprint / Balanced",
+          handling: "Stark"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "lotus-exige-s-06",
+        brand: "Lotus",
+        name: "Exige S",
+        year: "2006",
+        image: "images/cars/lotus-exige-s-06.jpg",
+        summary: "Leichtes, präzises Kurvenauto mit starkem Grip-Fokus.",
+        baseStats: {
+          engine: "Kompressor 4-Zylinder",
+          power: "Hoch",
+          usage: "Grip / Sprint",
+          handling: "Sehr präzise"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "mini-countryman-jcw-17",
+        brand: "Mini",
+        name: "Countryman John Cooper Works",
+        year: "2017",
+        image: "images/cars/mini-countryman-jcw-17.jpg",
+        summary: "Cooler Kandidat für Offroad- und Mixed-Setups.",
+        baseStats: {
+          engine: "Turbo 4-Zylinder",
+          power: "Hoch",
+          usage: "Offroad / Balanced",
+          handling: "Verspielt"
+        },
+        builds: defaultOffroadBuilds
+      },
+      {
+        id: "volkswagen-golf-gti-clubsport-16",
+        brand: "Volkswagen",
+        name: "Golf GTI Clubsport",
+        year: "2016",
+        image: "images/cars/volkswagen-golf-gti-clubsport-16.jpg",
+        summary: "Technischer Straßen-Allrounder mit guter Kontrolle.",
+        baseStats: {
+          engine: "Turbo 4-Zylinder",
+          power: "Hoch",
+          usage: "Sprint / Balanced",
+          handling: "Agil"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "volvo-242dl-75",
+        brand: "Volvo",
+        name: "242DL",
+        year: "1975",
+        image: "images/cars/volvo-242dl-75.jpg",
+        summary: "Ungewöhnliches, sehr cooles Umbauprojekt für Drift und Straße.",
+        baseStats: {
+          engine: "Turbo-Reihenvierer oder Swap",
+          power: "Hoch",
+          usage: "Drift / Balanced",
+          handling: "Speziell"
+        },
+        builds: {
+          ...defaultRoadBuilds,
+          ...defaultDriftBuilds
+        }
+      },
+      {
+        id: "polestar-1-20",
+        brand: "Polestar",
+        name: "Polestar 1",
+        year: "2020",
+        image: "images/cars/polestar-1-20.jpg",
+        summary: "Moderner GT mit starker Straßenperformance.",
+        baseStats: {
+          engine: "Hybrid",
+          power: "Sehr hoch",
+          usage: "Grip / Balanced",
+          handling: "Souverän"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "land-rover-range-rover-sport-svr-15",
+        brand: "Land Rover",
+        name: "Range Rover Sport SVR",
+        year: "2015",
+        image: "images/cars/land-rover-range-rover-sport-svr-15.jpg",
+        summary: "Starker Offroad- und Fun-Build mit viel Masse und Leistung.",
+        baseStats: {
+          engine: "V8 Supercharged",
+          power: "Sehr hoch",
+          usage: "Offroad / Balanced",
+          handling: "Schwer"
+        },
+        builds: defaultOffroadBuilds
+      },
+      {
+        id: "pagani-huayra-bc-17",
+        brand: "Pagani",
+        name: "Huayra BC",
+        year: "2017",
+        image: "images/cars/pagani-huayra-bc-17.jpg",
+        summary: "Hypercar mit sehr hoher Spitzenleistung.",
+        baseStats: {
+          engine: "V12 Biturbo",
+          power: "Extrem hoch",
+          usage: "Grip / Max Geschwindigkeit",
+          handling: "Scharf"
+        },
+        builds: defaultRoadBuilds
+      },
+      {
+        id: "koenigsegg-regera-16",
+        brand: "Koenigsegg",
+        name: "Regera",
+        year: "2016",
+        image: "images/cars/koenigsegg-regera-16.jpg",
+        summary: "Eines der stärksten Autos für extreme High-Speed-Setups.",
+        baseStats: {
+          engine: "Hybrid V8",
+          power: "Extrem hoch",
+          usage: "Max Geschwindigkeit / Grip",
+          handling: "Anspruchsvoll"
+        },
+        builds: defaultRoadBuilds
       }
     ];
 
@@ -1492,9 +1620,7 @@
           <div class="car-card-content">
             <div class="car-card-title">${car.name}</div>
             <div class="car-card-subtitle">${car.brand} · ${car.year}</div>
-            <div class="car-card-tags">
-              ${tags}
-            </div>
+            <div class="car-card-tags">${tags}</div>
           </div>
         `;
         card.addEventListener("click", () => openCarModal(car));
@@ -1504,8 +1630,7 @@
 
     function openCarModal(car) {
       currentCar = car;
-      const firstBuild = Object.keys(car.builds || {})[0] || null;
-      currentBuildType = firstBuild;
+      currentBuildType = Object.keys(car.builds || {})[0] || null;
 
       document.getElementById("modalImage").src = car.image || placeholderImage;
       document.getElementById("modalBrand").textContent = car.brand;
