@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightStalkerZ - Leaderboard</title>
+  <title>NightStalkerZ - NFS Heat Leaderboard</title>
   <style>
     body {
       margin: 0;
@@ -16,7 +16,7 @@
     }
 
     .page-container {
-      max-width: 1300px;
+      max-width: 1350px;
       margin: 0 auto;
       padding: 30px 20px 60px;
     }
@@ -93,6 +93,27 @@
       font-size: 1.05rem;
     }
 
+    .search-box {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-box input {
+      width: min(100%, 700px);
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    .search-box input::placeholder {
+      color: #aab7ea;
+    }
+
     .track-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -109,6 +130,7 @@
       padding: 10px 16px;
       cursor: pointer;
       transition: 0.25s ease;
+      font-size: 0.95rem;
     }
 
     .track-tab:hover,
@@ -145,7 +167,7 @@
       border-radius: 18px;
       background:
         linear-gradient(135deg, rgba(57, 230, 255, 0.25), rgba(0,0,0,0.15)),
-        url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80') center/cover;
+        url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80') center/cover;
       margin-bottom: 18px;
       border: 1px solid rgba(255,255,255,0.08);
     }
@@ -328,6 +350,10 @@
       outline: none;
     }
 
+    .form-group option {
+      color: black;
+    }
+
     .form-group input::placeholder {
       color: #aab7ea;
     }
@@ -459,7 +485,7 @@
   <div class="page-container">
     <div class="topbar">
       <h1>NightStalkerZ</h1>
-      <p>Clan Website</p>
+      <p>NFS Heat Renn-Leaderboard</p>
     </div>
 
     <div class="nav">
@@ -474,8 +500,12 @@
     </div>
 
     <div class="hero">
-      <h2>LEADER<span>BOARD</span></h2>
-      <p>Die besten Zeiten aller NightStalkerZ-Fahrer. Wer dominiert die Strecke?</p>
+      <h2>NFS HEAT <span>LEADERBOARD</span></h2>
+      <p>Alle wichtigen Rennen der Crew in deutscher Bezeichnung mit Bestzeiten, Podium und Einreichungssystem.</p>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="trackSearch" placeholder="Rennen suchen...">
     </div>
 
     <div class="track-tabs" id="trackTabs"></div>
@@ -483,23 +513,23 @@
     <div class="leaderboard-layout">
       <div class="side-card">
         <div class="track-image"></div>
-        <div class="badge" id="trackDifficulty">Easy</div>
-        <h3 id="trackName">Taranis</h3>
-        <p id="trackCar">Fahrzeug: Nissan Silvia S15</p>
-        <p id="trackType">Modus: Nacht / Drift / Time Attack</p>
+        <div class="badge" id="trackDifficulty">Sprint</div>
+        <h3 id="trackName">Die Resorts-Runde</h3>
+        <p id="trackCar">Empfohlen: Straßenrennen</p>
+        <p id="trackType">Palm City / Asphalt / Tag</p>
 
         <div class="target-box">
-          <strong>Target Time</strong>
-          <div class="target-time" id="targetTime">1:40.52</div>
+          <strong>Zielzeit</strong>
+          <div class="target-time" id="targetTime">2:45.00</div>
         </div>
 
         <div class="stats-box">
-          <strong>Strecken-Stats</strong>
+          <strong>Renn-Stats</strong>
           <p id="entryCount">Einträge: 0</p>
-          <p id="beatCount">Beat Target: 0</p>
+          <p id="beatCount">Unter Zielzeit: 0</p>
         </div>
 
-        <button class="reset-btn" id="resetTrackBtn">Strecke zurücksetzen</button>
+        <button class="reset-btn" id="resetTrackBtn">Rennen zurücksetzen</button>
       </div>
 
       <div class="main-card">
@@ -515,7 +545,7 @@
 
             <div class="form-group">
               <label for="timeInput">Zeit</label>
-              <input type="text" id="timeInput" placeholder="z. B. 1:38.14">
+              <input type="text" id="timeInput" placeholder="z. B. 2:43.15">
             </div>
 
             <div class="form-group">
@@ -530,7 +560,7 @@
 
         <div class="ranking-box">
           <div class="ranking-header">
-            <h3>Full Rankings</h3>
+            <h3>Vollständige Rangliste</h3>
             <div class="ranking-count" id="rankingCount">0 Fahrer</div>
           </div>
           <div class="rank-list" id="rankList"></div>
@@ -539,7 +569,7 @@
     </div>
 
     <div class="footer-note">
-      NightStalkerZ Leaderboard - Strecken, Zeiten und Ranglisten der Crew
+      NightStalkerZ - NFS Heat Rennzeiten und Crew-Rankings
     </div>
   </div>
 
@@ -555,84 +585,252 @@
       "BlazeLock"
     ];
 
-    const trackConfig = {
-      taranis: {
-        name: "Taranis",
-        difficulty: "Easy",
-        car: "Fahrzeug: Nissan Silvia S15",
-        type: "Modus: Nacht / Drift / Time Attack",
-        target: "1:40.52",
+    const raceConfig = {
+      resortsrunde: {
+        name: "Die Resorts-Runde",
+        difficulty: "Sprint",
+        car: "Empfohlen: Straßenrennen",
+        type: "Palm City / Asphalt / Tag",
+        target: "2:45.00",
         defaultEntries: [
-          { member: "NightHunter", country: "DE", time: "1:38.14", date: "12.03.2026" },
-          { member: "VexShadow", country: "DE", time: "1:39.07", date: "14.03.2026" },
-          { member: "AshFang", country: "AT", time: "1:39.88", date: "10.03.2026" }
+          { member: "NightHunter", country: "DE", time: "2:41.78", date: "12.03.2026" },
+          { member: "VexShadow", country: "DE", time: "2:42.91", date: "13.03.2026" },
+          { member: "AshFang", country: "AT", time: "2:44.07", date: "11.03.2026" }
         ]
       },
-      columbia: {
-        name: "Columbia",
-        difficulty: "Medium",
-        car: "Fahrzeug: Toyota Supra MK4",
-        type: "Modus: Sprint / Berg / Time Attack",
-        target: "2:08.30",
+      bahnhofssprint: {
+        name: "Bahnhofs-Sprint",
+        difficulty: "Sprint",
+        car: "Empfohlen: Straßenrennen",
+        type: "Downtown / Asphalt / Tag",
+        target: "2:30.00",
         defaultEntries: [
-          { member: "DriftRogue", country: "DE", time: "2:05.44", date: "15.03.2026" },
-          { member: "NightHunter", country: "DE", time: "2:06.18", date: "16.03.2026" },
-          { member: "NovaKade", country: "CH", time: "2:07.22", date: "11.03.2026" }
+          { member: "DriftRogue", country: "DE", time: "2:27.48", date: "15.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:28.25", date: "16.03.2026" },
+          { member: "NovaKade", country: "CH", time: "2:29.40", date: "11.03.2026" }
         ]
       },
-      gebirge: {
-        name: "Gebirgsüberquerung",
-        difficulty: "Hard",
-        car: "Fahrzeug: Mitsubishi Evo IX",
-        type: "Modus: Bergpass / Grip / Time Trial",
+      palmcityrunde: {
+        name: "Palm City Runde",
+        difficulty: "Circuit",
+        car: "Empfohlen: High-Speed Build",
+        type: "Palm City / Rundkurs / Tag",
+        target: "3:12.00",
+        defaultEntries: [
+          { member: "VexShadow", country: "DE", time: "3:08.22", date: "13.03.2026" },
+          { member: "BlazeLock", country: "AT", time: "3:09.54", date: "12.03.2026" },
+          { member: "RavenByte", country: "DE", time: "3:10.87", date: "09.03.2026" }
+        ]
+      },
+      hafenlinie: {
+        name: "Hafenlinie",
+        difficulty: "Sprint",
+        car: "Empfohlen: Beschleunigungs-Setup",
+        type: "Hafen / Industrie / Tag",
+        target: "2:18.00",
+        defaultEntries: [
+          { member: "SilentKrush", country: "DE", time: "2:14.20", date: "13.03.2026" },
+          { member: "AshFang", country: "DE", time: "2:15.11", date: "12.03.2026" },
+          { member: "DriftRogue", country: "AT", time: "2:16.44", date: "16.03.2026" }
+        ]
+      },
+      innenstadtkurs: {
+        name: "Innenstadtkurs",
+        difficulty: "Circuit",
+        car: "Empfohlen: Grip Build",
+        type: "Downtown / Kurvenreich / Nacht",
+        target: "2:58.00",
+        defaultEntries: [
+          { member: "NovaKade", country: "DE", time: "2:54.40", date: "10.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:55.05", date: "14.03.2026" },
+          { member: "BlazeLock", country: "CH", time: "2:56.18", date: "15.03.2026" }
+        ]
+      },
+      brueckenschlag: {
+        name: "Brückenschlag",
+        difficulty: "Sprint",
+        car: "Empfohlen: Top-Speed Build",
+        type: "Brückenroute / Schnell / Tag",
+        target: "2:36.00",
+        defaultEntries: [
+          { member: "VexShadow", country: "DE", time: "2:31.40", date: "11.03.2026" },
+          { member: "NightHunter", country: "AT", time: "2:32.08", date: "12.03.2026" },
+          { member: "RavenByte", country: "DE", time: "2:33.47", date: "16.03.2026" }
+        ]
+      },
+      bergring: {
+        name: "Bergring",
+        difficulty: "Circuit",
+        car: "Empfohlen: Allround Build",
+        type: "Bergregion / Asphalt / Tag",
+        target: "3:24.00",
+        defaultEntries: [
+          { member: "NightHunter", country: "DE", time: "3:19.62", date: "12.03.2026" },
+          { member: "BlazeLock", country: "DE", time: "3:20.54", date: "13.03.2026" },
+          { member: "AshFang", country: "AT", time: "3:22.04", date: "10.03.2026" }
+        ]
+      },
+      tunneljagd: {
+        name: "Tunneljagd",
+        difficulty: "Sprint",
+        car: "Empfohlen: Night Build",
+        type: "Tunnel / Schnell / Nacht",
+        target: "2:09.00",
+        defaultEntries: [
+          { member: "SilentKrush", country: "DE", time: "2:05.10", date: "15.03.2026" },
+          { member: "VexShadow", country: "DE", time: "2:05.84", date: "14.03.2026" },
+          { member: "NovaKade", country: "CH", time: "2:07.12", date: "13.03.2026" }
+        ]
+      },
+      kuestenlauf: {
+        name: "Küstenlauf",
+        difficulty: "Sprint",
+        car: "Empfohlen: Top-Speed Build",
+        type: "Küste / Lange Geraden / Tag",
+        target: "3:05.00",
+        defaultEntries: [
+          { member: "DriftRogue", country: "DE", time: "2:59.90", date: "16.03.2026" },
+          { member: "NightHunter", country: "DE", time: "3:00.33", date: "15.03.2026" },
+          { member: "AshFang", country: "AT", time: "3:02.14", date: "14.03.2026" }
+        ]
+      },
+      flughafenrunde: {
+        name: "Flughafenrunde",
+        difficulty: "Circuit",
+        car: "Empfohlen: High-Speed Build",
+        type: "Flughafen / Offen / Tag",
+        target: "2:52.00",
+        defaultEntries: [
+          { member: "NovaKade", country: "DE", time: "2:47.55", date: "09.03.2026" },
+          { member: "RavenByte", country: "DE", time: "2:48.10", date: "10.03.2026" },
+          { member: "BlazeLock", country: "AT", time: "2:49.84", date: "11.03.2026" }
+        ]
+      },
+      dockduell: {
+        name: "Dock-Duell",
+        difficulty: "Sprint",
+        car: "Empfohlen: Beschleunigungs-Setup",
+        type: "Docks / Eng / Nacht",
+        target: "2:21.00",
+        defaultEntries: [
+          { member: "SilentKrush", country: "DE", time: "2:17.12", date: "13.03.2026" },
+          { member: "AshFang", country: "DE", time: "2:18.44", date: "12.03.2026" },
+          { member: "VexShadow", country: "AT", time: "2:19.08", date: "11.03.2026" }
+        ]
+      },
+      palmringnacht: {
+        name: "Palmring bei Nacht",
+        difficulty: "Circuit",
+        car: "Empfohlen: Night Race Build",
+        type: "Palm City / Rundkurs / Nacht",
+        target: "3:06.00",
+        defaultEntries: [
+          { member: "NightHunter", country: "DE", time: "3:01.40", date: "15.03.2026" },
+          { member: "NovaKade", country: "DE", time: "3:02.18", date: "14.03.2026" },
+          { member: "RavenByte", country: "CH", time: "3:03.11", date: "13.03.2026" }
+        ]
+      },
+      industriepassage: {
+        name: "Industriepassage",
+        difficulty: "Sprint",
+        car: "Empfohlen: Straßen-Setup",
+        type: "Industrie / Technisch / Tag",
+        target: "2:40.00",
+        defaultEntries: [
+          { member: "BlazeLock", country: "DE", time: "2:35.66", date: "12.03.2026" },
+          { member: "VexShadow", country: "AT", time: "2:36.51", date: "13.03.2026" },
+          { member: "AshFang", country: "DE", time: "2:37.48", date: "14.03.2026" }
+        ]
+      },
+      stromleitung: {
+        name: "Stromleitung",
+        difficulty: "Sprint",
+        car: "Empfohlen: Beschleunigung + Grip",
+        type: "Vorstadt / Schnell / Nacht",
+        target: "2:12.00",
+        defaultEntries: [
+          { member: "SilentKrush", country: "DE", time: "2:08.33", date: "09.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:09.12", date: "10.03.2026" },
+          { member: "DriftRogue", country: "AT", time: "2:10.09", date: "11.03.2026" }
+        ]
+      },
+      spiegelufer: {
+        name: "Spiegelufer",
+        difficulty: "Circuit",
+        car: "Empfohlen: Präzisions-Build",
+        type: "Ufer / Mittlere Distanz / Tag",
+        target: "2:48.00",
+        defaultEntries: [
+          { member: "NovaKade", country: "CH", time: "2:43.51", date: "15.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:44.48", date: "14.03.2026" },
+          { member: "RavenByte", country: "DE", time: "2:45.74", date: "13.03.2026" }
+        ]
+      },
+      nachtspange: {
+        name: "Nachtspange",
+        difficulty: "Sprint",
+        car: "Empfohlen: Night Sprint Build",
+        type: "Palm City / Schnell / Nacht",
+        target: "2:25.00",
+        defaultEntries: [
+          { member: "VexShadow", country: "DE", time: "2:20.44", date: "11.03.2026" },
+          { member: "AshFang", country: "AT", time: "2:21.09", date: "12.03.2026" },
+          { member: "BlazeLock", country: "DE", time: "2:22.33", date: "13.03.2026" }
+        ]
+      },
+      kuppelkurve: {
+        name: "Kuppelkurve",
+        difficulty: "Circuit",
+        car: "Empfohlen: Grip / Race Setup",
+        type: "Stadtrand / Rundkurs / Tag",
+        target: "2:34.00",
+        defaultEntries: [
+          { member: "DriftRogue", country: "DE", time: "2:29.65", date: "16.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:30.12", date: "15.03.2026" },
+          { member: "NovaKade", country: "CH", time: "2:31.80", date: "14.03.2026" }
+        ]
+      },
+      westhafenloop: {
+        name: "Westhafen-Loop",
+        difficulty: "Circuit",
+        car: "Empfohlen: Stabilitäts-Build",
+        type: "Westhafen / Rundkurs / Nacht",
+        target: "2:59.00",
+        defaultEntries: [
+          { member: "SilentKrush", country: "DE", time: "2:54.42", date: "13.03.2026" },
+          { member: "RavenByte", country: "DE", time: "2:55.87", date: "12.03.2026" },
+          { member: "AshFang", country: "AT", time: "2:56.91", date: "11.03.2026" }
+        ]
+      },
+      ostkuestesprint: {
+        name: "Ostküsten-Sprint",
+        difficulty: "Sprint",
+        car: "Empfohlen: High-Speed",
+        type: "Küste / Lang / Tag",
         target: "3:18.00",
         defaultEntries: [
-          { member: "VexShadow", country: "DE", time: "3:14.52", date: "13.03.2026" },
-          { member: "BlazeLock", country: "AT", time: "3:16.08", date: "12.03.2026" },
-          { member: "RavenByte", country: "DE", time: "3:17.91", date: "09.03.2026" }
+          { member: "NightHunter", country: "DE", time: "3:12.15", date: "10.03.2026" },
+          { member: "VexShadow", country: "DE", time: "3:13.08", date: "11.03.2026" },
+          { member: "BlazeLock", country: "AT", time: "3:14.27", date: "12.03.2026" }
         ]
       },
-      nadelschleif: {
-        name: "Nadelschleif",
-        difficulty: "Extreme",
-        car: "Fahrzeug: Mazda RX-7",
-        type: "Modus: Technical / Precision / Night Run",
-        target: "1:56.80",
+      palmexpress: {
+        name: "Palm Express",
+        difficulty: "Sprint",
+        car: "Empfohlen: Top-Speed / Race",
+        type: "Palm City / Expressroute / Tag",
+        target: "2:27.00",
         defaultEntries: [
-          { member: "SilentKrush", country: "DE", time: "1:54.22", date: "13.03.2026" },
-          { member: "AshFang", country: "DE", time: "1:55.01", date: "12.03.2026" },
-          { member: "DriftRogue", country: "AT", time: "1:55.92", date: "16.03.2026" }
-        ]
-      },
-      thunder: {
-        name: "Thunder Valley",
-        difficulty: "Medium",
-        car: "Fahrzeug: Nissan GT-R R34",
-        type: "Modus: Valley / Speed / Full Send",
-        target: "2:22.60",
-        defaultEntries: [
-          { member: "NovaKade", country: "DE", time: "2:19.80", date: "10.03.2026" },
-          { member: "NightHunter", country: "DE", time: "2:20.11", date: "14.03.2026" },
-          { member: "BlazeLock", country: "CH", time: "2:21.20", date: "15.03.2026" }
-        ]
-      },
-      midnight: {
-        name: "Midnight Circuit",
-        difficulty: "Pro",
-        car: "Fahrzeug: Porsche 911 GT3",
-        type: "Modus: Circuit / Precision / High Speed",
-        target: "1:27.50",
-        defaultEntries: [
-          { member: "VexShadow", country: "DE", time: "1:25.40", date: "11.03.2026" },
-          { member: "NightHunter", country: "AT", time: "1:25.88", date: "12.03.2026" },
-          { member: "RavenByte", country: "DE", time: "1:26.47", date: "16.03.2026" }
+          { member: "NovaKade", country: "DE", time: "2:22.84", date: "09.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:23.20", date: "10.03.2026" },
+          { member: "DriftRogue", country: "CH", time: "2:24.14", date: "11.03.2026" }
         ]
       }
     };
 
-    const storageKey = "nsz_leaderboard_data_v1";
+    const storageKey = "nsz_nfs_heat_leaderboard_v1";
     let leaderboardData = loadData();
-    let currentTrack = "taranis";
+    let currentRace = Object.keys(raceConfig)[0];
 
     const trackTabs = document.getElementById("trackTabs");
     const memberSelect = document.getElementById("memberSelect");
@@ -641,6 +839,7 @@
     const submitTimeBtn = document.getElementById("submitTimeBtn");
     const resetTrackBtn = document.getElementById("resetTrackBtn");
     const statusMessage = document.getElementById("statusMessage");
+    const trackSearch = document.getElementById("trackSearch");
 
     function loadData() {
       const saved = localStorage.getItem(storageKey);
@@ -649,8 +848,8 @@
       }
 
       const initial = {};
-      for (const key in trackConfig) {
-        initial[key] = [...trackConfig[key].defaultEntries];
+      for (const key in raceConfig) {
+        initial[key] = [...raceConfig[key].defaultEntries];
       }
       localStorage.setItem(storageKey, JSON.stringify(initial));
       return initial;
@@ -680,15 +879,20 @@
       return entries.sort((a, b) => parseTimeToMs(a.time) - parseTimeToMs(b.time));
     }
 
-    function createTabs() {
+    function createTabs(filter = "") {
       trackTabs.innerHTML = "";
-      for (const key in trackConfig) {
+      const search = filter.toLowerCase().trim();
+
+      for (const key in raceConfig) {
+        const race = raceConfig[key];
+        if (search && !race.name.toLowerCase().includes(search)) continue;
+
         const btn = document.createElement("button");
-        btn.className = "track-tab" + (key === currentTrack ? " active" : "");
-        btn.textContent = trackConfig[key].name;
+        btn.className = "track-tab" + (key === currentRace ? " active" : "");
+        btn.textContent = race.name;
         btn.addEventListener("click", () => {
-          currentTrack = key;
-          renderAll();
+          currentRace = key;
+          renderAll(trackSearch.value);
         });
         trackTabs.appendChild(btn);
       }
@@ -712,20 +916,20 @@
       return `${d}.${m}.${y}`;
     }
 
-    function renderTrackInfo() {
-      const cfg = trackConfig[currentTrack];
+    function renderRaceInfo() {
+      const cfg = raceConfig[currentRace];
       document.getElementById("trackDifficulty").textContent = cfg.difficulty;
       document.getElementById("trackName").textContent = cfg.name;
       document.getElementById("trackCar").textContent = cfg.car;
       document.getElementById("trackType").textContent = cfg.type;
       document.getElementById("targetTime").textContent = cfg.target;
 
-      const entries = sortEntries([...leaderboardData[currentTrack]]);
+      const entries = sortEntries([...leaderboardData[currentRace]]);
       document.getElementById("entryCount").textContent = "Einträge: " + entries.length;
 
       const targetMs = parseTimeToMs(cfg.target);
       const beatCount = entries.filter(e => parseTimeToMs(e.time) < targetMs).length;
-      document.getElementById("beatCount").textContent = "Beat Target: " + beatCount;
+      document.getElementById("beatCount").textContent = "Unter Zielzeit: " + beatCount;
       document.getElementById("rankingCount").textContent = entries.length + " Fahrer";
     }
 
@@ -733,7 +937,7 @@
       const podium = document.getElementById("podium");
       podium.innerHTML = "";
 
-      const entries = sortEntries([...leaderboardData[currentTrack]]);
+      const entries = sortEntries([...leaderboardData[currentRace]]);
       const topThree = [entries[1], entries[0], entries[2]];
       const classes = ["silver", "gold", "bronze"];
       const ranks = [2, 1, 3];
@@ -767,9 +971,9 @@
       const rankList = document.getElementById("rankList");
       rankList.innerHTML = "";
 
-      const cfg = trackConfig[currentTrack];
+      const cfg = raceConfig[currentRace];
       const targetMs = parseTimeToMs(cfg.target);
-      const entries = sortEntries([...leaderboardData[currentTrack]]);
+      const entries = sortEntries([...leaderboardData[currentRace]]);
 
       if (entries.length === 0) {
         rankList.innerHTML = '<div class="empty-state">Noch keine Zeiten eingetragen.</div>';
@@ -781,7 +985,7 @@
         row.className = "rank-row";
 
         const beatTarget = parseTimeToMs(entry.time) < targetMs;
-        const badgeText = beatTarget ? "Beat Target" : "Standard";
+        const badgeText = beatTarget ? "Ziel geknackt" : "Eingetragen";
 
         row.innerHTML = `
           <div class="rank-position">#${index + 1}</div>
@@ -797,9 +1001,9 @@
       });
     }
 
-    function renderAll() {
-      createTabs();
-      renderTrackInfo();
+    function renderAll(filter = "") {
+      createTabs(filter);
+      renderRaceInfo();
       renderPodium();
       renderRankings();
       statusMessage.textContent = "";
@@ -816,11 +1020,11 @@
       }
 
       if (!parseTimeToMs(time)) {
-        statusMessage.textContent = "Ungültiges Format. Nutze z. B. 1:38.14";
+        statusMessage.textContent = "Ungültiges Format. Nutze z. B. 2:43.15";
         return;
       }
 
-      leaderboardData[currentTrack].push({
+      leaderboardData[currentRace].push({
         member,
         country: country.toUpperCase(),
         time,
@@ -828,17 +1032,21 @@
       });
 
       saveData();
-      renderAll();
+      renderAll(trackSearch.value);
       timeInput.value = "";
       countryInput.value = "";
       statusMessage.textContent = "Zeit erfolgreich eingetragen.";
     });
 
     resetTrackBtn.addEventListener("click", () => {
-      leaderboardData[currentTrack] = [...trackConfig[currentTrack].defaultEntries];
+      leaderboardData[currentRace] = [...raceConfig[currentRace].defaultEntries];
       saveData();
-      renderAll();
-      statusMessage.textContent = "Strecke wurde zurückgesetzt.";
+      renderAll(trackSearch.value);
+      statusMessage.textContent = "Rennen wurde zurückgesetzt.";
+    });
+
+    trackSearch.addEventListener("input", () => {
+      renderAll(trackSearch.value);
     });
 
     fillMembers();
