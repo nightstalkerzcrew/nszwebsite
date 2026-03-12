@@ -9,12 +9,14 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #0d1b3d, #050914 70%);
+      background:
+        radial-gradient(circle at top, rgba(25, 60, 140, 0.55), transparent 35%),
+        linear-gradient(180deg, #050914 0%, #091327 45%, #050914 100%);
       color: white;
     }
 
     .page-container {
-      max-width: 1200px;
+      max-width: 1250px;
       margin: 0 auto;
       padding: 30px 20px 60px;
     }
@@ -50,7 +52,7 @@
       background: rgba(255,255,255,0.12);
       padding: 12px 18px;
       border-radius: 12px;
-      transition: 0.3s;
+      transition: 0.3s ease;
       backdrop-filter: blur(8px);
       box-shadow: 0 0 12px rgba(255,255,255,0.08);
     }
@@ -65,7 +67,7 @@
 
     .hero {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 34px;
     }
 
     .hero h2 {
@@ -75,44 +77,45 @@
 
     .hero p {
       color: #d5ddff;
-      max-width: 780px;
+      max-width: 820px;
       margin: 0 auto;
+      line-height: 1.6;
     }
 
     .member-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 22px;
     }
 
     .member-card {
       background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 22px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 25px rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 24px rgba(0,0,0,0.22);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .member-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 0 25px rgba(57, 230, 255, 0.18);
+      transform: translateY(-5px);
+      box-shadow: 0 0 24px rgba(57, 230, 255, 0.18);
     }
 
-    .member-avatar {
-      width: 64px;
-      height: 64px;
+    .avatar {
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #39e6ff, #1c77ff);
+      background: rgba(57, 230, 255, 0.12);
+      border: 2px solid rgba(57, 230, 255, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
+      color: #39e6ff;
       font-weight: bold;
-      color: #04101d;
+      font-size: 1.2rem;
       margin-bottom: 16px;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
+      box-shadow: 0 0 14px rgba(57, 230, 255, 0.18);
     }
 
     .member-card h3 {
@@ -120,20 +123,35 @@
       color: #39e6ff;
     }
 
-    .member-role {
+    .role {
       display: inline-block;
+      margin-bottom: 12px;
       padding: 6px 10px;
       border-radius: 999px;
       background: rgba(57, 230, 255, 0.12);
       color: #8ff4ff;
       font-size: 0.9rem;
-      margin-bottom: 12px;
     }
 
     .member-card p {
       margin: 8px 0;
       color: #dce4ff;
       line-height: 1.5;
+    }
+
+    .status-online {
+      color: #72ff9a;
+      font-weight: bold;
+    }
+
+    .status-away {
+      color: #ffd76b;
+      font-weight: bold;
+    }
+
+    .status-busy {
+      color: #ff8a8a;
+      font-weight: bold;
     }
 
     .footer-note {
@@ -164,67 +182,85 @@
 
     <div class="hero">
       <h2>Members</h2>
-      <p>Hier findest du die aktuellen Mitglieder der NightStalkerZ Crew mit Rollen, Schwerpunkten und kurzer Übersicht.</p>
+      <p>Die Crew besteht aus aktiven Spielern mit unterschiedlichen Rollen, Stärken und Spielstilen. Hier siehst du die aktuelle Übersicht der wichtigsten NightStalkerZ-Mitglieder.</p>
     </div>
 
     <div class="member-grid">
       <div class="member-card">
-        <div class="member-avatar">NH</div>
+        <div class="avatar">NH</div>
         <h3>NightHunter</h3>
-        <div class="member-role">Leader</div>
-        <p>Leitet die Crew, organisiert Events und hält die Struktur der Gruppe zusammen.</p>
-        <p>Status: Aktiv</p>
-        <p>Spezialgebiet: Taktik, Führung, Event-Planung</p>
+        <div class="role">Leader</div>
+        <p>Status: <span class="status-online">Online</span></p>
+        <p>Spezialisierung: Taktik, Eventleitung, Crew-Organisation</p>
+        <p>Beschreibung: Führt die Crew mit Übersicht, Aktivität und klarer Struktur.</p>
       </div>
 
       <div class="member-card">
-        <div class="member-avatar">SR</div>
-        <h3>ShadowRider</h3>
-        <div class="member-role">Co-Leader</div>
-        <p>Unterstützt die Leitung und koordiniert Einsätze, Builds und interne Abläufe.</p>
-        <p>Status: Aktiv</p>
-        <p>Spezialgebiet: PvP, Support, Teamkoordination</p>
+        <div class="avatar">VX</div>
+        <h3>VexShadow</h3>
+        <div class="role">Co-Leader</div>
+        <p>Status: <span class="status-online">Online</span></p>
+        <p>Spezialisierung: PvP, Verteidigung, Reaktionsspiel</p>
+        <p>Beschreibung: Starker Frontspieler mit hoher Präsenz in aktiven Sessions.</p>
       </div>
 
       <div class="member-card">
-        <div class="member-avatar">GZ</div>
-        <h3>GhostZ</h3>
-        <div class="member-role">Veteran</div>
-        <p>Erfahrener Spieler mit hoher Aktivität und starkem Einfluss im Team.</p>
-        <p>Status: Aktiv</p>
-        <p>Spezialgebiet: Rennen, Event-Support, Builds</p>
+        <div class="avatar">RB</div>
+        <h3>RavenByte</h3>
+        <div class="role">Strategist</div>
+        <p>Status: <span class="status-away">Abwesend</span></p>
+        <p>Spezialisierung: Planung, Teameinsatz, Support-Routen</p>
+        <p>Beschreibung: Entwickelt Setups und sorgt für Struktur im Hintergrund.</p>
       </div>
 
       <div class="member-card">
-        <div class="member-avatar">SA</div>
-        <h3>SilentAce</h3>
-        <div class="member-role">Member</div>
-        <p>Zuverlässiges Crew-Mitglied mit Fokus auf Missionen und taktischem Spielstil.</p>
-        <p>Status: Aktiv</p>
-        <p>Spezialgebiet: Missionen, Verteidigung, Support</p>
+        <div class="avatar">SK</div>
+        <h3>SilentKrush</h3>
+        <div class="role">Enforcer</div>
+        <p>Status: <span class="status-busy">Beschäftigt</span></p>
+        <p>Spezialisierung: Druckspiel, Nahkampf, schnelle Einsätze</p>
+        <p>Beschreibung: Direkt, aggressiv und stark in intensiven Situationen.</p>
       </div>
 
       <div class="member-card">
-        <div class="member-avatar">RX</div>
-        <h3>ReaperX</h3>
-        <div class="member-role">Member</div>
-        <p>Konzentriert sich auf schnelle Reaktion, gute Performance und Eventteilnahme.</p>
-        <p>Status: Aktiv</p>
-        <p>Spezialgebiet: PvP, Fahrzeuge, Reaktion</p>
+        <div class="avatar">AF</div>
+        <h3>AshFang</h3>
+        <div class="role">Scout</div>
+        <p>Status: <span class="status-online">Online</span></p>
+        <p>Spezialisierung: Aufklärung, Bewegung, Gegnerbeobachtung</p>
+        <p>Beschreibung: Schnell unterwegs und stark beim Erfassen der Lage.</p>
       </div>
 
       <div class="member-card">
-        <div class="member-avatar">DV</div>
-        <h3>DarkVolt</h3>
-        <div class="member-role">Recruit</div>
-        <p>Neues Mitglied der Crew mit Potenzial und hoher Lernbereitschaft.</p>
-        <p>Status: In Prüfung</p>
-        <p>Spezialgebiet: Freemode, Support, Teamplay</p>
+        <div class="avatar">DR</div>
+        <h3>DriftRogue</h3>
+        <div class="role">Racer</div>
+        <p>Status: <span class="status-away">Abwesend</span></p>
+        <p>Spezialisierung: Geschwindigkeit, Rennen, Fahrzeugkontrolle</p>
+        <p>Beschreibung: Einer der besten Fahrer der Crew bei Rennen und Verfolgungen.</p>
+      </div>
+
+      <div class="member-card">
+        <div class="avatar">NK</div>
+        <h3>NovaKade</h3>
+        <div class="role">Support</div>
+        <p>Status: <span class="status-online">Online</span></p>
+        <p>Spezialisierung: Teamhilfe, Absicherung, flexible Rollen</p>
+        <p>Beschreibung: Verlässlich, ruhig und in jeder Session nützlich.</p>
+      </div>
+
+      <div class="member-card">
+        <div class="avatar">BL</div>
+        <h3>BlazeLock</h3>
+        <div class="role">Heavy</div>
+        <p>Status: <span class="status-busy">Beschäftigt</span></p>
+        <p>Spezialisierung: Druckaufbau, schwere Ausrüstung, Frontlinie</p>
+        <p>Beschreibung: Bringt Stabilität und Präsenz in hitzige Matches.</p>
       </div>
     </div>
 
     <div class="footer-note">
-      NightStalkerZ Members - Übersicht der Crew-Struktur
+      NightStalkerZ Members - Aktive Rollenprofile der Crew
     </div>
   </div>
 </body>
