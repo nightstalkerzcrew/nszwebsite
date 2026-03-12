@@ -3,54 +3,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightStalkerZ</title>
+  <title>NightStalkerZ - Home</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #0d1b3d, #050914 70%);
+      color: white;
+    }
+
+    .page-container {
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3.2rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 15px rgba(57, 230, 255, 0.6);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 25px 0 40px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.12);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.08);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 35px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 28px rgba(0,0,0,0.25);
+    }
+
+    .hero h2 {
+      font-size: 2.4rem;
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: #ffffff;
+    }
+
+    .hero p {
+      color: #d5ddff;
+      max-width: 820px;
+      margin: 0 auto 22px;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #39e6ff;
+      color: #07111f;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 22px;
+      color: #39e6ff;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 24px rgba(0,0,0,0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 24px rgba(57, 230, 255, 0.18);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #39e6ff;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #dce4ff;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .card a {
+      color: #8ff4ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .highlight-box {
+      background: rgba(255,255,255,0.06);
+      border-radius: 22px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 35px;
+      box-shadow: 0 0 26px rgba(0,0,0,0.2);
+    }
+
+    .highlight-box h3 {
+      margin-top: 0;
+      color: #39e6ff;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .mini-card strong {
+      display: block;
+      color: #8ff4ff;
+      margin-bottom: 8px;
+    }
+
+    .mini-card span {
+      color: #dce4ff;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
+  <div class="page-container">
+    <div class="topbar">
       <h1>NightStalkerZ</h1>
-      <p class="subtitle">Clan Website</p>
-      <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="members.html">Members</a>
-        <a href="gallery.html">Gallery</a>
-        <a href="news.html">News</a>
-        <a href="builds.html">Builds</a>
-        <a href="shop.html">Shop</a>
-        <a href="login.html">Login</a>
-      </nav>
+      <p>Offizielle Clan Website</p>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero">
+    <div class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="members.html">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html">Shop</a>
+      <a href="login.html">Login</a>
+    </div>
+
+    <div class="hero">
       <h2>Willkommen bei NightStalkerZ</h2>
       <p>
-        Die offizielle NSZ Clan Website mit Leaderboards, Members, News, Builds und mehr.
+        NightStalkerZ ist eine moderne Clan- und Crew-Community mit Fokus auf Aktivität, Zusammenhalt,
+        Events, Rankings und gemeinsame Sessions. Auf dieser Website findest du Mitglieder, News,
+        Builds, Screenshots und weitere Inhalte rund um die Crew.
       </p>
-      <button id="welcomeBtn">NSZ starten</button>
-    </section>
+      <div class="hero-buttons">
+        <a href="members.html" class="btn-primary">Zur Crew</a>
+        <a href="leaderboard.html" class="btn-secondary">Zum Leaderboard</a>
+      </div>
+    </div>
 
-    <section class="cards">
+    <h2 class="section-title">Bereiche der Website</h2>
+
+    <div class="card-grid">
       <div class="card">
         <h3>Leaderboard</h3>
-        <p>Alle Bestzeiten und Rekorde der Crew an einem Ort.</p>
+        <p>Aktuelle Rankings, Punktestände, Siege und Aktivität der stärksten Crew-Mitglieder.</p>
+        <a href="leaderboard.html">Seite öffnen</a>
       </div>
 
       <div class="card">
         <h3>Members</h3>
-        <p>Alle aktuellen Mitglieder und Rollen im Überblick.</p>
+        <p>Übersicht aller Mitglieder mit Rollen, Status und ihren Spezialisierungen in der Crew.</p>
+        <a href="members.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Gallery</h3>
+        <p>Screenshots, Highlights, Event-Bilder und besondere Momente aus dem Crew-Alltag.</p>
+        <a href="gallery.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>News</h3>
+        <p>Aktuelle Ankündigungen, Updates und Hinweise zu geplanten Events und Änderungen.</p>
+        <a href="news.html">Seite öffnen</a>
       </div>
 
       <div class="card">
         <h3>Builds</h3>
-        <p>Empfohlene Fahrzeuge, Klassen und Setups für Events.</p>
+        <p>Empfohlene Setups, Fahrzeugideen und Rollenprofile für verschiedene Spielstile.</p>
+        <a href="builds.html">Seite öffnen</a>
       </div>
-    </section>
-  </main>
 
-  <script src="assets/js/main.js"></script>
+      <div class="card">
+        <h3>Shop</h3>
+        <p>Platzhalter für Crew-interne Inhalte, Pakete, Belohnungen und spätere Extras.</p>
+        <a href="shop.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Login</h3>
+        <p>Zugang zum späteren Mitgliederbereich mit internen Funktionen und geschützten Inhalten.</p>
+        <a href="login.html">Seite öffnen</a>
+      </div>
+
+      <div class="card">
+        <h3>Community</h3>
+        <p>Der Fokus liegt auf Teamplay, Aktivität, Loyalität und einem starken gemeinsamen Auftritt.</p>
+        <a href="members.html">Mehr sehen</a>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <h3>Aktuelle Highlights</h3>
+      <div class="highlight-grid">
+        <div class="mini-card">
+          <strong>Top Spieler</strong>
+          <span>NightHunter führt aktuell das Ranking der Crew mit den meisten Punkten an.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Neue Inhalte</strong>
+          <span>News, Builds und Shop wurden als neue Website-Bereiche hinzugefügt.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Mitgliederbereich</strong>
+          <span>Der Login-Bereich ist vorbereitet und kann später erweitert werden.</span>
+        </div>
+        <div class="mini-card">
+          <strong>Nächster Ausbau</strong>
+          <span>Als Nächstes können echte Bilder, Animationen und ein Admin-System ergänzt werden.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ - Zusammenhalt, Aktivität und Stil in einer starken Crew
+    </div>
+  </div>
 </body>
 </html>
