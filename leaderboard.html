@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightStalkerZ - Leaderboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(25, 60, 140, 0.45), transparent 35%),
+        radial-gradient(circle at right, rgba(57, 230, 255, 0.10), transparent 30%),
+        linear-gradient(180deg, #050914 0%, #091327 45%, #050914 100%);
+      color: white;
+    }
+
+    .page-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 30px 20px 60px;
+    }
+
+    .topbar {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .topbar h1 {
+      color: #39e6ff;
+      font-size: 3rem;
+      margin: 0 0 8px;
+      text-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
+    }
+
+    .topbar p {
+      color: #cfd8ff;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 24px 0 36px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.10);
+      padding: 12px 18px;
+      border-radius: 12px;
+      transition: 0.3s ease;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 12px rgba(255,255,255,0.06);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 38px 20px;
+      margin-bottom: 30px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 30px rgba(0,0,0,0.22);
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin: 0 0 10px;
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    .hero h2 span {
+      color: #39e6ff;
+      text-shadow: 0 0 18px rgba(57, 230, 255, 0.4);
+    }
+
+    .hero p {
+      color: #dce4ff;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .track-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .track-tab {
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      border-radius: 999px;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .track-tab:hover,
+    .track-tab.active {
+      background: #39e6ff;
+      color: #07111f;
+      font-weight: bold;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.35);
+    }
+
+    .leaderboard-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .side-card,
+    .main-card {
+      background: rgba(255,255,255,0.07);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 0 26px rgba(0,0,0,0.22);
+    }
+
+    .side-card {
+      padding: 22px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .track-image {
+      height: 180px;
+      border-radius: 18px;
+      background:
+        linear-gradient(135deg, rgba(57, 230, 255, 0.25), rgba(0,0,0,0.15)),
+        url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80') center/cover;
+      margin-bottom: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.85rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(57, 230, 255, 0.14);
+      color: #8ff4ff;
+      margin-bottom: 10px;
+    }
+
+    .side-card h3 {
+      margin: 0 0 10px;
+      color: white;
+      font-size: 1.8rem;
+    }
+
+    .side-card p {
+      margin: 8px 0;
+      color: #dce4ff;
+      line-height: 1.5;
+    }
+
+    .target-box,
+    .stats-box {
+      margin-top: 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .target-box strong,
+    .stats-box strong {
+      display: block;
+      color: #8ff4ff;
+      margin-bottom: 8px;
+    }
+
+    .target-time {
+      font-size: 1.8rem;
+      color: #39e6ff;
+      font-weight: bold;
+    }
+
+    .submit-btn,
+    .reset-btn {
+      width: 100%;
+      border: none;
+      padding: 13px 16px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s ease;
+      margin-top: 14px;
+    }
+
+    .submit-btn {
+      background: #39e6ff;
+      color: #07111f;
+      box-shadow: 0 0 18px rgba(57, 230, 255, 0.3);
+    }
+
+    .reset-btn {
+      background: rgba(255,255,255,0.10);
+      color: white;
+    }
+
+    .submit-btn:hover,
+    .reset-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .main-card {
+      padding: 22px;
+    }
+
+    .podium {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .podium-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .podium-rank {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+
+    .gold {
+      border: 2px solid #ffd54a;
+      color: #ffd54a;
+      box-shadow: 0 0 18px rgba(255, 213, 74, 0.25);
+    }
+
+    .silver {
+      border: 2px solid #d9e1ea;
+      color: #d9e1ea;
+      box-shadow: 0 0 18px rgba(217, 225, 234, 0.2);
+    }
+
+    .bronze {
+      border: 2px solid #ff9f43;
+      color: #ff9f43;
+      box-shadow: 0 0 18px rgba(255, 159, 67, 0.2);
+    }
+
+    .podium-card h4 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .podium-time {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #39e6ff;
+      margin-bottom: 6px;
+    }
+
+    .podium-date {
+      color: #b9c5f0;
+      font-size: 0.92rem;
+    }
+
+    .form-box {
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 22px;
+    }
+
+    .form-box h3 {
+      margin-top: 0;
+      color: #39e6ff;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      margin-bottom: 8px;
+      color: #dce4ff;
+      font-size: 0.95rem;
+    }
+
+    .form-group select,
+    .form-group input {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      outline: none;
+    }
+
+    .form-group input::placeholder {
+      color: #aab7ea;
+    }
+
+    .status-message {
+      margin-top: 14px;
+      color: #8ff4ff;
+      min-height: 22px;
+    }
+
+    .ranking-box {
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .ranking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .ranking-header h3 {
+      margin: 0;
+      color: #39e6ff;
+    }
+
+    .ranking-count {
+      color: #cfd8ff;
+      font-size: 0.95rem;
+    }
+
+    .rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 70px 1fr 140px 140px;
+      gap: 12px;
+      align-items: center;
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .rank-position {
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      color: #8ff4ff;
+    }
+
+    .rank-name {
+      font-weight: bold;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .rank-meta {
+      font-size: 0.92rem;
+      color: #b8c4ef;
+    }
+
+    .rank-badge {
+      justify-self: center;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(57, 230, 255, 0.12);
+      color: #8ff4ff;
+      font-size: 0.88rem;
+    }
+
+    .rank-time {
+      justify-self: end;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ffd54a;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #b9c5f0;
+      padding: 20px 10px;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #aab7ea;
+      margin-top: 35px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 1000px) {
+      .leaderboard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-card {
+        position: static;
+      }
+
+      .podium {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .rank-row {
+        grid-template-columns: 60px 1fr;
+      }
+
+      .rank-badge,
+      .rank-time {
+        justify-self: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <div class="topbar">
+      <h1>NightStalkerZ</h1>
+      <p>Clan Website</p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">Home</a>
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+      <a href="members.html">Members</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="news.html">News</a>
+      <a href="builds.html">Builds</a>
+      <a href="shop.html">Shop</a>
+      <a href="login.html">Login</a>
+    </div>
+
+    <div class="hero">
+      <h2>LEADER<span>BOARD</span></h2>
+      <p>Die besten Zeiten aller NightStalkerZ-Fahrer. Wer dominiert die Strecke?</p>
+    </div>
+
+    <div class="track-tabs" id="trackTabs"></div>
+
+    <div class="leaderboard-layout">
+      <div class="side-card">
+        <div class="track-image"></div>
+        <div class="badge" id="trackDifficulty">Easy</div>
+        <h3 id="trackName">Taranis</h3>
+        <p id="trackCar">Fahrzeug: Nissan Silvia S15</p>
+        <p id="trackType">Modus: Nacht / Drift / Time Attack</p>
+
+        <div class="target-box">
+          <strong>Target Time</strong>
+          <div class="target-time" id="targetTime">1:40.52</div>
+        </div>
+
+        <div class="stats-box">
+          <strong>Strecken-Stats</strong>
+          <p id="entryCount">Einträge: 0</p>
+          <p id="beatCount">Beat Target: 0</p>
+        </div>
+
+        <button class="reset-btn" id="resetTrackBtn">Strecke zurücksetzen</button>
+      </div>
+
+      <div class="main-card">
+        <div class="podium" id="podium"></div>
+
+        <div class="form-box">
+          <h3>Zeit einreichen</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="memberSelect">Mitglied</label>
+              <select id="memberSelect"></select>
+            </div>
+
+            <div class="form-group">
+              <label for="timeInput">Zeit</label>
+              <input type="text" id="timeInput" placeholder="z. B. 1:38.14">
+            </div>
+
+            <div class="form-group">
+              <label for="countryInput">Land / Kürzel</label>
+              <input type="text" id="countryInput" placeholder="z. B. DE">
+            </div>
+          </div>
+
+          <button class="submit-btn" id="submitTimeBtn">Zeit einreichen</button>
+          <div class="status-message" id="statusMessage"></div>
+        </div>
+
+        <div class="ranking-box">
+          <div class="ranking-header">
+            <h3>Full Rankings</h3>
+            <div class="ranking-count" id="rankingCount">0 Fahrer</div>
+          </div>
+          <div class="rank-list" id="rankList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      NightStalkerZ Leaderboard - Strecken, Zeiten und Ranglisten der Crew
+    </div>
+  </div>
+
+  <script>
+    const members = [
+      "NightHunter",
+      "VexShadow",
+      "RavenByte",
+      "SilentKrush",
+      "AshFang",
+      "DriftRogue",
+      "NovaKade",
+      "BlazeLock"
+    ];
+
+    const trackConfig = {
+      taranis: {
+        name: "Taranis",
+        difficulty: "Easy",
+        car: "Fahrzeug: Nissan Silvia S15",
+        type: "Modus: Nacht / Drift / Time Attack",
+        target: "1:40.52",
+        defaultEntries: [
+          { member: "NightHunter", country: "DE", time: "1:38.14", date: "12.03.2026" },
+          { member: "VexShadow", country: "DE", time: "1:39.07", date: "14.03.2026" },
+          { member: "AshFang", country: "AT", time: "1:39.88", date: "10.03.2026" }
+        ]
+      },
+      columbia: {
+        name: "Columbia",
+        difficulty: "Medium",
+        car: "Fahrzeug: Toyota Supra MK4",
+        type: "Modus: Sprint / Berg / Time Attack",
+        target: "2:08.30",
+        defaultEntries: [
+          { member: "DriftRogue", country: "DE", time: "2:05.44", date: "15.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:06.18", date: "16.03.2026" },
+          { member: "NovaKade", country: "CH", time: "2:07.22", date: "11.03.2026" }
+        ]
+      },
+      gebirge: {
+        name: "Gebirgsüberquerung",
+        difficulty: "Hard",
+        car: "Fahrzeug: Mitsubishi Evo IX",
+        type: "Modus: Bergpass / Grip / Time Trial",
+        target: "3:18.00",
+        defaultEntries: [
+          { member: "VexShadow", country: "DE", time: "3:14.52", date: "13.03.2026" },
+          { member: "BlazeLock", country: "AT", time: "3:16.08", date: "12.03.2026" },
+          { member: "RavenByte", country: "DE", time: "3:17.91", date: "09.03.2026" }
+        ]
+      },
+      nadelschleif: {
+        name: "Nadelschleif",
+        difficulty: "Extreme",
+        car: "Fahrzeug: Mazda RX-7",
+        type: "Modus: Technical / Precision / Night Run",
+        target: "1:56.80",
+        defaultEntries: [
+          { member: "SilentKrush", country: "DE", time: "1:54.22", date: "13.03.2026" },
+          { member: "AshFang", country: "DE", time: "1:55.01", date: "12.03.2026" },
+          { member: "DriftRogue", country: "AT", time: "1:55.92", date: "16.03.2026" }
+        ]
+      },
+      thunder: {
+        name: "Thunder Valley",
+        difficulty: "Medium",
+        car: "Fahrzeug: Nissan GT-R R34",
+        type: "Modus: Valley / Speed / Full Send",
+        target: "2:22.60",
+        defaultEntries: [
+          { member: "NovaKade", country: "DE", time: "2:19.80", date: "10.03.2026" },
+          { member: "NightHunter", country: "DE", time: "2:20.11", date: "14.03.2026" },
+          { member: "BlazeLock", country: "CH", time: "2:21.20", date: "15.03.2026" }
+        ]
+      },
+      midnight: {
+        name: "Midnight Circuit",
+        difficulty: "Pro",
+        car: "Fahrzeug: Porsche 911 GT3",
+        type: "Modus: Circuit / Precision / High Speed",
+        target: "1:27.50",
+        defaultEntries: [
+          { member: "VexShadow", country: "DE", time: "1:25.40", date: "11.03.2026" },
+          { member: "NightHunter", country: "AT", time: "1:25.88", date: "12.03.2026" },
+          { member: "RavenByte", country: "DE", time: "1:26.47", date: "16.03.2026" }
+        ]
+      }
+    };
+
+    const storageKey = "nsz_leaderboard_data_v1";
+    let leaderboardData = loadData();
+    let currentTrack = "taranis";
+
+    const trackTabs = document.getElementById("trackTabs");
+    const memberSelect = document.getElementById("memberSelect");
+    const timeInput = document.getElementById("timeInput");
+    const countryInput = document.getElementById("countryInput");
+    const submitTimeBtn = document.getElementById("submitTimeBtn");
+    const resetTrackBtn = document.getElementById("resetTrackBtn");
+    const statusMessage = document.getElementById("statusMessage");
+
+    function loadData() {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        return JSON.parse(saved);
+      }
+
+      const initial = {};
+      for (const key in trackConfig) {
+        initial[key] = [...trackConfig[key].defaultEntries];
+      }
+      localStorage.setItem(storageKey, JSON.stringify(initial));
+      return initial;
+    }
+
+    function saveData() {
+      localStorage.setItem(storageKey, JSON.stringify(leaderboardData));
+    }
+
+    function parseTimeToMs(timeString) {
+      const clean = timeString.trim();
+      const match = clean.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
+      if (!match) return null;
+
+      const minutes = parseInt(match[1], 10);
+      const seconds = parseInt(match[2], 10);
+      let millis = match[3];
+
+      if (millis.length === 1) millis = millis + "00";
+      if (millis.length === 2) millis = millis + "0";
+      millis = parseInt(millis, 10);
+
+      return (minutes * 60 * 1000) + (seconds * 1000) + millis;
+    }
+
+    function sortEntries(entries) {
+      return entries.sort((a, b) => parseTimeToMs(a.time) - parseTimeToMs(b.time));
+    }
+
+    function createTabs() {
+      trackTabs.innerHTML = "";
+      for (const key in trackConfig) {
+        const btn = document.createElement("button");
+        btn.className = "track-tab" + (key === currentTrack ? " active" : "");
+        btn.textContent = trackConfig[key].name;
+        btn.addEventListener("click", () => {
+          currentTrack = key;
+          renderAll();
+        });
+        trackTabs.appendChild(btn);
+      }
+    }
+
+    function fillMembers() {
+      memberSelect.innerHTML = "";
+      members.forEach(member => {
+        const option = document.createElement("option");
+        option.value = member;
+        option.textContent = member;
+        memberSelect.appendChild(option);
+      });
+    }
+
+    function getTodayDate() {
+      const now = new Date();
+      const d = String(now.getDate()).padStart(2, "0");
+      const m = String(now.getMonth() + 1).padStart(2, "0");
+      const y = now.getFullYear();
+      return `${d}.${m}.${y}`;
+    }
+
+    function renderTrackInfo() {
+      const cfg = trackConfig[currentTrack];
+      document.getElementById("trackDifficulty").textContent = cfg.difficulty;
+      document.getElementById("trackName").textContent = cfg.name;
+      document.getElementById("trackCar").textContent = cfg.car;
+      document.getElementById("trackType").textContent = cfg.type;
+      document.getElementById("targetTime").textContent = cfg.target;
+
+      const entries = sortEntries([...leaderboardData[currentTrack]]);
+      document.getElementById("entryCount").textContent = "Einträge: " + entries.length;
+
+      const targetMs = parseTimeToMs(cfg.target);
+      const beatCount = entries.filter(e => parseTimeToMs(e.time) < targetMs).length;
+      document.getElementById("beatCount").textContent = "Beat Target: " + beatCount;
+      document.getElementById("rankingCount").textContent = entries.length + " Fahrer";
+    }
+
+    function renderPodium() {
+      const podium = document.getElementById("podium");
+      podium.innerHTML = "";
+
+      const entries = sortEntries([...leaderboardData[currentTrack]]);
+      const topThree = [entries[1], entries[0], entries[2]];
+      const classes = ["silver", "gold", "bronze"];
+      const ranks = [2, 1, 3];
+
+      for (let i = 0; i < 3; i++) {
+        const item = topThree[i];
+        const card = document.createElement("div");
+        card.className = "podium-card";
+
+        if (item) {
+          card.innerHTML = `
+            <div class="podium-rank ${classes[i]}">${ranks[i]}</div>
+            <h4>${item.member}</h4>
+            <div class="podium-time">${item.time}</div>
+            <div class="podium-date">${item.date}</div>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="podium-rank ${classes[i]}">${ranks[i]}</div>
+            <h4>Frei</h4>
+            <div class="podium-time">--:--.--</div>
+            <div class="podium-date">Kein Eintrag</div>
+          `;
+        }
+
+        podium.appendChild(card);
+      }
+    }
+
+    function renderRankings() {
+      const rankList = document.getElementById("rankList");
+      rankList.innerHTML = "";
+
+      const cfg = trackConfig[currentTrack];
+      const targetMs = parseTimeToMs(cfg.target);
+      const entries = sortEntries([...leaderboardData[currentTrack]]);
+
+      if (entries.length === 0) {
+        rankList.innerHTML = '<div class="empty-state">Noch keine Zeiten eingetragen.</div>';
+        return;
+      }
+
+      entries.forEach((entry, index) => {
+        const row = document.createElement("div");
+        row.className = "rank-row";
+
+        const beatTarget = parseTimeToMs(entry.time) < targetMs;
+        const badgeText = beatTarget ? "Beat Target" : "Standard";
+
+        row.innerHTML = `
+          <div class="rank-position">#${index + 1}</div>
+          <div>
+            <div class="rank-name">${entry.member}</div>
+            <div class="rank-meta">${entry.date} · ${entry.country}</div>
+          </div>
+          <div class="rank-badge">${badgeText}</div>
+          <div class="rank-time">${entry.time}</div>
+        `;
+
+        rankList.appendChild(row);
+      });
+    }
+
+    function renderAll() {
+      createTabs();
+      renderTrackInfo();
+      renderPodium();
+      renderRankings();
+      statusMessage.textContent = "";
+    }
+
+    submitTimeBtn.addEventListener("click", () => {
+      const member = memberSelect.value.trim();
+      const time = timeInput.value.trim();
+      const country = countryInput.value.trim() || "DE";
+
+      if (!member || !time) {
+        statusMessage.textContent = "Bitte Mitglied und Zeit ausfüllen.";
+        return;
+      }
+
+      if (!parseTimeToMs(time)) {
+        statusMessage.textContent = "Ungültiges Format. Nutze z. B. 1:38.14";
+        return;
+      }
+
+      leaderboardData[currentTrack].push({
+        member,
+        country: country.toUpperCase(),
+        time,
+        date: getTodayDate()
+      });
+
+      saveData();
+      renderAll();
+      timeInput.value = "";
+      countryInput.value = "";
+      statusMessage.textContent = "Zeit erfolgreich eingetragen.";
+    });
+
+    resetTrackBtn.addEventListener("click", () => {
+      leaderboardData[currentTrack] = [...trackConfig[currentTrack].defaultEntries];
+      saveData();
+      renderAll();
+      statusMessage.textContent = "Strecke wurde zurückgesetzt.";
+    });
+
+    fillMembers();
+    renderAll();
+  </script>
+</body>
+</html>
