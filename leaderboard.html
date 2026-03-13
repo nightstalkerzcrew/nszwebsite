@@ -6,24 +6,28 @@
   <title>NightStalkerZ - Distance Leaderboard</title>
   <style>
     :root {
-      --bg1: #07142b;
-      --bg2: #0a1c42;
-      --panel: rgba(33, 77, 166, 0.22);
-      --panel-strong: rgba(38, 89, 191, 0.3);
-      --line: rgba(145, 200, 255, 0.25);
-      --line-strong: rgba(99, 203, 255, 0.55);
-      --text: #eef8ff;
-      --muted: #b8d7ff;
-      --cyan: #33f0ff;
-      --cyan-soft: #2fd3ff;
-      --blue: #58a6ff;
-      --pink: #ff8ac2;
-      --danger: #ff8aa1;
-      --success: #77ffb0;
-      --warning: #ffd37a;
-      --shadow: 0 0 0 1px rgba(115, 187, 255, 0.12), 0 16px 40px rgba(0, 0, 0, 0.35), 0 0 30px rgba(51, 240, 255, 0.08);
-      --glow: 0 0 12px rgba(51, 240, 255, 0.35);
-      --radius: 22px;
+      --bg-a: #07142a;
+      --bg-b: #0b1f49;
+      --panel: rgba(44, 88, 180, 0.22);
+      --panel-2: rgba(33, 66, 140, 0.26);
+      --line: rgba(145, 199, 255, 0.2);
+      --line-strong: rgba(80, 228, 255, 0.55);
+      --text: #eef7ff;
+      --muted: #bdd7ff;
+      --cyan: #41f4ff;
+      --cyan-2: #33d6ff;
+      --green: #61ffd9;
+      --gold: #f3d16a;
+      --silver: #d7e0ee;
+      --bronze: #f0a67b;
+      --danger: #ff93a9;
+      --success: #7fffb3;
+      --warn: #ffd67b;
+      --shadow:
+        0 0 0 1px rgba(117, 180, 255, 0.08),
+        0 14px 32px rgba(0,0,0,.34),
+        0 0 24px rgba(65, 244, 255, .06);
+      --radius: 24px;
     }
 
     * {
@@ -32,378 +36,368 @@
 
     html, body {
       margin: 0;
-      padding: 0;
       min-height: 100%;
       font-family: Inter, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top, rgba(42, 108, 255, 0.18), transparent 28%),
-        linear-gradient(180deg, var(--bg1) 0%, var(--bg2) 100%);
+        radial-gradient(circle at 20% 0%, rgba(54, 134, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(65, 244, 255, 0.09), transparent 24%),
+        linear-gradient(180deg, var(--bg-a) 0%, var(--bg-b) 100%);
     }
 
     body {
-      padding: 28px 18px 40px;
+      padding: 24px 18px 34px;
     }
 
-    .shell {
-      width: min(1400px, 100%);
+    .wrap {
+      width: min(1500px, 100%);
       margin: 0 auto;
     }
 
-    .topbar {
+    .top {
       display: grid;
-      gap: 14px;
-      margin-bottom: 18px;
+      gap: 16px;
       justify-items: center;
+      margin-bottom: 18px;
     }
 
     .brand {
       text-align: center;
     }
 
-    .brand-title {
-      font-size: 54px;
+    .brand-name {
+      font-size: 58px;
       font-weight: 900;
-      letter-spacing: 0.5px;
-      color: #7af5ff;
-      text-shadow: 0 0 22px rgba(51, 240, 255, 0.55);
+      color: #6ffff6;
+      text-shadow: 0 0 22px rgba(65, 244, 255, 0.45);
       line-height: 1;
     }
 
     .brand-sub {
       margin-top: 6px;
-      color: #d8ecff;
       font-weight: 700;
+      color: #dceeff;
       font-size: 20px;
     }
 
-    .nav {
+    .menu {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       justify-content: center;
     }
 
-    .nav a {
+    .menu a {
       text-decoration: none;
       color: var(--text);
       padding: 10px 18px;
       border-radius: 999px;
-      background: linear-gradient(180deg, rgba(112, 161, 255, 0.22), rgba(49, 88, 163, 0.24));
       border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(104, 146, 231, 0.22), rgba(42, 75, 143, 0.22));
       box-shadow: var(--shadow);
-      font-weight: 700;
+      font-weight: 800;
+      font-size: 14px;
     }
 
-    .nav a.active {
-      background: linear-gradient(180deg, rgba(60, 255, 251, 0.28), rgba(51, 161, 255, 0.24));
+    .menu a.active {
       border-color: var(--line-strong);
-      color: #b9ffff;
-      box-shadow: 0 0 0 1px rgba(77, 233, 255, 0.25), 0 0 20px rgba(51, 240, 255, 0.25);
+      background: linear-gradient(180deg, rgba(58, 255, 248, 0.28), rgba(65, 140, 255, 0.24));
+      color: #d1ffff;
+      box-shadow: 0 0 16px rgba(65, 244, 255, 0.2);
     }
 
     .hero {
-      border-radius: 26px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(38, 78, 160, 0.32), rgba(20, 45, 99, 0.34));
-      box-shadow: var(--shadow);
-      padding: 26px 24px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
       margin-bottom: 18px;
-      text-align: center;
+    }
+
+    .hero-main,
+    .hero-side,
+    .card {
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(49, 91, 178, 0.22), rgba(23, 45, 97, 0.26));
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 26px 28px;
+      display: grid;
+      align-content: center;
+      min-height: 210px;
+    }
+
+    .hero-side {
+      min-height: 210px;
     }
 
     .hero-title {
-      font-size: 58px;
-      font-weight: 900;
-      line-height: 1;
       margin: 0;
-      color: #f2fbff;
+      font-size: 66px;
+      line-height: 1;
+      font-weight: 900;
+      color: white;
     }
 
     .hero-title .accent {
-      color: #74fff3;
-      text-shadow: 0 0 24px rgba(51, 240, 255, 0.45);
+      color: #66fff2;
+      text-shadow: 0 0 20px rgba(65,244,255,.35);
     }
 
     .hero-text {
       margin-top: 12px;
-      font-size: 26px;
-      color: var(--text);
+      font-size: 24px;
       font-weight: 600;
+      color: #ecf8ff;
     }
 
     .hero-small {
       margin-top: 8px;
-      font-size: 15px;
       color: var(--muted);
+      font-size: 15px;
     }
 
-    .toolbar {
+    .filters {
       display: grid;
-      grid-template-columns: 1.4fr 0.8fr 0.8fr;
+      grid-template-columns: 1.3fr 0.8fr 0.8fr;
       gap: 14px;
       margin-bottom: 14px;
     }
 
-    .search,
-    .filter-select,
-    .small-btn,
     .input,
-    .select {
-      width: 100%;
+    .select,
+    .btn,
+    .chip {
       border: 1px solid var(--line);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(58, 106, 196, 0.26), rgba(28, 61, 130, 0.22));
+      background: linear-gradient(180deg, rgba(69, 112, 200, 0.22), rgba(34, 61, 122, 0.24));
       color: var(--text);
-      box-shadow: inset 0 0 0 1px rgba(130, 200, 255, 0.05), var(--shadow);
+      box-shadow: var(--shadow);
       outline: none;
     }
 
-    .search,
-    .filter-select,
     .input,
-    .select {
-      padding: 15px 18px;
-      font-size: 17px;
-    }
-
-    .small-btn {
-      padding: 15px 18px;
+    .select,
+    .btn {
+      width: 100%;
+      border-radius: 20px;
+      min-height: 58px;
+      padding: 0 18px;
       font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
     }
 
-    .chips {
+    .btn {
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .race-chip-box {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .chip {
-      padding: 10px 16px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(90, 133, 216, 0.22), rgba(46, 79, 145, 0.22));
-      color: var(--text);
-      font-weight: 700;
+      padding: 10px 16px;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: var(--shadow);
+      font-size: 14px;
     }
 
     .chip.active {
-      background: linear-gradient(180deg, rgba(38, 255, 241, 0.28), rgba(40, 136, 255, 0.26));
-      border-color: rgba(116, 255, 243, 0.7);
-      color: #c5fffb;
-      box-shadow: 0 0 18px rgba(51, 240, 255, 0.25);
+      background: linear-gradient(180deg, rgba(59,255,248,.3), rgba(69,140,255,.24));
+      border-color: var(--line-strong);
+      color: #d4fffd;
+      box-shadow: 0 0 16px rgba(65,244,255,.22);
     }
 
-    .layout {
+    .grid {
       display: grid;
       grid-template-columns: 430px 1fr;
       gap: 22px;
       align-items: start;
     }
 
-    .left-stack,
-    .right-stack {
+    .stack {
       display: grid;
-      gap: 20px;
-    }
-
-    .card {
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(44, 90, 181, 0.26), rgba(20, 44, 93, 0.3));
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-
-    .track-card {
-      display: grid;
-      grid-template-columns: 1fr;
       gap: 18px;
     }
 
-    .track-image {
-      width: 100%;
-      aspect-ratio: 1.32 / 1;
-      border-radius: 22px;
-      object-fit: cover;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.05);
+    .card {
+      padding: 18px;
     }
 
-    .track-topline {
+    .track-box {
+      display: grid;
+      gap: 16px;
+    }
+
+    .track-img {
+      width: 100%;
+      aspect-ratio: 1.28 / 1;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+    }
+
+    .mini-chips {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 10px;
     }
 
     .mini-chip {
       border-radius: 999px;
       padding: 7px 12px;
-      font-size: 13px;
-      font-weight: 800;
-      color: #bbffff;
-      background: rgba(48, 210, 255, 0.18);
-      border: 1px solid rgba(89, 224, 255, 0.35);
+      font-size: 12px;
+      font-weight: 900;
+      background: rgba(49, 224, 255, 0.15);
+      border: 1px solid rgba(89, 225, 255, 0.34);
+      color: #b8fffe;
     }
 
     .track-name {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 900;
-      color: #d8fff8;
-      text-shadow: 0 0 10px rgba(51, 240, 255, 0.2);
+      color: #dcfff8;
     }
 
     .track-meta {
       display: grid;
-      gap: 6px;
+      gap: 4px;
       color: var(--muted);
-      font-size: 17px;
+      font-size: 16px;
     }
 
-    .target-card {
-      padding: 18px;
+    .target-box,
+    .stats-box {
       border-radius: 22px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.03);
+      padding: 16px;
     }
 
     .target-label {
       color: var(--muted);
-      font-weight: 700;
+      font-weight: 800;
       margin-bottom: 8px;
     }
 
     .target-time {
-      font-size: 52px;
+      font-size: 48px;
       font-weight: 900;
-      color: #4cffdf;
-      text-shadow: 0 0 18px rgba(51, 240, 255, 0.35);
+      color: var(--green);
+      text-shadow: 0 0 18px rgba(65, 244, 255, 0.18);
       line-height: 1;
     }
 
-    .stats-card {
-      display: grid;
-      gap: 10px;
-      border-radius: 22px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-      padding: 18px;
-    }
-
     .stats-title {
+      color: #6ffff0;
       font-weight: 900;
-      color: #6afff1;
-      font-size: 22px;
+      font-size: 20px;
+      margin-bottom: 8px;
     }
 
     .stats-line {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      color: var(--text);
-      font-size: 17px;
+      padding: 4px 0;
+      font-size: 16px;
     }
 
     .reload-btn {
-      border: 1px solid var(--line);
+      min-height: 54px;
       border-radius: 18px;
-      background: linear-gradient(180deg, rgba(100, 151, 255, 0.22), rgba(44, 79, 145, 0.22));
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(112, 155, 250, 0.2), rgba(47, 80, 147, 0.22));
       color: var(--text);
-      box-shadow: var(--shadow);
-      padding: 14px 16px;
-      font-size: 16px;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
-      width: 100%;
+      box-shadow: var(--shadow);
     }
 
-    .right-grid-top {
+    .podium-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
 
     .podium-card {
+      min-height: 220px;
       border-radius: 24px;
       border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(47, 94, 189, 0.22), rgba(22, 49, 102, 0.22));
-      padding: 20px;
-      min-height: 220px;
+      background: linear-gradient(180deg, rgba(47, 94, 189, 0.2), rgba(22, 49, 102, 0.22));
+      box-shadow: var(--shadow);
       display: grid;
       align-content: center;
       justify-items: center;
       text-align: center;
-      box-shadow: var(--shadow);
+      padding: 20px;
     }
 
     .podium-rank {
-      width: 70px;
-      height: 70px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      border: 3px solid rgba(255,255,255,0.5);
       font-size: 28px;
       font-weight: 900;
       margin-bottom: 14px;
+      border: 3px solid rgba(255,255,255,.4);
     }
 
-    .rank-1 .podium-rank {
-      border-color: #ffd978;
-      color: #ffe48f;
-      box-shadow: 0 0 16px rgba(255, 217, 120, 0.25);
+    .rank1 .podium-rank {
+      border-color: var(--gold);
+      color: #ffe89e;
     }
 
-    .rank-2 .podium-rank {
-      border-color: #d0d9ef;
-      color: #eff5ff;
-      box-shadow: 0 0 16px rgba(208, 217, 239, 0.2);
+    .rank2 .podium-rank {
+      border-color: var(--silver);
+      color: #f6fbff;
     }
 
-    .rank-3 .podium-rank {
-      border-color: #f3a27d;
-      color: #ffc0a3;
-      box-shadow: 0 0 16px rgba(243, 162, 125, 0.2);
+    .rank3 .podium-rank {
+      border-color: var(--bronze);
+      color: #ffd0ba;
     }
 
     .podium-name {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 900;
-      color: #ffffff;
+      color: white;
     }
 
     .podium-time {
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 900;
-      color: #69fff2;
+      color: #69fff3;
       margin-top: 4px;
     }
 
     .podium-sub {
-      font-size: 16px;
-      color: var(--muted);
       margin-top: 6px;
+      font-size: 15px;
+      color: var(--muted);
     }
 
-    .split-grid {
+    .bottom-grid {
       display: grid;
       grid-template-columns: 430px 1fr;
       gap: 16px;
       margin-top: 16px;
     }
 
-    .form-title,
-    .table-title {
-      margin: 0 0 16px;
+    .card-title {
+      margin: 0 0 14px;
+      color: #76fff0;
       font-size: 22px;
       font-weight: 900;
-      color: #7affee;
     }
 
     .form-grid {
@@ -417,18 +411,15 @@
     }
 
     .label {
-      font-size: 17px;
-      font-weight: 700;
-      color: #e8f4ff;
+      font-size: 16px;
+      font-weight: 800;
+      color: #edf7ff;
     }
 
-    .select,
-    .input {
-      height: 68px;
+    .big {
+      min-height: 64px;
+      font-size: 20px;
       border-radius: 22px;
-      font-size: 22px;
-      padding: 0 22px;
-      color: white;
     }
 
     .select option {
@@ -436,27 +427,25 @@
     }
 
     .submit-btn {
-      width: 100%;
-      height: 70px;
+      min-height: 66px;
       border: none;
       border-radius: 22px;
       cursor: pointer;
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 900;
       color: white;
-      background: linear-gradient(90deg, #23efff 0%, #76c8ff 55%, #7fa4ff 100%);
-      box-shadow: 0 10px 30px rgba(62, 204, 255, 0.28), 0 0 22px rgba(35, 239, 255, 0.18);
+      background: linear-gradient(90deg, #23f1ff 0%, #73c8ff 55%, #80a8ff 100%);
+      box-shadow: 0 10px 28px rgba(55, 205, 255, .26), 0 0 20px rgba(35, 241, 255, .18);
     }
 
     .submit-btn:disabled {
-      opacity: 0.65;
+      opacity: .68;
       cursor: default;
     }
 
     .status {
-      min-height: 26px;
+      min-height: 24px;
       font-size: 14px;
-      margin-top: 6px;
       color: var(--muted);
     }
 
@@ -469,18 +458,13 @@
     }
 
     .status.warn {
-      color: var(--warning);
+      color: var(--warn);
     }
 
     .hint {
-      color: #d8ebff;
       font-size: 15px;
+      color: #dcedff;
       line-height: 1.5;
-      margin-top: 6px;
-    }
-
-    .table-card {
-      min-height: 100%;
     }
 
     .table-wrap {
@@ -493,101 +477,90 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 700px;
+      min-width: 860px;
     }
 
-    th,
-    td {
+    th, td {
       padding: 14px 16px;
       text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      font-size: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 14px;
     }
 
     th {
+      font-size: 12px;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-size: 12px;
+      letter-spacing: .08em;
       background: rgba(255,255,255,0.04);
     }
 
     tr:hover td {
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.025);
     }
 
     .rank-pill {
       display: inline-flex;
-      align-items: center;
+      min-width: 42px;
       justify-content: center;
-      min-width: 44px;
-      padding: 8px 12px;
+      align-items: center;
+      padding: 8px 10px;
       border-radius: 999px;
+      background: rgba(255,255,255,.08);
       font-weight: 900;
-      color: white;
-      background: rgba(255,255,255,0.08);
     }
 
     .footer {
-      margin-top: 26px;
       text-align: center;
       color: var(--muted);
       font-size: 14px;
+      margin-top: 26px;
     }
 
-    @media (max-width: 1180px) {
-      .layout,
-      .split-grid {
+    @media (max-width: 1200px) {
+      .hero,
+      .grid,
+      .bottom-grid {
         grid-template-columns: 1fr;
       }
 
-      .right-grid-top {
+      .podium-grid {
         grid-template-columns: 1fr;
       }
 
-      .toolbar {
+      .filters {
         grid-template-columns: 1fr;
       }
     }
 
-    @media (max-width: 720px) {
-      .brand-title {
-        font-size: 40px;
+    @media (max-width: 760px) {
+      .brand-name {
+        font-size: 42px;
       }
 
       .hero-title {
-        font-size: 40px;
+        font-size: 44px;
       }
 
       .hero-text {
         font-size: 20px;
       }
 
-      .select,
-      .input {
+      .big {
         font-size: 18px;
-      }
-
-      .chips {
-        gap: 8px;
-      }
-
-      .chip {
-        padding: 9px 14px;
-        font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="shell">
-    <div class="topbar">
+  <div class="wrap">
+    <div class="top">
       <div class="brand">
-        <div class="brand-title">NightStalkerZ</div>
+        <div class="brand-name">NightStalkerZ</div>
         <div class="brand-sub">NFS Heat Final Pro Leaderboard</div>
       </div>
 
-      <div class="nav">
+      <div class="menu">
         <a href="#">Home</a>
         <a href="#" class="active">Leaderboard</a>
         <a href="#">Members</a>
@@ -600,48 +573,54 @@
     </div>
 
     <div class="hero">
-      <h1 class="hero-title">NFS HEAT <span class="accent">FINAL PRO</span></h1>
-      <div class="hero-text">Alle Rennen, deutsche Namen, Live-Sync mit Google Sheets und optimiert für GitHub Pages.</div>
-      <div class="hero-small">Leaderboard, Podium, Fahrer-Auswahl und Zeit-Einreichung in einem Layout.</div>
+      <div class="hero-main">
+        <h1 class="hero-title">NFS HEAT <span class="accent">FINAL PRO</span></h1>
+        <div class="hero-text">Alle Rennen, deutsche Namen, Live-Sync mit Google Sheets und optimiert für GitHub Pages.</div>
+        <div class="hero-small">Fahrer-Auswahl, Fahrzeug-Dropdown, Podium und vollständige Rangliste mit Google-Sheets-Sync.</div>
+      </div>
+      <div class="hero-side"></div>
     </div>
 
-    <div class="toolbar">
-      <input id="raceSearch" class="search" type="text" placeholder="Rennen suchen..." />
-      <select id="categorySelect" class="filter-select">
+    <div class="filters">
+      <input id="raceSearch" class="input" type="text" placeholder="Rennen suchen..." />
+      <select id="categorySelect" class="select">
         <option value="all">Alle Kategorien</option>
         <option value="tag">Tag</option>
         <option value="nacht">Tag und Nacht</option>
       </select>
-      <button id="reloadTopBtn" class="small-btn">Daten neu laden</button>
+      <button id="reloadTopBtn" class="btn">Daten neu laden</button>
     </div>
 
-    <div id="raceChips" class="chips"></div>
+    <div id="raceChipBox" class="race-chip-box"></div>
 
-    <div class="layout">
-      <div class="left-stack">
-        <div class="card track-card">
-          <img id="trackImage" class="track-image" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop" alt="Track" />
+    <div class="grid">
+      <div class="stack">
+        <div class="card track-box">
+          <img
+            id="trackImage"
+            class="track-img"
+            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1200&auto=format&fit=crop"
+            alt="Track"
+          />
 
-          <div>
-            <div class="track-topline">
-              <div class="mini-chip">Rundkurs</div>
-              <div id="trackModeChip" class="mini-chip">Tag</div>
-            </div>
-
-            <div id="trackName" class="track-name">Erdferkel</div>
-
-            <div class="track-meta">
-              <div id="trackEvent">Palm City Event</div>
-              <div id="trackBuild">Empfohlenes Race Build</div>
-            </div>
+          <div class="mini-chips">
+            <div class="mini-chip">Rundkurs</div>
+            <div id="trackModeChip" class="mini-chip">Tag</div>
           </div>
 
-          <div class="target-card">
+          <div id="trackName" class="track-name">Erdferkel</div>
+
+          <div class="track-meta">
+            <div id="trackEvent">Palm City Event</div>
+            <div id="trackBuild">Empfohlenes Race Build</div>
+          </div>
+
+          <div class="target-box">
             <div class="target-label">Zielzeit</div>
             <div id="targetTime" class="target-time">3:00.000</div>
           </div>
 
-          <div class="stats-card">
+          <div class="stats-box">
             <div class="stats-title">Renn-Stats</div>
             <div class="stats-line"><span>Einträge:</span><strong id="statEntries">0</strong></div>
             <div class="stats-line"><span>Unter Zielzeit:</span><strong id="statUnderTarget">0</strong></div>
@@ -651,23 +630,23 @@
         </div>
       </div>
 
-      <div class="right-stack">
-        <div class="right-grid-top">
-          <div class="podium-card rank-2">
+      <div class="stack">
+        <div class="podium-grid">
+          <div class="podium-card rank2">
             <div class="podium-rank">2</div>
             <div id="p2Name" class="podium-name">Frei</div>
             <div id="p2Time" class="podium-time">--:--.---</div>
             <div id="p2Sub" class="podium-sub">Kein Eintrag</div>
           </div>
 
-          <div class="podium-card rank-1">
+          <div class="podium-card rank1">
             <div class="podium-rank">1</div>
             <div id="p1Name" class="podium-name">Frei</div>
             <div id="p1Time" class="podium-time">--:--.---</div>
             <div id="p1Sub" class="podium-sub">Kein Eintrag</div>
           </div>
 
-          <div class="podium-card rank-3">
+          <div class="podium-card rank3">
             <div class="podium-rank">3</div>
             <div id="p3Name" class="podium-name">Frei</div>
             <div id="p3Time" class="podium-time">--:--.---</div>
@@ -675,19 +654,19 @@
           </div>
         </div>
 
-        <div class="split-grid">
+        <div class="bottom-grid">
           <div class="card">
-            <h2 class="form-title">Zeit einreichen</h2>
+            <h2 class="card-title">Zeit einreichen</h2>
 
             <div class="form-grid">
               <div class="field">
                 <label class="label" for="memberSelect">Fahrer</label>
-                <select id="memberSelect" class="select"></select>
+                <select id="memberSelect" class="select big"></select>
               </div>
 
               <div class="field">
                 <label class="label" for="countrySelect">Land</label>
-                <select id="countrySelect" class="select">
+                <select id="countrySelect" class="select big">
                   <option value="DE">DE</option>
                   <option value="AT">AT</option>
                   <option value="CH">CH</option>
@@ -703,17 +682,17 @@
 
               <div class="field">
                 <label class="label" for="timeInput">Zeit</label>
-                <input id="timeInput" class="input" type="text" placeholder="4:34.970" />
+                <input id="timeInput" class="input big" type="text" placeholder="4:34.970" />
               </div>
 
               <div class="field">
                 <label class="label" for="carSelect">Fahrzeug</label>
-                <select id="carSelect" class="select"></select>
+                <select id="carSelect" class="select big"></select>
               </div>
 
               <div class="field">
                 <label class="label" for="proofInput">Proof-Link</label>
-                <input id="proofInput" class="input" type="url" placeholder="Optionaler Link zum Beweis" />
+                <input id="proofInput" class="input big" type="url" placeholder="Optionaler Link zum Beweis" />
               </div>
 
               <button id="submitBtn" class="submit-btn">Zeit absenden</button>
@@ -725,8 +704,8 @@
             </div>
           </div>
 
-          <div class="card table-card">
-            <h2 class="table-title">Vollständige Rangliste</h2>
+          <div class="card">
+            <h2 class="card-title">Vollständige Rangliste</h2>
             <div id="tableStatus" class="status"></div>
 
             <div class="table-wrap">
@@ -759,36 +738,139 @@
       { key: "aardvark", name: "Erdferkel", mode: "Tag", target: "3:00.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "aerion", name: "Aerion", mode: "Tag", target: "2:10.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "apollo10", name: "Apollo 10", mode: "Tag", target: "1:35.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
-      { key: "aurora", name: "Aurora", mode: "Nacht", target: "2:20.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "aurora", name: "Aurora", mode: "Tag und Nacht", target: "2:20.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "axiom", name: "Axiom", mode: "Tag", target: "2:18.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "backincontrol", name: "Wieder Unter Kontrolle", mode: "Tag", target: "2:40.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "bamboo", name: "Bambus", mode: "Tag", target: "2:25.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "bannister", name: "Geländer", mode: "Tag", target: "2:30.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "battlemachine", name: "Kampfmaschine", mode: "Tag und Nacht", target: "2:48.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "blackbird", name: "Schwarzer Vogel", mode: "Tag", target: "2:35.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "bolt", name: "Blitz", mode: "Tag", target: "2:14.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "bullet", name: "Kugel", mode: "Tag", target: "2:16.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "callout", name: "Herausforderung", mode: "Tag", target: "2:32.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "carsonextreme", name: "Carson Extrem", mode: "Tag", target: "2:28.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "caspianseamonster", name: "Kaspisches Seemonster", mode: "Tag", target: "2:42.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "cheyenne", name: "Cheyenne", mode: "Tag", target: "2:20.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "cityexpress", name: "Stadt-Express", mode: "Tag", target: "2:44.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "columbia", name: "Columbia", mode: "Tag", target: "2:46.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "crossmountains", name: "Über die Berge", mode: "Tag", target: "3:02.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "crossfield", name: "Querfeld", mode: "Tag", target: "2:37.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "crossover", name: "Kreuzungspunkt", mode: "Tag", target: "2:38.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "cuttingcorners", name: "Kurven schneiden", mode: "Tag", target: "2:30.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "desertgod", name: "Wüstengott", mode: "Tag", target: "2:55.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "discovery", name: "Entdeckung", mode: "Tag", target: "2:42.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "discoverya", name: "Entdeckung A", mode: "Tag", target: "2:32.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "discoveryb", name: "Entdeckung B", mode: "Tag", target: "2:36.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "discoveryc", name: "Entdeckung C", mode: "Tag", target: "2:39.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
-      { key: "flyingdutchman", name: "Der Fliegende Holländer", mode: "Nacht", target: "3:08.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "eagle", name: "Adler", mode: "Tag", target: "2:33.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "enterprise", name: "Enterprise", mode: "Tag und Nacht", target: "2:58.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "farah", name: "Farah", mode: "Tag", target: "2:45.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "flanker", name: "Flankierer", mode: "Tag", target: "2:49.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "flashback", name: "Rückblende", mode: "Tag", target: "2:29.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "flyingdutchman", name: "Der Fliegende Holländer", mode: "Tag und Nacht", target: "3:08.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "foxbat", name: "Fuchsfledermaus", mode: "Tag", target: "2:47.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "fury", name: "Zorn", mode: "Tag", target: "2:41.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "gazelle", name: "Gazelle", mode: "Tag", target: "2:35.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "goldenarrow", name: "Goldener Pfeil", mode: "Tag", target: "2:31.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "gonzales", name: "Gonzales", mode: "Tag", target: "2:34.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "greenbird", name: "Grüner Vogel", mode: "Tag", target: "2:39.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "hardstop", name: "Vollbremsung", mode: "Tag", target: "2:28.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "hawkermech", name: "Hawker Mech", mode: "Tag und Nacht", target: "3:06.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "helios2", name: "Helios 2", mode: "Tag und Nacht", target: "3:02.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "iplane", name: "I-Plane", mode: "Tag", target: "2:21.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "initiation", name: "Initiation", mode: "Tag", target: "2:27.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "intimidator", name: "Einschüchterer", mode: "Tag", target: "2:29.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "jstorm", name: "J. Storm", mode: "Tag", target: "2:23.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "juno", name: "Juno", mode: "Tag", target: "2:20.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "kingdakar", name: "König Dakar", mode: "Tag", target: "2:58.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "larry", name: "Larry", mode: "Tag", target: "2:36.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "lightning", name: "Blitzschlag", mode: "Tag", target: "2:33.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "luckycharm", name: "Glücksbringer", mode: "Tag", target: "2:31.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "maoriventure", name: "Maori-Unternehmen", mode: "Tag", target: "2:48.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "marinara", name: "Marinara", mode: "Tag", target: "2:43.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "marlin", name: "Marlin", mode: "Tag", target: "2:41.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "mcqueen", name: "McQueen", mode: "Tag", target: "2:34.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "merciless", name: "Gnadenlos", mode: "Tag", target: "2:29.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "mercury", name: "Merkur", mode: "Tag", target: "2:27.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "milleniumf", name: "Millennium F", mode: "Tag", target: "2:44.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "nanospectrum", name: "Nanospektrum", mode: "Tag", target: "2:42.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "needletail", name: "Nadelheck", mode: "Tag", target: "2:37.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "newhorizons", name: "Neue Horizonte", mode: "Tag", target: "2:53.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "nightracer", name: "Nachtracer", mode: "Tag und Nacht", target: "2:50.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "nosless", name: "Ohne NOS", mode: "Tag", target: "2:22.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "noobaround", name: "Noob-Runde", mode: "Tag", target: "2:32.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "oceandrive", name: "Ozeanfahrt", mode: "Tag", target: "2:46.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "ohmygod", name: "Oh mein Gott!", mode: "Tag", target: "2:54.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "portview", name: "Hafenblick", mode: "Tag", target: "2:38.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "prestige", name: "Prestige", mode: "Tag", target: "2:35.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "problemchild", name: "Problemkind", mode: "Tag", target: "2:37.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "proton", name: "Proton", mode: "Tag", target: "2:36.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "qubit", name: "Qubit", mode: "Tag", target: "2:30.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "racinglines", name: "Ideallinien", mode: "Tag", target: "2:31.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "raptor", name: "Raptor", mode: "Tag", target: "2:33.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "rarebear", name: "Seltener Bär", mode: "Tag", target: "2:40.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "rayoflight", name: "Lichtstrahl", mode: "Tag", target: "2:28.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "reaction", name: "Reaktion", mode: "Tag", target: "2:29.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "redrocktornado", name: "Roter Fels-Tornado", mode: "Tag", target: "2:58.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "ringracer", name: "Ring-Racer", mode: "Tag", target: "2:34.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "rivals", name: "Rivalen", mode: "Tag", target: "2:39.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "rollercoaster", name: "Achterbahn", mode: "Tag", target: "2:44.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "runner", name: "Läufer", mode: "Tag", target: "2:37.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "savage", name: "Wild", mode: "Tag", target: "2:41.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "scorpion", name: "Skorpion", mode: "Tag", target: "2:43.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "scramjet", name: "Staustrahl", mode: "Tag", target: "2:52.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "serendipity", name: "Glücksfall", mode: "Tag", target: "2:36.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "shinkansen", name: "Shinkansen", mode: "Tag", target: "2:57.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "skyace", name: "Himmelsass", mode: "Tag", target: "2:49.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "sliptrick", name: "Rutsch-Trick", mode: "Tag", target: "2:41.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "sonic", name: "Sonic", mode: "Tag", target: "2:30.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "specter", name: "Spektral", mode: "Tag", target: "2:32.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "spike", name: "Spike", mode: "Tag", target: "2:31.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "spiral", name: "Spirale", mode: "Tag", target: "2:52.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
-      { key: "stardust", name: "Sternenstaub", mode: "Nacht", target: "3:12.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "spiritofoz", name: "Geist von Oz", mode: "Tag", target: "2:45.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "stardust", name: "Sternenstaub", mode: "Tag und Nacht", target: "3:12.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "steeldragon", name: "Stahldrache", mode: "Tag", target: "2:59.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "streamliner", name: "Stromlinie", mode: "Tag", target: "2:42.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "summit", name: "Gipfel", mode: "Tag", target: "2:50.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "sway", name: "Schwung", mode: "Tag", target: "2:40.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "tachyon", name: "Tachyon", mode: "Tag", target: "2:35.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "taranis", name: "Taranis", mode: "Tag", target: "2:46.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "theresortscircuit", name: "Der Resort-Rundkurs", mode: "Tag", target: "2:48.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "therun", name: "Der Lauf", mode: "Tag", target: "4:10.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
-      { key: "ultimate", name: "Ultimativ", mode: "Nacht", target: "4:22.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "thrust", name: "Schub", mode: "Tag", target: "2:38.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "topthrill", name: "Maximaler Kick", mode: "Tag", target: "2:41.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "toptier", name: "Spitzenklasse", mode: "Tag", target: "2:39.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "tornado", name: "Tornado", mode: "Tag", target: "2:44.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "trikster", name: "Trickster", mode: "Tag", target: "2:43.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "tumbler", name: "Taumler", mode: "Tag", target: "2:46.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "ultimate", name: "Ultimativ", mode: "Tag und Nacht", target: "4:22.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "ultrasharp", name: "Ultrascharf", mode: "Tag", target: "2:31.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "valkyrie", name: "Walküre", mode: "Tag", target: "2:44.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "venturi", name: "Venturi", mode: "Tag", target: "2:38.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "vesco", name: "Vesco", mode: "Tag", target: "2:40.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "vertigo", name: "Vertigo", mode: "Tag", target: "2:36.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "voyager", name: "Voyager", mode: "Tag", target: "3:10.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
-      { key: "wildking", name: "Wildkönig", mode: "Nacht", target: "3:22.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
+      { key: "wildking", name: "Wildkönig", mode: "Tag und Nacht", target: "3:22.000", event: "Palm City Event", build: "Empfohlenes Race Build" },
       { key: "yoshikazu", name: "Yoshikazu", mode: "Tag", target: "2:46.000", event: "Palm City Event", build: "Empfohlenes Race Build" }
     ];
 
     const cars = [
+      "Acura NSX (2017)",
+      "Alfa Romeo Giulia Quadrifoglio (2016)",
       "Aston Martin DB11 Volante (2018)",
       "Audi R8 V10 Performance Coupe (2019)",
       "BMW M2 Competition (2019)",
       "BMW M3 Evolution II E30 (1988)",
       "BMW M4 Coupe (2018)",
+      "Buick Grand National GNX (1987)",
+      "Chevrolet Camaro Z28 (2014)",
       "Chevrolet Corvette Grand Sport (2017)",
       "Chevrolet Corvette Z06 (2013)",
       "Dodge Challenger SRT8 (2014)",
       "Ferrari 488 GTB (2015)",
       "Ferrari F40 (1987)",
       "Ford GT (2017)",
+      "Honda Civic Type-R (2000)",
       "Honda NSX Type-R (1992)",
       "Lamborghini Countach 25th Anniversary (1988)",
       "Lamborghini Huracan Performante (2018)",
@@ -802,6 +884,7 @@
       "Nissan GT-R Premium (2017)",
       "Pagani Huayra BC (2017)",
       "Plymouth Barracuda (1970)",
+      "Polestar 1 (2020)",
       "Porsche 911 Carrera RSR 2.8 (1973)",
       "Porsche 911 GT2 RS (2018)",
       "SRT Viper GTS (2014)",
@@ -815,7 +898,7 @@
     let currentSearch = "";
     let currentCategory = "all";
 
-    const raceChips = document.getElementById("raceChips");
+    const raceChipBox = document.getElementById("raceChipBox");
     const raceSearch = document.getElementById("raceSearch");
     const categorySelect = document.getElementById("categorySelect");
     const reloadBtn = document.getElementById("reloadBtn");
@@ -906,18 +989,21 @@
       return timeToMs(a) - timeToMs(b);
     }
 
+    function getRaceByKey(key) {
+      return races.find(r => r.key === key) || races[0];
+    }
+
     function getRaceNameByKey(key) {
       const race = races.find(r => r.key === key);
       return race ? race.name : key;
     }
 
-    function getRaceByKey(key) {
-      return races.find(r => r.key === key) || races[0];
-    }
-
     function getRaceKeyByAny(value) {
       const input = normalizeText(value);
-      const race = races.find(r => normalizeText(r.key) === input || normalizeText(r.name) === input);
+      const race = races.find(r =>
+        normalizeText(r.key) === input ||
+        normalizeText(r.name) === input
+      );
       return race ? race.key : "";
     }
 
@@ -927,8 +1013,8 @@
       const member = String(item.member || item.fahrer || item.driver || item.name || "").trim();
       const time = normalizeTimeInput(item.time || item.besteZeit || item.bestTime || item.zeit || "");
       const country = String(item.country || item.land || item.kuerzel || item.kürzel || "-").trim() || "-";
+      const car = String(item.car || item.fahrzeug || item.vehicle || "").trim() || "-";
       const date = String(item.date || item.datum || item.createdAt || "-").trim() || "-";
-      const car = String(item.car || item.fahrzeug || item.vehicle || "").trim();
       const proof = String(item.proof || item.beweis || item.link || "").trim();
 
       return {
@@ -937,10 +1023,9 @@
         member,
         country,
         car,
-        proof,
-        time,
         date,
-        rang: item.rang ?? item.rank ?? ""
+        proof,
+        time
       };
     }
 
@@ -952,20 +1037,21 @@
 
     function renderRaceChips() {
       const filtered = races.filter(r => {
-        const matchesSearch = !currentSearch || normalizeText(r.name).includes(normalizeText(currentSearch));
-        const matchesCategory = currentCategory === "all" ||
+        const searchOk = !currentSearch || normalizeText(r.name).includes(normalizeText(currentSearch));
+        const catOk =
+          currentCategory === "all" ||
           (currentCategory === "tag" && normalizeText(r.mode) === "tag") ||
           (currentCategory === "nacht" && normalizeText(r.mode) !== "tag");
-        return matchesSearch && matchesCategory;
+        return searchOk && catOk;
       });
 
-      raceChips.innerHTML = filtered.map(r => `
+      raceChipBox.innerHTML = filtered.map(r => `
         <button class="chip ${r.key === currentRace ? "active" : ""}" data-race="${escapeHtml(r.key)}">
           ${escapeHtml(r.name)}
         </button>
       `).join("");
 
-      raceChips.querySelectorAll(".chip").forEach(btn => {
+      raceChipBox.querySelectorAll(".chip").forEach(btn => {
         btn.addEventListener("click", () => {
           currentRace = btn.dataset.race;
           renderAll();
@@ -973,11 +1059,11 @@
       });
     }
 
-    function renderTrackCard() {
+    function renderTrackInfo() {
       const race = getRaceByKey(currentRace);
       const entries = getCurrentRaceEntries();
       const targetMs = timeToMs(race.target);
-      const underTarget = entries.filter(entry => timeToMs(entry.time) <= targetMs).length;
+      const underTarget = entries.filter(e => timeToMs(e.time) <= targetMs).length;
 
       trackName.textContent = race.name;
       trackModeChip.textContent = race.mode;
@@ -988,7 +1074,7 @@
       statUnderTarget.textContent = String(underTarget);
     }
 
-    function fillPodiumCard(nameEl, timeEl, subEl, entry) {
+    function setPodiumCard(nameEl, timeEl, subEl, entry) {
       if (!entry) {
         nameEl.textContent = "Frei";
         timeEl.textContent = "--:--.---";
@@ -998,14 +1084,14 @@
 
       nameEl.textContent = entry.member || "Unbekannt";
       timeEl.textContent = entry.time || "--:--.---";
-      subEl.textContent = `${entry.country || "-"}${entry.car ? " · " + entry.car : ""}`;
+      subEl.textContent = `${entry.country || "-"} · ${entry.car || "-"}`;
     }
 
     function renderPodium() {
       const entries = getCurrentRaceEntries();
-      fillPodiumCard(p1Name, p1Time, p1Sub, entries[0]);
-      fillPodiumCard(p2Name, p2Time, p2Sub, entries[1]);
-      fillPodiumCard(p3Name, p3Time, p3Sub, entries[2]);
+      setPodiumCard(p1Name, p1Time, p1Sub, entries[0]);
+      setPodiumCard(p2Name, p2Time, p2Sub, entries[1]);
+      setPodiumCard(p3Name, p3Time, p3Sub, entries[2]);
     }
 
     function renderTable() {
@@ -1014,7 +1100,7 @@
       if (entries.length === 0) {
         leaderboardBody.innerHTML = `
           <tr>
-            <td colspan="6" style="color:#b8d7ff;">Noch keine Zeiten aus Google Sheets geladen.</td>
+            <td colspan="6" style="color:#bdd7ff;">Noch keine Zeiten aus Google Sheets geladen.</td>
           </tr>
         `;
         return;
@@ -1024,63 +1110,63 @@
         <tr>
           <td><span class="rank-pill">${index + 1}</span></td>
           <td>${escapeHtml(entry.member)}</td>
-          <td>${escapeHtml(entry.country || "-")}</td>
+          <td>${escapeHtml(entry.country)}</td>
           <td>${escapeHtml(entry.time)}</td>
-          <td>${escapeHtml(entry.car || "-")}</td>
-          <td>${escapeHtml(entry.date || "-")}</td>
+          <td>${escapeHtml(entry.car)}</td>
+          <td>${escapeHtml(entry.date)}</td>
         </tr>
       `).join("");
     }
 
     function renderAll() {
       renderRaceChips();
-      renderTrackCard();
+      renderTrackInfo();
       renderPodium();
       renderTable();
     }
 
     function fillCars() {
-      carSelect.innerHTML = cars.map(car => `
-        <option value="${escapeHtml(car)}">${escapeHtml(car)}</option>
-      `).join("");
+      const options = [`<option value="">Bitte Fahrzeug wählen</option>`]
+        .concat(cars.map(car => `<option value="${escapeHtml(car)}">${escapeHtml(car)}</option>`));
+      carSelect.innerHTML = options.join("");
     }
 
     async function fillMembers() {
-      memberSelect.innerHTML = "";
+      memberSelect.innerHTML = `<option value="">Fahrer werden geladen...</option>`;
 
       try {
-        const response = await fetch(`${SCRIPT_URL}?type=drivers`);
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
+        const response = await fetch(`${SCRIPT_URL}?type=drivers`, { method: "GET" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const data = await response.json();
-
-        let driverNames = [];
+        let names = [];
 
         if (Array.isArray(data)) {
-          driverNames = data.map(item => {
+          names = data.map(item => {
             if (typeof item === "string") return item.trim();
             return String(item.fahrer || item.member || item.driver || item.name || "").trim();
           }).filter(Boolean);
         }
 
-        if (driverNames.length === 0) {
-          driverNames = [...new Set(leaderboardData.map(item => item.member).filter(Boolean))];
+        if (names.length === 0) {
+          names = [...new Set(leaderboardData.map(e => e.member).filter(Boolean))];
         }
 
-        if (driverNames.length === 0) {
-          driverNames = ["Ulf Gehart"];
+        if (names.length === 0) {
+          names = ["Ulf Gehart"];
         }
 
-        driverNames = [...new Set(driverNames)].sort((a, b) => a.localeCompare(b, "de"));
+        names = [...new Set(names)].sort((a, b) => a.localeCompare(b, "de"));
 
-        memberSelect.innerHTML = driverNames.map(name => `
-          <option value="${escapeHtml(name)}">${escapeHtml(name)}</option>
-        `).join("");
+        memberSelect.innerHTML =
+          `<option value="">Bitte Fahrer wählen</option>` +
+          names.map(name => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
       } catch (error) {
         console.error(error);
-        memberSelect.innerHTML = `<option value="Ulf Gehart">Ulf Gehart</option>`;
+        memberSelect.innerHTML = `
+          <option value="">Bitte Fahrer wählen</option>
+          <option value="Ulf Gehart">Ulf Gehart</option>
+        `;
       }
     }
 
@@ -1088,17 +1174,15 @@
       try {
         setStatus(tableStatus, "Leaderboard wird geladen ...", "warn");
 
-        const response = await fetch(`${SCRIPT_URL}?type=website`);
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
+        const response = await fetch(`${SCRIPT_URL}?type=website`, { method: "GET" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const data = await response.json();
 
         leaderboardData = Array.isArray(data)
           ? data
-            .map(mapWebsiteEntry)
-            .filter(item => item.raceKey && item.member && item.time && isValidTime(item.time))
+              .map(mapWebsiteEntry)
+              .filter(item => item.raceKey && item.member && item.time && isValidTime(item.time))
           : [];
 
         setStatus(tableStatus, `${leaderboardData.length} Bestzeiten geladen.`, "success");
@@ -1109,6 +1193,7 @@
         leaderboardData = [];
         setStatus(tableStatus, "Fehler beim Laden des Leaderboards.", "error");
         renderAll();
+        await fillMembers();
       }
     }
 
@@ -1130,30 +1215,36 @@
         return;
       }
 
+      if (!car) {
+        setStatus(submitStatus, "Bitte ein Fahrzeug auswählen.", "error");
+        return;
+      }
+
       submitBtn.disabled = true;
       setStatus(submitStatus, "Eintrag wird gesendet ...", "warn");
 
-      try {
-        const payload = {
-          raceKey: race.key,
-          raceName: race.name,
-          strecke: race.name,
-          member: member,
-          fahrer: member,
-          country: country,
-          land: country,
-          car: car,
-          fahrzeug: car,
-          proof: proof,
-          zeit: time,
-          time: time,
-          besteZeit: time,
-          date: new Date().toLocaleDateString("de-DE"),
-          status: "Offen"
-        };
+      const payload = {
+        raceKey: race.key,
+        raceName: race.name,
+        strecke: race.name,
+        member: member,
+        fahrer: member,
+        country: country,
+        land: country,
+        car: car,
+        fahrzeug: car,
+        proof: proof,
+        zeit: time,
+        time: time,
+        besteZeit: time,
+        date: new Date().toLocaleDateString("de-DE"),
+        status: "Offen"
+      };
 
+      try {
         const response = await fetch(SCRIPT_URL, {
           method: "POST",
+          redirect: "follow",
           headers: {
             "Content-Type": "text/plain;charset=utf-8"
           },
@@ -1164,30 +1255,32 @@
           throw new Error(`HTTP ${response.status}`);
         }
 
-        let text = "";
-        try {
-          text = await response.text();
-        } catch (e) {
-          text = "";
-        }
-
-        if (text) {
+        const raw = await response.text().catch(() => "");
+        if (raw) {
           try {
-            const result = JSON.parse(text);
+            const result = JSON.parse(raw);
             if (result && result.success === false) {
               throw new Error(result.message || "Unbekannter Fehler");
             }
-          } catch (parseError) {
+          } catch (_) {
           }
         }
 
         setStatus(submitStatus, "Zeit eingereicht. Status: Offen.", "success");
         timeInput.value = "";
         proofInput.value = "";
+        carSelect.selectedIndex = 0;
         await loadSheetData();
       } catch (error) {
         console.error(error);
-        setStatus(submitStatus, `Senden fehlgeschlagen: ${error.message}`, "error");
+
+        let msg = error.message || "Unbekannter Fehler";
+
+        if (msg === "Failed to fetch") {
+          msg = "Failed to fetch - Google Apps Script ist nicht erreichbar oder nicht korrekt als Web-App veröffentlicht.";
+        }
+
+        setStatus(submitStatus, `Senden fehlgeschlagen: ${msg}`, "error");
       } finally {
         submitBtn.disabled = false;
       }
@@ -1207,7 +1300,7 @@
     reloadTopBtn.addEventListener("click", loadSheetData);
     submitBtn.addEventListener("click", submitTime);
 
-    timeInput.addEventListener("keydown", (event) => {
+    timeInput.addEventListener("keydown", event => {
       if (event.key === "Enter") {
         submitTime();
       }
