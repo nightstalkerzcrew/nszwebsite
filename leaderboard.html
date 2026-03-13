@@ -644,9 +644,25 @@
         .replace(/'/g, "&#039;");
     }
 
+    function normalizeText(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+    }
+
     function getRaceNameByKey(key) {
       const race = races.find(r => r.key === key);
       return race ? race.name : key;
+    }
+
+    function getRaceKeyByAny(value) {
+      const input = normalizeText(value);
+
+      const direct = races.find(r => normalizeText(r.key) === input || normalizeText(r.name) === input);
+      if (direct) return direct.key;
+
+      return "";
     }
 
     function getCurrentRaceEntries() {
@@ -661,6 +677,7 @@
 
     function timeToMs(value) {
       const str = String(value || "").trim().replace(",", ".");
+
       let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
       if (match) {
         return parseInt(match[1], 10) * 60000 +
@@ -780,24 +797,126 @@
       renderTable(entries);
     }
 
+    function mapWebsiteEntry(item) {
+      const raceName =
+        String(
+          item.strecke ||
+          item.raceName ||
+          item.track ||
+          item.race ||
+          ""
+        ).trim();
+
+      const raceKey =
+        String(
+          item.raceKey ||
+          item.trackKey ||
+          getRaceKeyByAny(raceName)
+        ).trim();
+
+      const member =
+        String(
+          item.member ||
+          item.fahrer ||
+          item.driver ||
+          item.name ||
+          ""
+        ).trim();
+
+      const time =
+        normalizeTimeInput(
+          item.time ||
+          item.besteZeit ||
+          item.bestTime ||
+          item.zeit ||
+          ""
+        );
+
+      const country =
+        String(
+          item.country ||
+          item.land ||
+          item.kuerzel ||
+          item.kürzel ||
+          "-"
+        ).trim() || "-";
+
+      const date =
+        String(
+          item.date ||
+          item.datum ||
+          item.createdAt ||
+          "-"
+        ).trim() || "-";
+
+      const car =
+        String(
+          item.car ||
+          item.fahrzeug ||
+          item.vehicle ||
+          ""
+        ).trim();
+
+      const proof =
+        String(
+          item.proof ||
+          item.beweis ||
+          item.link ||
+          ""
+        ).trim();
+
+      return {
+        raceKey,
+        raceName: raceName || getRaceNameByKey(raceKey),
+        member,
+        country,
+        car,
+        proof,
+        time,
+        date,
+        rang: item.rang ?? item.rank ?? ""
+      };
+    }
+
     async function fillMembers() {
       memberSelect.innerHTML = "";
 
       try {
         const response = await fetch(`${SCRIPT_URL}?type=drivers`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
         const data = await response.json();
 
-        const driverNames = Array.isArray(data)
-          ? data.map(item => String(item.fahrer || "").trim()).filter(Boolean)
-          : [];
+        let driverNames = [];
+
+        if (Array.isArray(data)) {
+          driverNames = data.map(item => {
+            if (typeof item === "string") return item.trim();
+            return String(
+              item.fahrer ||
+              item.member ||
+              item.driver ||
+              item.name ||
+              ""
+            ).trim();
+          }).filter(Boolean);
+        }
 
         if (driverNames.length === 0) {
-          const option = document.createElement("option");
-          option.value = "";
-          option.textContent = "Keine Fahrer gefunden";
-          memberSelect.appendChild(option);
-          return;
+          const uniqueFromLeaderboard = [...new Set(
+            leaderboardData.map(item => item.member).filter(Boolean)
+          )];
+
+          driverNames = uniqueFromLeaderboard;
         }
+
+        if (driverNames.length === 0) {
+          driverNames = ["Ulf Gehart"];
+        }
+
+        driverNames = [...new Set(driverNames)].sort((a, b) => a.localeCompare(b, "de"));
 
         driverNames.forEach(member => {
           const option = document.createElement("option");
@@ -829,7 +948,12 @@
         }
 
         const data = await response.json();
-        leaderboardData = Array.isArray(data) ? data : [];
+
+        leaderboardData = Array.isArray(data)
+          ? data
+              .map(mapWebsiteEntry)
+              .filter(item => item.raceKey && item.member && item.time && isValidTime(item.time))
+          : [];
 
         setStatus(tableStatus, `${leaderboardData.length} Bestzeiten geladen.`, "success");
         renderAll();
@@ -873,12 +997,18 @@
           raceKey: selectedRace.key,
           raceName: selectedRace.name,
           member: member,
+          fahrer: member,
           country: country,
+          land: country,
           discordId: "",
           car: car,
+          fahrzeug: car,
           proof: proof,
+          zeit: time,
           time: time,
-          date: new Date().toLocaleDateString("de-DE")
+          besteZeit: time,
+          date: new Date().toLocaleDateString("de-DE"),
+          status: "Offen"
         };
 
         const response = await fetch(SCRIPT_URL, {
@@ -893,9 +1023,17 @@
           throw new Error(`HTTP ${response.status}`);
         }
 
-        const result = await response.json();
+        let result = null;
+        let rawText = "";
 
-        if (!result.success) {
+        try {
+          rawText = await response.text();
+          result = rawText ? JSON.parse(rawText) : null;
+        } catch (parseError) {
+          result = null;
+        }
+
+        if (result && result.success === false) {
           throw new Error(result.message || "Unbekannter Fehler");
         }
 
@@ -922,9 +1060,9 @@
     });
 
     (async function init() {
-      await fillMembers();
       renderAll();
       await loadSheetData();
+      await fillMembers();
     })();
   </script>
 </body>
