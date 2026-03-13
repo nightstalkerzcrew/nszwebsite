@@ -3,1044 +3,929 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NightStalkerZ - NFS Heat Final Pro Leaderboard</title>
+  <title>Distance Leaderboard</title>
   <style>
-    * { box-sizing: border-box; }
+    :root {
+      --bg: #0b1020;
+      --bg-soft: #121936;
+      --card: #18213f;
+      --card-2: #1d2850;
+      --line: #2a3768;
+      --text: #eef3ff;
+      --muted: #aab6da;
+      --accent: #6ea8ff;
+      --accent-2: #8b5cf6;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --gold: #ffd700;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+      --shadow: 0 10px 30px rgba(0,0,0,.28);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(25, 60, 140, 0.45), transparent 35%),
-        radial-gradient(circle at right, rgba(57, 230, 255, 0.10), transparent 30%),
-        linear-gradient(180deg, #050914 0%, #091327 45%, #050914 100%);
-      color: white;
+      font-family: Inter, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--bg) 0%, #0f1530 100%);
+      color: var(--text);
     }
 
-    .page-container {
-      max-width: 1450px;
+    .container {
+      width: min(1200px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 30px 20px 60px;
-    }
-
-    .topbar {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .topbar h1 {
-      margin: 0 0 8px;
-      font-size: 3rem;
-      color: #39e6ff;
-      text-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
-    }
-
-    .topbar p {
-      margin: 0;
-      color: #cfd8ff;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 24px 0 34px;
-    }
-
-    .nav a {
-      text-decoration: none;
-      color: white;
-      background: rgba(255,255,255,0.10);
-      padding: 12px 18px;
-      border-radius: 12px;
-      transition: 0.25s ease;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 12px rgba(255,255,255,0.06);
-    }
-
-    .nav a:hover,
-    .nav a.active {
-      background: #39e6ff;
-      color: #07111f;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
+      padding: 24px 0 48px;
     }
 
     .hero {
-      text-align: center;
-      padding: 38px 20px;
-      margin-bottom: 26px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 0 30px rgba(0,0,0,0.22);
-    }
-
-    .hero h2 {
-      font-size: 3rem;
-      margin: 0 0 10px;
-      color: white;
-      letter-spacing: 1px;
-    }
-
-    .hero h2 span {
-      color: #39e6ff;
-      text-shadow: 0 0 18px rgba(57, 230, 255, 0.4);
-    }
-
-    .hero p {
-      color: #dce4ff;
-      margin: 0;
-      font-size: 1.05rem;
-    }
-
-    .toolbar {
       display: grid;
-      grid-template-columns: 1.2fr 0.7fr 0.7fr;
-      gap: 16px;
-      margin-bottom: 20px;
+      gap: 14px;
+      margin-bottom: 24px;
     }
 
-    .toolbar input,
-    .toolbar select {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      outline: none;
-      font-size: 1rem;
+    .title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
     }
 
-    .toolbar select option {
-      color: black;
-    }
-
-    .toolbar input::placeholder {
-      color: #aab7ea;
-    }
-
-    .race-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 28px;
-    }
-
-    .race-tab {
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border-radius: 999px;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: 0.25s ease;
-      font-size: 0.95rem;
-    }
-
-    .race-tab:hover,
-    .race-tab.active {
-      background: #39e6ff;
-      color: #07111f;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.35);
-    }
-
-    .leaderboard-layout {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .side-card,
-    .main-card {
-      background: rgba(255,255,255,0.07);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 0 26px rgba(0,0,0,0.22);
-    }
-
-    .side-card {
-      padding: 22px;
-      position: sticky;
-      top: 18px;
-    }
-
-    .track-image {
-      height: 190px;
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, rgba(57, 230, 255, 0.25), rgba(0,0,0,0.15)),
-        url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80') center/cover;
-      margin-bottom: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .badge-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.85rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(57, 230, 255, 0.14);
-      color: #8ff4ff;
-    }
-
-    .side-card h3 {
-      margin: 0 0 10px;
-      color: white;
-      font-size: 1.8rem;
-    }
-
-    .side-card p {
-      margin: 8px 0;
-      color: #dce4ff;
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
       line-height: 1.5;
     }
 
-    .target-box,
-    .stats-box {
-      margin-top: 16px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
     }
 
-    .target-box strong,
-    .stats-box strong {
+    .card {
+      background: linear-gradient(180deg, var(--card) 0%, var(--card-2) 100%);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card-inner {
+      padding: 18px;
+    }
+
+    .section-title {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .label {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    select,
+    input,
+    button,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: #8ea0d6;
+    }
+
+    select:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(110,168,255,0.18);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform .06s ease, opacity .2s ease, background .2s ease;
+    }
+
+    button:hover {
+      opacity: 0.96;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      border: none;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+    }
+
+    .status {
+      margin-top: 12px;
+      min-height: 22px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .status.success {
+      color: #7df0a2;
+    }
+
+    .status.error {
+      color: #ff8b8b;
+    }
+
+    .status.warn {
+      color: #ffc66d;
+    }
+
+    .content {
+      display: grid;
+      gap: 20px;
+    }
+
+    .race-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .race-btn {
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .race-btn small {
       display: block;
-      color: #8ff4ff;
+      margin-top: 4px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .race-btn.active {
+      background: linear-gradient(135deg, rgba(110,168,255,0.22), rgba(139,92,246,0.22));
+      border-color: var(--accent);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat-box {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
       margin-bottom: 8px;
     }
 
-    .target-time {
-      font-size: 1.8rem;
-      color: #39e6ff;
-      font-weight: bold;
-    }
-
-    .submit-btn,
-    .refresh-btn {
-      width: 100%;
-      border: none;
-      padding: 13px 16px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.25s ease;
-      margin-top: 14px;
-    }
-
-    .submit-btn {
-      background: #39e6ff;
-      color: #07111f;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.3);
-    }
-
-    .refresh-btn {
-      background: rgba(255,255,255,0.10);
-      color: white;
-    }
-
-    .submit-btn:hover,
-    .refresh-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .main-card {
-      padding: 22px;
+    .stat-value {
+      font-size: 24px;
+      font-weight: 800;
     }
 
     .podium {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 22px;
+      gap: 12px;
     }
 
-    .podium-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 20px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.08);
+    .podium-item {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      min-height: 150px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
     }
 
     .podium-rank {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 14px;
-      font-weight: bold;
-      font-size: 1.4rem;
+      font-size: 28px;
+      font-weight: 900;
     }
 
-    .gold {
-      border: 2px solid #ffd54a;
-      color: #ffd54a;
-      box-shadow: 0 0 18px rgba(255, 213, 74, 0.25);
+    .podium-item.rank-1 {
+      background: linear-gradient(180deg, rgba(255,215,0,0.18), rgba(255,255,255,0.04));
+      border-color: rgba(255,215,0,0.55);
     }
 
-    .silver {
-      border: 2px solid #d9e1ea;
-      color: #d9e1ea;
-      box-shadow: 0 0 18px rgba(217, 225, 234, 0.2);
+    .podium-item.rank-2 {
+      background: linear-gradient(180deg, rgba(192,192,192,0.18), rgba(255,255,255,0.04));
+      border-color: rgba(192,192,192,0.5);
     }
 
-    .bronze {
-      border: 2px solid #ff9f43;
-      color: #ff9f43;
-      box-shadow: 0 0 18px rgba(255, 159, 67, 0.2);
+    .podium-item.rank-3 {
+      background: linear-gradient(180deg, rgba(205,127,50,0.18), rgba(255,255,255,0.04));
+      border-color: rgba(205,127,50,0.45);
     }
 
-    .podium-card h4 {
-      margin: 0 0 8px;
-      font-size: 1.2rem;
+    .podium-name {
+      font-size: 17px;
+      font-weight: 700;
     }
 
     .podium-time {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #39e6ff;
-      margin-bottom: 6px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
     }
 
-    .podium-date {
-      color: #b9c5f0;
-      font-size: 0.92rem;
+    .podium-meta {
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .form-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 22px;
+    .table-wrap {
+      overflow: auto;
+      border-radius: 16px;
+      border: 1px solid var(--line);
     }
 
-    .form-box h3 {
-      margin-top: 0;
-      color: #39e6ff;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255,255,255,0.03);
     }
 
-    .form-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+    th,
+    td {
+      padding: 14px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: left;
+      font-size: 14px;
+      white-space: nowrap;
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      margin-bottom: 8px;
-      color: #dce4ff;
-      font-size: 0.95rem;
-    }
-
-    .form-group select,
-    .form-group input {
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      outline: none;
-    }
-
-    .form-group select option {
-      color: black;
-    }
-
-    .form-group input::placeholder {
-      color: #aab7ea;
-    }
-
-    .status-message {
-      margin-top: 14px;
-      color: #8ff4ff;
-      min-height: 22px;
-    }
-
-    .ranking-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .ranking-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 12px;
-    }
-
-    .ranking-header h3 {
-      margin: 0;
-      color: #39e6ff;
-    }
-
-    .ranking-count {
-      color: #cfd8ff;
-      font-size: 0.95rem;
-    }
-
-    .rank-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .rank-row {
-      display: grid;
-      grid-template-columns: 70px 1fr 130px 150px 140px;
-      gap: 12px;
-      align-items: center;
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
       background: rgba(255,255,255,0.04);
-      border-radius: 14px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
     }
 
-    .rank-position {
-      font-size: 1.2rem;
-      font-weight: bold;
+    tr:hover td {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .rank-pill {
+      display: inline-block;
+      min-width: 36px;
       text-align: center;
-      color: #8ff4ff;
-    }
-
-    .rank-name {
-      font-weight: bold;
-      color: white;
-      margin-bottom: 4px;
-    }
-
-    .rank-meta {
-      font-size: 0.92rem;
-      color: #b8c4ef;
-    }
-
-    .rank-type {
-      justify-self: center;
-      padding: 7px 10px;
+      padding: 6px 10px;
       border-radius: 999px;
+      font-weight: 800;
       background: rgba(255,255,255,0.08);
-      color: #dce4ff;
-      font-size: 0.88rem;
     }
 
-    .rank-badge {
-      justify-self: center;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(57, 230, 255, 0.12);
-      color: #8ff4ff;
-      font-size: 0.88rem;
+    .empty {
+      color: var(--muted);
+      padding: 18px 0 4px;
     }
 
-    .rank-time {
-      justify-self: end;
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #ffd54a;
-    }
-
-    .empty-state {
-      text-align: center;
-      color: #b9c5f0;
-      padding: 20px 10px;
+    .muted {
+      color: var(--muted);
     }
 
     .footer-note {
-      text-align: center;
-      color: #aab7ea;
-      margin-top: 35px;
-      font-size: 0.95rem;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
-    @media (max-width: 1100px) {
-      .toolbar {
+    @media (max-width: 980px) {
+      .layout {
         grid-template-columns: 1fr;
       }
 
-      .leaderboard-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .side-card {
-        position: static;
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .podium {
         grid-template-columns: 1fr;
       }
+    }
 
-      .form-row {
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 20px, 1200px);
+      }
+
+      .title {
+        font-size: 28px;
+      }
+
+      .stats-row {
         grid-template-columns: 1fr;
       }
 
-      .rank-row {
-        grid-template-columns: 60px 1fr;
-      }
-
-      .rank-type,
-      .rank-badge,
-      .rank-time {
-        justify-self: start;
+      .race-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
 <body>
-  <div class="page-container">
-    <div class="topbar">
-      <h1>NightStalkerZ</h1>
-      <p>NFS Heat Final Pro Leaderboard</p>
-    </div>
-
-    <div class="nav">
-      <a href="index.html">Home</a>
-      <a href="leaderboard.html" class="active">Leaderboard</a>
-      <a href="members.html">Members</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="news.html">News</a>
-      <a href="builds.html">Builds</a>
-      <a href="shop.html">Shop</a>
-      <a href="login.html">Login</a>
-    </div>
-
+  <div class="container">
     <div class="hero">
-      <h2>NFS HEAT <span>FINAL PRO</span></h2>
-      <p>Alle Rennen, deutsche Namen, Live-Sync mit Google Sheets und optimiert für GitHub Pages.</p>
-    </div>
-
-    <div class="toolbar">
-      <input type="text" id="raceSearch" placeholder="Rennen suchen..." />
-      <select id="categoryFilter">
-        <option value="all">Alle Kategorien</option>
-        <option value="Sprint">Sprint</option>
-        <option value="Rundkurs">Rundkurs</option>
-      </select>
-      <select id="timeFilter">
-        <option value="all">Tag und Nacht</option>
-        <option value="Tag">Nur Tag</option>
-        <option value="Nacht">Nur Nacht</option>
-      </select>
-    </div>
-
-    <div class="race-tabs" id="raceTabs"></div>
-
-    <div class="leaderboard-layout">
-      <div class="side-card">
-        <div class="track-image"></div>
-        <div class="badge-row">
-          <div class="badge" id="raceCategory">Rundkurs</div>
-          <div class="badge" id="raceTimeMode">Tag</div>
-        </div>
-        <h3 id="raceName">Erdferkel</h3>
-        <p id="raceCar">Empfohlen: Race Build</p>
-        <p id="raceType">Palm City Event</p>
-
-        <div class="target-box">
-          <strong>Zielzeit</strong>
-          <div class="target-time" id="targetTime">3:00.00</div>
-        </div>
-
-        <div class="stats-box">
-          <strong>Renn-Stats</strong>
-          <p id="entryCount">Einträge: 0</p>
-          <p id="beatCount">Unter Zielzeit: 0</p>
-        </div>
-
-        <button class="refresh-btn" id="refreshBtn">Daten neu laden</button>
-      </div>
-
-      <div class="main-card">
-        <div class="podium" id="podium"></div>
-
-        <div class="form-box">
-          <h3>Zeit einreichen</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="memberSelect">Mitglied</label>
-              <select id="memberSelect"></select>
-            </div>
-
-            <div class="form-group">
-              <label for="timeInput">Zeit</label>
-              <input type="text" id="timeInput" placeholder="z. B. 2:43.15" />
-            </div>
-
-            <div class="form-group">
-              <label for="countryInput">Land / Kürzel</label>
-              <input type="text" id="countryInput" placeholder="z. B. DE" />
-            </div>
-          </div>
-
-          <button class="submit-btn" id="submitTimeBtn">Zeit an Google Sheets senden</button>
-          <div class="status-message" id="statusMessage"></div>
-        </div>
-
-        <div class="ranking-box">
-          <div class="ranking-header">
-            <h3>Vollständige Rangliste</h3>
-            <div class="ranking-count" id="rankingCount">0 Fahrer</div>
-          </div>
-          <div class="rank-list" id="rankList"></div>
-        </div>
+      <div class="title">Distance Leaderboard</div>
+      <div class="subtitle">
+        Öffentliche Bestzeiten aus Google Sheets. Neue Einreichungen werden gespeichert und erscheinen nach Freigabe im Leaderboard.
       </div>
     </div>
 
-    <div class="footer-note">
-      NightStalkerZ - Final Pro Google Sheets Sync
+    <div class="layout">
+      <aside class="card">
+        <div class="card-inner">
+          <h2 class="section-title">Zeit einreichen</h2>
+
+          <div class="field">
+            <label class="label" for="memberSelect">Fahrer</label>
+            <select id="memberSelect"></select>
+          </div>
+
+          <div class="field">
+            <label class="label" for="countrySelect">Land</label>
+            <select id="countrySelect">
+              <option value="DE">DE</option>
+              <option value="AT">AT</option>
+              <option value="CH">CH</option>
+              <option value="NL">NL</option>
+              <option value="BE">BE</option>
+              <option value="FR">FR</option>
+              <option value="IT">IT</option>
+              <option value="ES">ES</option>
+              <option value="UK">UK</option>
+              <option value="US">US</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="label" for="timeInput">Zeit</label>
+            <input id="timeInput" type="text" placeholder="z. B. 1:32.440 oder 4:34.970" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="carInput">Fahrzeug</label>
+            <input id="carInput" type="text" placeholder="Optionales Fahrzeug" />
+          </div>
+
+          <div class="field">
+            <label class="label" for="proofInput">Proof-Link</label>
+            <input id="proofInput" type="url" placeholder="Optionaler Link zum Beweis" />
+          </div>
+
+          <button id="submitBtn" class="btn-primary">Zeit absenden</button>
+          <div id="submitStatus" class="status"></div>
+
+          <div class="footer-note">
+            Die Einreichung wird als <strong>Offen</strong> gespeichert. Nach Freigabe erscheint sie automatisch im öffentlichen Leaderboard.
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="card">
+          <div class="card-inner">
+            <h2 class="section-title">Strecken</h2>
+            <div id="raceGrid" class="race-grid"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-inner">
+            <h2 class="section-title">Übersicht</h2>
+            <div class="stats-row">
+              <div class="stat-box">
+                <div class="stat-label">Aktuelle Strecke</div>
+                <div id="statTrack" class="stat-value">-</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Einträge</div>
+                <div id="statEntries" class="stat-value">0</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Schnellste Zeit</div>
+                <div id="statBest" class="stat-value">-</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Fahrer</div>
+                <div id="statDrivers" class="stat-value">0</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-inner">
+            <h2 class="section-title">Podium</h2>
+            <div id="podium" class="podium"></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-inner">
+            <h2 class="section-title">Rangliste</h2>
+            <div id="tableStatus" class="status"></div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rang</th>
+                    <th>Fahrer</th>
+                    <th>Land</th>
+                    <th>Zeit</th>
+                    <th>Datum</th>
+                  </tr>
+                </thead>
+                <tbody id="leaderboardBody"></tbody>
+              </table>
+            </div>
+            <div id="emptyState" class="empty" style="display:none;">Für diese Strecke sind noch keine akzeptierten Zeiten vorhanden.</div>
+          </div>
+        </section>
+      </main>
     </div>
   </div>
 
   <script>
-    const SCRIPT_URL = "HIER_DEINE_GOOGLE_APPS_SCRIPT_URL_EINFUEGEN";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykzXalGQ1Gy74I7IVOlLd0DvsaarjyuJDLPQBVNqpbFz95yPIHvojso1PlQo-7ZdOC/exec";
 
-    const members = [
-      "NightHunter",
-      "VexShadow",
-      "RavenByte",
-      "SilentKrush",
-      "AshFang",
-      "DriftRogue",
-      "NovaKade",
-      "BlazeLock"
+    const races = [
+      { key: "aardvark", name: "Erdferkel" },
+      { key: "aerion", name: "Aerion" },
+      { key: "apollo10", name: "Apollo 10" },
+      { key: "aurora", name: "Aurora" },
+      { key: "axiom", name: "Axiom" },
+      { key: "backincontrol", name: "Wieder Unter Kontrolle" },
+      { key: "bamboo", name: "Bambus" },
+      { key: "bannister", name: "Geländer" },
+      { key: "battlemachine", name: "Kampfmaschine" },
+      { key: "blackbird", name: "Schwarzer Vogel" },
+      { key: "bolt", name: "Blitz" },
+      { key: "bullet", name: "Kugel" },
+      { key: "callout", name: "Herausforderung" },
+      { key: "carsonextreme", name: "Carson Extrem" },
+      { key: "caspianseamonster", name: "Kaspisches Seemonster" },
+      { key: "cheyenne", name: "Cheyenne" },
+      { key: "cityexpress", name: "Stadt-Express" },
+      { key: "columbia", name: "Columbia" },
+      { key: "crossmountains", name: "Über die Berge" },
+      { key: "crossfield", name: "Querfeld" },
+      { key: "crossover", name: "Kreuzungspunkt" },
+      { key: "cuttingcorners", name: "Kurven schneiden" },
+      { key: "desertgod", name: "Wüstengott" },
+      { key: "discovery", name: "Entdeckung" },
+      { key: "discoverya", name: "Entdeckung A" },
+      { key: "discoveryb", name: "Entdeckung B" },
+      { key: "discoveryc", name: "Entdeckung C" },
+      { key: "eagle", name: "Adler" },
+      { key: "enterprise", name: "Enterprise" },
+      { key: "farah", name: "Farah" },
+      { key: "flanker", name: "Flankierer" },
+      { key: "flashback", name: "Rückblende" },
+      { key: "flyingdutchman", name: "Der Fliegende Holländer" },
+      { key: "foxbat", name: "Fuchsfledermaus" },
+      { key: "fury", name: "Zorn" },
+      { key: "gazelle", name: "Gazelle" },
+      { key: "goldenarrow", name: "Goldener Pfeil" },
+      { key: "gonzales", name: "Gonzales" },
+      { key: "greenbird", name: "Grüner Vogel" },
+      { key: "hardstop", name: "Vollbremsung" },
+      { key: "hawkermech", name: "Hawker Mech" },
+      { key: "helios2", name: "Helios 2" },
+      { key: "iplane", name: "I-Plane" },
+      { key: "initiation", name: "Initiation" },
+      { key: "intimidator", name: "Einschüchterer" },
+      { key: "jstorm", name: "J. Storm" },
+      { key: "juno", name: "Juno" },
+      { key: "kingdakar", name: "König Dakar" },
+      { key: "larry", name: "Larry" },
+      { key: "lightning", name: "Blitzschlag" },
+      { key: "luckycharm", name: "Glücksbringer" },
+      { key: "maoriventure", name: "Maori-Unternehmen" },
+      { key: "marinara", name: "Marinara" },
+      { key: "marlin", name: "Marlin" },
+      { key: "mcqueen", name: "McQueen" },
+      { key: "merciless", name: "Gnadenlos" },
+      { key: "mercury", name: "Merkur" },
+      { key: "milleniumf", name: "Millennium F" },
+      { key: "nanospectrum", name: "Nanospektrum" },
+      { key: "needletail", name: "Nadelheck" },
+      { key: "newhorizons", name: "Neue Horizonte" },
+      { key: "nightracer", name: "Nachtracer" },
+      { key: "nosless", name: "Ohne NOS" },
+      { key: "noobaround", name: "Noob-Runde" },
+      { key: "oceandrive", name: "Ozeanfahrt" },
+      { key: "ohmygod", name: "Oh mein Gott!" },
+      { key: "portview", name: "Hafenblick" },
+      { key: "prestige", name: "Prestige" },
+      { key: "problemchild", name: "Problemkind" },
+      { key: "proton", name: "Proton" },
+      { key: "qubit", name: "Qubit" },
+      { key: "racinglines", name: "Ideallinien" },
+      { key: "raptor", name: "Raptor" },
+      { key: "rarebear", name: "Seltener Bär" },
+      { key: "rayoflight", name: "Lichtstrahl" },
+      { key: "reaction", name: "Reaktion" },
+      { key: "redrocktornado", name: "Roter Fels-Tornado" },
+      { key: "ringracer", name: "Ring-Racer" },
+      { key: "rivals", name: "Rivalen" },
+      { key: "rollercoaster", name: "Achterbahn" },
+      { key: "runner", name: "Läufer" },
+      { key: "savage", name: "Wild" },
+      { key: "scorpion", name: "Skorpion" },
+      { key: "scramjet", name: "Staustrahl" },
+      { key: "serendipity", name: "Glücksfall" },
+      { key: "shinkansen", name: "Shinkansen" },
+      { key: "skyace", name: "Himmelsass" },
+      { key: "sliptrick", name: "Rutsch-Trick" },
+      { key: "sonic", name: "Sonic" },
+      { key: "specter", name: "Spektral" },
+      { key: "spike", name: "Spike" },
+      { key: "spiral", name: "Spirale" },
+      { key: "spiritofoz", name: "Geist von Oz" },
+      { key: "stardust", name: "Sternenstaub" },
+      { key: "steeldragon", name: "Stahldrache" },
+      { key: "streamliner", name: "Stromlinie" },
+      { key: "summit", name: "Gipfel" },
+      { key: "sway", name: "Schwung" },
+      { key: "tachyon", name: "Tachyon" },
+      { key: "taranis", name: "Taranis" },
+      { key: "theresortscircuit", name: "Der Resort-Rundkurs" },
+      { key: "therun", name: "Der Lauf" },
+      { key: "thrust", name: "Schub" },
+      { key: "topthrill", name: "Maximaler Kick" },
+      { key: "toptier", name: "Spitzenklasse" },
+      { key: "tornado", name: "Tornado" },
+      { key: "trikster", name: "Trickster" },
+      { key: "tumbler", name: "Taumler" },
+      { key: "ultimate", name: "Ultimativ" },
+      { key: "ultrasharp", name: "Ultrascharf" },
+      { key: "valkyrie", name: "Walküre" },
+      { key: "venturi", name: "Venturi" },
+      { key: "vesco", name: "Vesco" },
+      { key: "vertigo", name: "Vertigo" },
+      { key: "voyager", name: "Voyager" },
+      { key: "wildking", name: "Wildkönig" },
+      { key: "yoshikazu", name: "Yoshikazu" }
     ];
 
-    const raceConfig = {
-      aardvark: { name: "Erdferkel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      aerion: { name: "Aerion", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      apollo10: { name: "Apollo 10", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      aurora: { name: "Aurora", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      axiom: { name: "Axiom", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      backincontrol: { name: "Wieder Unter Kontrolle", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      bamboo: { name: "Bambus", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      bannister: { name: "Geländer", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      battlemachine: { name: "Kampfmaschine", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      blackbird: { name: "Schwarzer Vogel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      bolt: { name: "Blitz", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      bullet: { name: "Kugel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      callout: { name: "Herausforderung", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      carsonextreme: { name: "Carson Extrem", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      caspianseamonster: { name: "Kaspisches Seemonster", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      cheyenne: { name: "Cheyenne", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      cityexpress: { name: "Stadt-Express", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      columbia: { name: "Columbia", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      crossmountains: { name: "Über die Berge", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      crossfield: { name: "Querfeld", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      crossover: { name: "Kreuzungspunkt", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      cuttingcorners: { name: "Kurven schneiden", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      desertgod: { name: "Wüstengott", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discovery: { name: "Entdeckung", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discoverya: { name: "Entdeckung A", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discoveryb: { name: "Entdeckung B", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discoveryc: { name: "Entdeckung C", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      eagle: { name: "Adler", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      enterprise: { name: "Enterprise", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      farah: { name: "Farah", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      flanker: { name: "Flankierer", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      flashback: { name: "Rückblende", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      flyingdutchman: { name: "Der Fliegende Holländer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      foxbat: { name: "Fuchsfledermaus", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      fury: { name: "Zorn", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      gazelle: { name: "Gazelle", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      goldenarrow: { name: "Goldener Pfeil", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      gonzales: { name: "Gonzales", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      greenbird: { name: "Grüner Vogel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      hardstop: { name: "Vollbremsung", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      hawkermech: { name: "Hawker Mech", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      helios2: { name: "Helios 2", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      iplane: { name: "I-Plane", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      initiation: { name: "Initiation", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      intimidator: { name: "Einschüchterer", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      jstorm: { name: "J. Storm", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      juno: { name: "Juno", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      kingdakar: { name: "König Dakar", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      larry: { name: "Larry", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      lightning: { name: "Blitzschlag", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      luckycharm: { name: "Glücksbringer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      maoriventure: { name: "Maori-Unternehmen", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      marinara: { name: "Marinara", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      marlin: { name: "Marlin", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      mcqueen: { name: "McQueen", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      merciless: { name: "Gnadenlos", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      mercury: { name: "Merkur", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      milleniumf: { name: "Millennium F", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      nanospectrum: { name: "Nanospektrum", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      needletail: { name: "Nadelheck", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      newhorizons: { name: "Neue Horizonte", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      nightracer: { name: "Nachtracer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      nosless: { name: "Ohne NOS", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      noobaround: { name: "Noob-Runde", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      oceandrive: { name: "Ozeanfahrt", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      ohmygod: { name: "Oh mein Gott!", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      portview: { name: "Hafenblick", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      prestige: { name: "Prestige", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      problemchild: { name: "Problemkind", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      proton: { name: "Proton", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      qubit: { name: "Qubit", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      racinglines: { name: "Ideallinien", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      raptor: { name: "Raptor", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      rarebear: { name: "Seltener Bär", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      rayoflight: { name: "Lichtstrahl", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      reaction: { name: "Reaktion", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      redrocktornado: { name: "Roter Fels-Tornado", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      ringracer: { name: "Ring-Racer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      rivals: { name: "Rivalen", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      rollercoaster: { name: "Achterbahn", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      runner: { name: "Läufer", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      savage: { name: "Wild", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      scorpion: { name: "Skorpion", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      scramjet: { name: "Staustrahl", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      serendipity: { name: "Glücksfall", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      shinkansen: { name: "Shinkansen", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      skyace: { name: "Himmelsass", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      sliptrick: { name: "Rutsch-Trick", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      sonic: { name: "Sonic", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      specter: { name: "Spektral", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      spike: { name: "Spike", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      spiral: { name: "Spirale", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      spiritofoz: { name: "Geist von Oz", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      stardust: { name: "Sternenstaub", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      steeldragon: { name: "Stahldrache", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      streamliner: { name: "Stromlinie", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      summit: { name: "Gipfel", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      sway: { name: "Schwung", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      tachyon: { name: "Tachyon", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      taranis: { name: "Taranis", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      theresortscircuit: { name: "Der Resort-Rundkurs", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      therun: { name: "Der Lauf", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      thrust: { name: "Schub", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      topthrill: { name: "Maximaler Kick", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      toptier: { name: "Spitzenklasse", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      tornado: { name: "Tornado", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      trikster: { name: "Trickster", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      tumbler: { name: "Taumler", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      ultimate: { name: "Ultimativ", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      ultrasharp: { name: "Ultrascharf", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      valkyrie: { name: "Walküre", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      venturi: { name: "Venturi", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      vesco: { name: "Vesco", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      vertigo: { name: "Vertigo", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      voyager: { name: "Voyager", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      wildking: { name: "Wildkönig", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      yoshikazu: { name: "Yoshikazu", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" }
-    };
+    let leaderboardData = [];
+    let currentRace = "apollo10";
 
-    let sheetData = [];
-    let currentRace = Object.keys(raceConfig)[0];
-
-    const raceTabs = document.getElementById("raceTabs");
     const memberSelect = document.getElementById("memberSelect");
+    const countrySelect = document.getElementById("countrySelect");
     const timeInput = document.getElementById("timeInput");
-    const countryInput = document.getElementById("countryInput");
-    const submitTimeBtn = document.getElementById("submitTimeBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
-    const statusMessage = document.getElementById("statusMessage");
-    const raceSearch = document.getElementById("raceSearch");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const timeFilter = document.getElementById("timeFilter");
+    const carInput = document.getElementById("carInput");
+    const proofInput = document.getElementById("proofInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitStatus = document.getElementById("submitStatus");
+    const raceGrid = document.getElementById("raceGrid");
+    const podium = document.getElementById("podium");
+    const leaderboardBody = document.getElementById("leaderboardBody");
+    const tableStatus = document.getElementById("tableStatus");
+    const emptyState = document.getElementById("emptyState");
+    const statTrack = document.getElementById("statTrack");
+    const statEntries = document.getElementById("statEntries");
+    const statBest = document.getElementById("statBest");
+    const statDrivers = document.getElementById("statDrivers");
 
-    function parseTimeToMs(timeString) {
-      const clean = String(timeString).trim();
-      const match = clean.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
-      if (!match) return null;
-
-      const minutes = parseInt(match[1], 10);
-      const seconds = parseInt(match[2], 10);
-      let millis = match[3];
-
-      if (millis.length === 1) millis += "00";
-      if (millis.length === 2) millis += "0";
-      millis = parseInt(millis, 10);
-
-      return (minutes * 60 * 1000) + (seconds * 1000) + millis;
+    function setStatus(el, text, type = "") {
+      el.textContent = text;
+      el.className = "status" + (type ? " " + type : "");
     }
 
-    function sortEntries(entries) {
-      return entries.sort((a, b) => parseTimeToMs(a.time) - parseTimeToMs(b.time));
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
     }
 
-    function getTodayDate() {
-      const now = new Date();
-      const d = String(now.getDate()).padStart(2, "0");
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const y = now.getFullYear();
-      return `${d}.${m}.${y}`;
+    function getRaceNameByKey(key) {
+      const race = races.find(r => r.key === key);
+      return race ? race.name : key;
     }
 
-    function fillMembers() {
-      memberSelect.innerHTML = "";
-      members.forEach(member => {
-        const option = document.createElement("option");
-        option.value = member;
-        option.textContent = member;
-        memberSelect.appendChild(option);
-      });
+    function getCurrentRaceEntries() {
+      return leaderboardData
+        .filter(item => item.raceKey === currentRace)
+        .sort((a, b) => compareTimes(a.time, b.time));
     }
 
-    function getFilteredRaceKeys() {
-      const search = raceSearch.value.toLowerCase().trim();
-      const category = categoryFilter.value;
-      const dayTime = timeFilter.value;
-
-      return Object.keys(raceConfig).filter(key => {
-        const race = raceConfig[key];
-        const matchSearch = !search || race.name.toLowerCase().includes(search);
-        const matchCategory = category === "all" || race.category === category;
-        const matchTime = dayTime === "all" || race.dayTime === dayTime;
-        return matchSearch && matchCategory && matchTime;
-      });
+    function compareTimes(a, b) {
+      return timeToMs(a) - timeToMs(b);
     }
 
-    function ensureCurrentRaceVisible() {
-      const filtered = getFilteredRaceKeys();
-      if (!filtered.includes(currentRace)) {
-        currentRace = filtered.length ? filtered[0] : Object.keys(raceConfig)[0];
+    function timeToMs(value) {
+      const str = String(value || "").trim().replace(",", ".");
+      let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
+      if (match) {
+        return parseInt(match[1], 10) * 60000 +
+          parseInt(match[2], 10) * 1000 +
+          parseInt(match[3].padEnd(3, "0"), 10);
       }
+
+      match = str.match(/^(\d+):(\d{1,2}):(\d{1,3})$/);
+      if (match) {
+        return parseInt(match[1], 10) * 60000 +
+          parseInt(match[2], 10) * 1000 +
+          parseInt(match[3].padEnd(3, "0"), 10);
+      }
+
+      match = str.match(/^(\d+):(\d{1,2})$/);
+      if (match) {
+        return parseInt(match[1], 10) * 60000 +
+          parseInt(match[2], 10) * 1000;
+      }
+
+      return Number.MAX_SAFE_INTEGER;
     }
 
-    function createTabs() {
-      raceTabs.innerHTML = "";
-      const filtered = getFilteredRaceKeys();
+    function normalizeTimeInput(value) {
+      const str = String(value || "").trim().replace(",", ".");
 
-      filtered.forEach(key => {
-        const btn = document.createElement("button");
-        btn.className = "race-tab" + (key === currentRace ? " active" : "");
-        btn.textContent = raceConfig[key].name;
+      let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
+      if (match) {
+        return `${parseInt(match[1], 10)}:${String(parseInt(match[2], 10)).padStart(2, "0")}.${match[3].padEnd(3, "0")}`;
+      }
+
+      match = str.match(/^(\d+):(\d{1,2}):(\d{1,3})$/);
+      if (match) {
+        return `${parseInt(match[1], 10)}:${String(parseInt(match[2], 10)).padStart(2, "0")}.${match[3].padEnd(3, "0")}`;
+      }
+
+      match = str.match(/^(\d+):(\d{1,2})$/);
+      if (match) {
+        return `${parseInt(match[1], 10)}:${String(parseInt(match[2], 10)).padStart(2, "0")}.000`;
+      }
+
+      return str;
+    }
+
+    function isValidTime(value) {
+      const str = normalizeTimeInput(value);
+      return /^(\d+):(\d{2})\.(\d{3})$/.test(str);
+    }
+
+    function renderRaceButtons() {
+      raceGrid.innerHTML = races.map(race => `
+        <button class="race-btn ${race.key === currentRace ? "active" : ""}" data-race="${escapeHtml(race.key)}">
+          ${escapeHtml(race.name)}
+          <small>${escapeHtml(race.key)}</small>
+        </button>
+      `).join("");
+
+      raceGrid.querySelectorAll(".race-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          currentRace = key;
+          currentRace = btn.dataset.race;
           renderAll();
         });
-        raceTabs.appendChild(btn);
-      });
-
-      if (filtered.length === 0) {
-        raceTabs.innerHTML = '<div class="empty-state">Keine Rennen gefunden.</div>';
-      }
-    }
-
-    function getEntriesForCurrentRace() {
-      return sheetData
-        .filter(item => item.raceKey === currentRace)
-        .map(item => ({
-          member: item.member || "",
-          country: item.country || "",
-          time: item.time || "",
-          date: item.date || ""
-        }))
-        .filter(item => parseTimeToMs(item.time) !== null);
-    }
-
-    function renderRaceInfo() {
-      const cfg = raceConfig[currentRace];
-      document.getElementById("raceCategory").textContent = cfg.category;
-      document.getElementById("raceTimeMode").textContent = cfg.dayTime;
-      document.getElementById("raceName").textContent = cfg.name;
-      document.getElementById("raceCar").textContent = cfg.car || "";
-      document.getElementById("raceType").textContent = cfg.type || "Palm City Event";
-      document.getElementById("targetTime").textContent = cfg.target;
-
-      const entries = sortEntries(getEntriesForCurrentRace());
-      document.getElementById("entryCount").textContent = "Einträge: " + entries.length;
-
-      const targetMs = parseTimeToMs(cfg.target);
-      const beatCount = entries.filter(e => parseTimeToMs(e.time) < targetMs).length;
-      document.getElementById("beatCount").textContent = "Unter Zielzeit: " + beatCount;
-      document.getElementById("rankingCount").textContent = entries.length + " Fahrer";
-    }
-
-    function renderPodium() {
-      const podium = document.getElementById("podium");
-      podium.innerHTML = "";
-
-      const entries = sortEntries(getEntriesForCurrentRace());
-      const first = entries[0];
-      const second = entries[1];
-      const third = entries[2];
-
-      const podiumData = [
-        { item: second, rank: 2, className: "silver" },
-        { item: first, rank: 1, className: "gold" },
-        { item: third, rank: 3, className: "bronze" }
-      ];
-
-      podiumData.forEach(slot => {
-        const card = document.createElement("div");
-        card.className = "podium-card";
-
-        if (slot.item) {
-          card.innerHTML = `
-            <div class="podium-rank ${slot.className}">${slot.rank}</div>
-            <h4>${slot.item.member}</h4>
-            <div class="podium-time">${slot.item.time}</div>
-            <div class="podium-date">${slot.item.date} · ${slot.item.country}</div>
-          `;
-        } else {
-          card.innerHTML = `
-            <div class="podium-rank ${slot.className}">${slot.rank}</div>
-            <h4>Frei</h4>
-            <div class="podium-time">--:--.--</div>
-            <div class="podium-date">Kein Eintrag</div>
-          `;
-        }
-
-        podium.appendChild(card);
       });
     }
 
-    function renderRankings() {
-      const rankList = document.getElementById("rankList");
-      rankList.innerHTML = "";
+    function renderStats(entries) {
+      statTrack.textContent = getRaceNameByKey(currentRace);
+      statEntries.textContent = String(entries.length);
+      statBest.textContent = entries[0] ? entries[0].time : "-";
+      statDrivers.textContent = String(new Set(entries.map(e => e.member)).size);
+    }
 
-      const cfg = raceConfig[currentRace];
-      const targetMs = parseTimeToMs(cfg.target);
-      const entries = sortEntries(getEntriesForCurrentRace());
+    function renderPodium(entries) {
+      const top3 = entries.slice(0, 3);
 
-      if (entries.length === 0) {
-        rankList.innerHTML = '<div class="empty-state">Noch keine Zeiten aus Google Sheets geladen.</div>';
+      if (top3.length === 0) {
+        podium.innerHTML = `<div class="muted">Noch keine Daten für diese Strecke.</div>`;
         return;
       }
 
-      entries.forEach((entry, index) => {
-        const row = document.createElement("div");
-        row.className = "rank-row";
+      podium.innerHTML = top3.map((entry, index) => `
+        <div class="podium-item rank-${index + 1}">
+          <div class="podium-rank">#${index + 1}</div>
+          <div class="podium-name">${escapeHtml(entry.member)}</div>
+          <div class="podium-time">${escapeHtml(entry.time)}</div>
+          <div class="podium-meta">${escapeHtml(entry.country || "-")} · ${escapeHtml(entry.date || "-")}</div>
+        </div>
+      `).join("");
+    }
 
-        const beatTarget = parseTimeToMs(entry.time) < targetMs;
-        const badgeText = beatTarget ? "Ziel geknackt" : "Eingetragen";
+    function renderTable(entries) {
+      leaderboardBody.innerHTML = "";
 
-        row.innerHTML = `
-          <div class="rank-position">#${index + 1}</div>
-          <div>
-            <div class="rank-name">${entry.member}</div>
-            <div class="rank-meta">${entry.date} · ${entry.country}</div>
-          </div>
-          <div class="rank-type">${cfg.dayTime}</div>
-          <div class="rank-badge">${badgeText}</div>
-          <div class="rank-time">${entry.time}</div>
-        `;
+      if (entries.length === 0) {
+        emptyState.style.display = "block";
+        return;
+      }
 
-        rankList.appendChild(row);
-      });
+      emptyState.style.display = "none";
+
+      leaderboardBody.innerHTML = entries.map((entry, index) => `
+        <tr>
+          <td><span class="rank-pill">${index + 1}</span></td>
+          <td>${escapeHtml(entry.member)}</td>
+          <td>${escapeHtml(entry.country || "-")}</td>
+          <td>${escapeHtml(entry.time)}</td>
+          <td>${escapeHtml(entry.date || "-")}</td>
+        </tr>
+      `).join("");
     }
 
     function renderAll() {
-      ensureCurrentRaceVisible();
-      createTabs();
-      renderRaceInfo();
-      renderPodium();
-      renderRankings();
+      renderRaceButtons();
+      const entries = getCurrentRaceEntries();
+      renderStats(entries);
+      renderPodium(entries);
+      renderTable(entries);
+    }
+
+    async function fillMembers() {
+      memberSelect.innerHTML = "";
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?type=drivers`);
+        const data = await response.json();
+
+        const driverNames = Array.isArray(data)
+          ? data.map(item => String(item.fahrer || "").trim()).filter(Boolean)
+          : [];
+
+        if (driverNames.length === 0) {
+          const option = document.createElement("option");
+          option.value = "";
+          option.textContent = "Keine Fahrer gefunden";
+          memberSelect.appendChild(option);
+          return;
+        }
+
+        driverNames.forEach(member => {
+          const option = document.createElement("option");
+          option.value = member;
+          option.textContent = member;
+          memberSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error(error);
+
+        const fallbackMembers = ["Ulf Gehart"];
+
+        fallbackMembers.forEach(member => {
+          const option = document.createElement("option");
+          option.value = member;
+          option.textContent = member;
+          memberSelect.appendChild(option);
+        });
+      }
     }
 
     async function loadSheetData() {
-      if (!SCRIPT_URL || SCRIPT_URL.includes("HIER_DEINE")) {
-        statusMessage.textContent = "Bitte zuerst deine Google Apps Script URL eintragen.";
-        return;
-      }
-
-      statusMessage.textContent = "Lade Daten aus Google Sheets...";
-
       try {
-        const response = await fetch(SCRIPT_URL);
+        setStatus(tableStatus, "Leaderboard wird geladen ...", "warn");
+
+        const response = await fetch(`${SCRIPT_URL}?type=website`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
         const data = await response.json();
-        sheetData = Array.isArray(data) ? data : [];
+        leaderboardData = Array.isArray(data) ? data : [];
+
+        setStatus(tableStatus, `${leaderboardData.length} Bestzeiten geladen.`, "success");
         renderAll();
-        statusMessage.textContent = "Daten erfolgreich geladen.";
       } catch (error) {
         console.error(error);
-        statusMessage.textContent = "Fehler beim Laden aus Google Sheets.";
+        leaderboardData = [];
+        setStatus(tableStatus, "Fehler beim Laden des Leaderboards.", "error");
+        renderAll();
       }
     }
 
     async function submitTime() {
+      const selectedRace = races.find(r => r.key === currentRace);
       const member = memberSelect.value.trim();
-      const time = timeInput.value.trim();
-      const country = (countryInput.value.trim() || "DE").toUpperCase();
-      const cfg = raceConfig[currentRace];
+      const country = countrySelect.value.trim() || "DE";
+      const rawTime = timeInput.value.trim();
+      const time = normalizeTimeInput(rawTime);
+      const car = carInput.value.trim();
+      const proof = proofInput.value.trim();
 
-      if (!member || !time) {
-        statusMessage.textContent = "Bitte Mitglied und Zeit ausfüllen.";
+      if (!selectedRace) {
+        setStatus(submitStatus, "Keine gültige Strecke ausgewählt.", "error");
         return;
       }
 
-      if (!parseTimeToMs(time)) {
-        statusMessage.textContent = "Ungültiges Format. Nutze z. B. 2:43.15";
+      if (!member) {
+        setStatus(submitStatus, "Bitte einen Fahrer auswählen.", "error");
         return;
       }
 
-      if (!SCRIPT_URL || SCRIPT_URL.includes("HIER_DEINE")) {
-        statusMessage.textContent = "Bitte zuerst deine Google Apps Script URL eintragen.";
+      if (!rawTime || !isValidTime(rawTime)) {
+        setStatus(submitStatus, "Bitte eine gültige Zeit eingeben, z. B. 1:32.440.", "error");
         return;
       }
 
-      const payload = {
-        raceKey: currentRace,
-        raceName: cfg.name,
-        category: cfg.category,
-        dayTime: cfg.dayTime,
-        member: member,
-        country: country,
-        time: time,
-        date: getTodayDate()
-      };
-
-      statusMessage.textContent = "Sende Eintrag an Google Sheets...";
+      submitBtn.disabled = true;
+      setStatus(submitStatus, "Eintrag wird gesendet ...", "warn");
 
       try {
+        const payload = {
+          raceKey: selectedRace.key,
+          raceName: selectedRace.name,
+          member: member,
+          country: country,
+          discordId: "",
+          car: car,
+          proof: proof,
+          time: time,
+          date: new Date().toLocaleDateString("de-DE")
+        };
+
         const response = await fetch(SCRIPT_URL, {
           method: "POST",
           headers: {
-            "Content-Type": "text/plain;charset=utf-8"
+            "Content-Type": "application/json"
           },
           body: JSON.stringify(payload)
         });
 
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
         const result = await response.json();
 
-        if (result.success) {
-          timeInput.value = "";
-          countryInput.value = "";
-          statusMessage.textContent = "Zeit erfolgreich gespeichert.";
-          await loadSheetData();
-        } else {
-          statusMessage.textContent = "Speichern fehlgeschlagen.";
+        if (!result.success) {
+          throw new Error(result.message || "Unbekannter Fehler");
         }
+
+        setStatus(submitStatus, "Zeit eingereicht. Status: Offen. Sichtbar nach Freigabe.", "success");
+        timeInput.value = "";
+        carInput.value = "";
+        proofInput.value = "";
+
+        await loadSheetData();
       } catch (error) {
         console.error(error);
-        statusMessage.textContent = "Fehler beim Senden an Google Sheets.";
+        setStatus(submitStatus, `Senden fehlgeschlagen: ${error.message}`, "error");
+      } finally {
+        submitBtn.disabled = false;
       }
     }
 
-    submitTimeBtn.addEventListener("click", submitTime);
-    refreshBtn.addEventListener("click", loadSheetData);
-    raceSearch.addEventListener("input", renderAll);
-    categoryFilter.addEventListener("change", renderAll);
-    timeFilter.addEventListener("change", renderAll);
+    submitBtn.addEventListener("click", submitTime);
 
-    fillMembers();
-    renderAll();
-    loadSheetData();
+    timeInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        submitTime();
+      }
+    });
+
+    (async function init() {
+      await fillMembers();
+      renderAll();
+      await loadSheetData();
+    })();
   </script>
 </body>
 </html>
