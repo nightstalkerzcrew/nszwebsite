@@ -1,1046 +1,433 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NightStalkerZ - NFS Heat Final Pro Leaderboard</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(25, 60, 140, 0.45), transparent 35%),
-        radial-gradient(circle at right, rgba(57, 230, 255, 0.10), transparent 30%),
-        linear-gradient(180deg, #050914 0%, #091327 45%, #050914 100%);
-      color: white;
-    }
-
-    .page-container {
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 30px 20px 60px;
-    }
-
-    .topbar {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .topbar h1 {
-      margin: 0 0 8px;
-      font-size: 3rem;
-      color: #39e6ff;
-      text-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
-    }
-
-    .topbar p {
-      margin: 0;
-      color: #cfd8ff;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 24px 0 34px;
-    }
-
-    .nav a {
-      text-decoration: none;
-      color: white;
-      background: rgba(255,255,255,0.10);
-      padding: 12px 18px;
-      border-radius: 12px;
-      transition: 0.25s ease;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 12px rgba(255,255,255,0.06);
-    }
-
-    .nav a:hover,
-    .nav a.active {
-      background: #39e6ff;
-      color: #07111f;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
-    }
-
-    .hero {
-      text-align: center;
-      padding: 38px 20px;
-      margin-bottom: 26px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 0 30px rgba(0,0,0,0.22);
-    }
-
-    .hero h2 {
-      font-size: 3rem;
-      margin: 0 0 10px;
-      color: white;
-      letter-spacing: 1px;
-    }
-
-    .hero h2 span {
-      color: #39e6ff;
-      text-shadow: 0 0 18px rgba(57, 230, 255, 0.4);
-    }
-
-    .hero p {
-      color: #dce4ff;
-      margin: 0;
-      font-size: 1.05rem;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1.2fr 0.7fr 0.7fr;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .toolbar input,
-    .toolbar select {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      outline: none;
-      font-size: 1rem;
-    }
-
-    .toolbar select option {
-      color: black;
-    }
-
-    .toolbar input::placeholder {
-      color: #aab7ea;
-    }
-
-    .race-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 28px;
-    }
-
-    .race-tab {
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border-radius: 999px;
-      padding: 10px 16px;
-      cursor: pointer;
-      transition: 0.25s ease;
-      font-size: 0.95rem;
-    }
-
-    .race-tab:hover,
-    .race-tab.active {
-      background: #39e6ff;
-      color: #07111f;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.35);
-    }
-
-    .leaderboard-layout {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .side-card,
-    .main-card {
-      background: rgba(255,255,255,0.07);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 0 26px rgba(0,0,0,0.22);
-    }
-
-    .side-card {
-      padding: 22px;
-      position: sticky;
-      top: 18px;
-    }
-
-    .track-image {
-      height: 190px;
-      border-radius: 18px;
-      background:
-        linear-gradient(135deg, rgba(57, 230, 255, 0.25), rgba(0,0,0,0.15)),
-        url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80') center/cover;
-      margin-bottom: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .badge-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.85rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(57, 230, 255, 0.14);
-      color: #8ff4ff;
-    }
-
-    .side-card h3 {
-      margin: 0 0 10px;
-      color: white;
-      font-size: 1.8rem;
-    }
-
-    .side-card p {
-      margin: 8px 0;
-      color: #dce4ff;
-      line-height: 1.5;
-    }
-
-    .target-box,
-    .stats-box {
-      margin-top: 16px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 16px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .target-box strong,
-    .stats-box strong {
-      display: block;
-      color: #8ff4ff;
-      margin-bottom: 8px;
-    }
-
-    .target-time {
-      font-size: 1.8rem;
-      color: #39e6ff;
-      font-weight: bold;
-    }
-
-    .submit-btn,
-    .refresh-btn {
-      width: 100%;
-      border: none;
-      padding: 13px 16px;
-      border-radius: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.25s ease;
-      margin-top: 14px;
-    }
-
-    .submit-btn {
-      background: #39e6ff;
-      color: #07111f;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.3);
-    }
-
-    .refresh-btn {
-      background: rgba(255,255,255,0.10);
-      color: white;
-    }
-
-    .submit-btn:hover,
-    .refresh-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .main-card {
-      padding: 22px;
-    }
-
-    .podium {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 22px;
-    }
-
-    .podium-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 20px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .podium-rank {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 14px;
-      font-weight: bold;
-      font-size: 1.4rem;
-    }
-
-    .gold {
-      border: 2px solid #ffd54a;
-      color: #ffd54a;
-      box-shadow: 0 0 18px rgba(255, 213, 74, 0.25);
-    }
-
-    .silver {
-      border: 2px solid #d9e1ea;
-      color: #d9e1ea;
-      box-shadow: 0 0 18px rgba(217, 225, 234, 0.2);
-    }
-
-    .bronze {
-      border: 2px solid #ff9f43;
-      color: #ff9f43;
-      box-shadow: 0 0 18px rgba(255, 159, 67, 0.2);
-    }
-
-    .podium-card h4 {
-      margin: 0 0 8px;
-      font-size: 1.2rem;
-    }
-
-    .podium-time {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #39e6ff;
-      margin-bottom: 6px;
-    }
-
-    .podium-date {
-      color: #b9c5f0;
-      font-size: 0.92rem;
-    }
-
-    .form-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 22px;
-    }
-
-    .form-box h3 {
-      margin-top: 0;
-      color: #39e6ff;
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group label {
-      margin-bottom: 8px;
-      color: #dce4ff;
-      font-size: 0.95rem;
-    }
-
-    .form-group select,
-    .form-group input {
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      outline: none;
-    }
-
-    .form-group select option {
-      color: black;
-    }
-
-    .form-group input::placeholder {
-      color: #aab7ea;
-    }
-
-    .status-message {
-      margin-top: 14px;
-      color: #8ff4ff;
-      min-height: 22px;
-    }
-
-    .ranking-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .ranking-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      gap: 12px;
-    }
-
-    .ranking-header h3 {
-      margin: 0;
-      color: #39e6ff;
-    }
-
-    .ranking-count {
-      color: #cfd8ff;
-      font-size: 0.95rem;
-    }
-
-    .rank-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .rank-row {
-      display: grid;
-      grid-template-columns: 70px 1fr 130px 150px 140px;
-      gap: 12px;
-      align-items: center;
-      background: rgba(255,255,255,0.04);
-      border-radius: 14px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .rank-position {
-      font-size: 1.2rem;
-      font-weight: bold;
-      text-align: center;
-      color: #8ff4ff;
-    }
-
-    .rank-name {
-      font-weight: bold;
-      color: white;
-      margin-bottom: 4px;
-    }
-
-    .rank-meta {
-      font-size: 0.92rem;
-      color: #b8c4ef;
-    }
-
-    .rank-type {
-      justify-self: center;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: #dce4ff;
-      font-size: 0.88rem;
-    }
-
-    .rank-badge {
-      justify-self: center;
-      padding: 7px 10px;
-      border-radius: 999px;
-      background: rgba(57, 230, 255, 0.12);
-      color: #8ff4ff;
-      font-size: 0.88rem;
-    }
-
-    .rank-time {
-      justify-self: end;
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #ffd54a;
-    }
-
-    .empty-state {
-      text-align: center;
-      color: #b9c5f0;
-      padding: 20px 10px;
-    }
-
-    .footer-note {
-      text-align: center;
-      color: #aab7ea;
-      margin-top: 35px;
-      font-size: 0.95rem;
-    }
-
-    @media (max-width: 1100px) {
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .leaderboard-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .side-card {
-        position: static;
-      }
-
-      .podium {
-        grid-template-columns: 1fr;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
-      }
-
-      .rank-row {
-        grid-template-columns: 60px 1fr;
-      }
-
-      .rank-type,
-      .rank-badge,
-      .rank-time {
-        justify-self: start;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="page-container">
-    <div class="topbar">
-      <h1>NightStalkerZ</h1>
-      <p>NFS Heat Final Pro Leaderboard</p>
-    </div>
-
-    <div class="nav">
-      <a href="index.html">Home</a>
-      <a href="leaderboard.html" class="active">Leaderboard</a>
-      <a href="members.html">Members</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="news.html">News</a>
-      <a href="builds.html">Builds</a>
-      <a href="shop.html">Shop</a>
-      <a href="login.html">Login</a>
-    </div>
-
-    <div class="hero">
-      <h2>NFS HEAT <span>FINAL PRO</span></h2>
-      <p>Alle Rennen, deutsche Namen, Live-Sync mit Google Sheets und optimiert für GitHub Pages.</p>
-    </div>
-
-    <div class="toolbar">
-      <input type="text" id="raceSearch" placeholder="Rennen suchen..." />
-      <select id="categoryFilter">
-        <option value="all">Alle Kategorien</option>
-        <option value="Sprint">Sprint</option>
-        <option value="Rundkurs">Rundkurs</option>
-      </select>
-      <select id="timeFilter">
-        <option value="all">Tag und Nacht</option>
-        <option value="Tag">Nur Tag</option>
-        <option value="Nacht">Nur Nacht</option>
-      </select>
-    </div>
-
-    <div class="race-tabs" id="raceTabs"></div>
-
-    <div class="leaderboard-layout">
-      <div class="side-card">
-        <div class="track-image"></div>
-        <div class="badge-row">
-          <div class="badge" id="raceCategory">Rundkurs</div>
-          <div class="badge" id="raceTimeMode">Tag</div>
-        </div>
-        <h3 id="raceName">Erdferkel</h3>
-        <p id="raceCar">Empfohlen: Race Build</p>
-        <p id="raceType">Palm City Event</p>
-
-        <div class="target-box">
-          <strong>Zielzeit</strong>
-          <div class="target-time" id="targetTime">3:00.00</div>
-        </div>
-
-        <div class="stats-box">
-          <strong>Renn-Stats</strong>
-          <p id="entryCount">Einträge: 0</p>
-          <p id="beatCount">Unter Zielzeit: 0</p>
-        </div>
-
-        <button class="refresh-btn" id="refreshBtn">Daten neu laden</button>
-      </div>
-
-      <div class="main-card">
-        <div class="podium" id="podium"></div>
-
-        <div class="form-box">
-          <h3>Zeit einreichen</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="memberSelect">Mitglied</label>
-              <select id="memberSelect"></select>
-            </div>
-
-            <div class="form-group">
-              <label for="timeInput">Zeit</label>
-              <input type="text" id="timeInput" placeholder="z. B. 2:43.15" />
-            </div>
-
-            <div class="form-group">
-              <label for="countryInput">Land / Kürzel</label>
-              <input type="text" id="countryInput" placeholder="z. B. DE" />
-            </div>
-          </div>
-
-          <button class="submit-btn" id="submitTimeBtn">Zeit an Google Sheets senden</button>
-          <div class="status-message" id="statusMessage"></div>
-        </div>
-
-        <div class="ranking-box">
-          <div class="ranking-header">
-            <h3>Vollständige Rangliste</h3>
-            <div class="ranking-count" id="rankingCount">0 Fahrer</div>
-          </div>
-          <div class="rank-list" id="rankList"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-note">
-      NightStalkerZ - Final Pro Google Sheets Sync
-    </div>
-  </div>
-
-  <script>
-    const SCRIPT_URL = "HIER_DEINE_GOOGLE_APPS_SCRIPT_URL_EINFUEGEN";
-
-    const members = [
-      "NightHunter",
-      "VexShadow",
-      "RavenByte",
-      "SilentKrush",
-      "AshFang",
-      "DriftRogue",
-      "NovaKade",
-      "BlazeLock"
+const CONFIG = {
+  SHEETS: {
+    SUBMISSIONS: "Einreichungen",
+    LEADERBOARD: "Leaderboard",
+    TRACKS: "Strecken",
+    CARS: "Autos",
+    DRIVERS: "Fahrer"
+  },
+  STATUS: {
+    OPEN: "Offen",
+    ACCEPTED: "Akzeptiert",
+    REJECTED: "Abgelehnt"
+  },
+  SUBMISSION_COLUMNS: {
+    TIMESTAMP: 1,
+    DISCORD_ID: 2,
+    DRIVER_NAME: 3,
+    TRACK: 4,
+    CAR: 5,
+    TIME: 6,
+    PROOF: 7,
+    STATUS: 8,
+    COMMENT: 9
+  }
+};
+
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu("Leaderboard Tools")
+    .addItem("Alles aktualisieren", "updateSystem")
+    .addItem("Dropdowns einrichten", "setupValidation")
+    .addItem("Leaderboard aktualisieren", "updateLeaderboard")
+    .addToUi();
+}
+
+function onEdit(e) {
+  if (!e || !e.range) return;
+
+  try {
+    const sheet = e.range.getSheet();
+    if (sheet.getName() !== CONFIG.SHEETS.SUBMISSIONS) return;
+
+    const row = e.range.getRow();
+    const col = e.range.getColumn();
+
+    if (row === 1) return;
+
+    const relevantColumns = [
+      CONFIG.SUBMISSION_COLUMNS.DISCORD_ID,
+      CONFIG.SUBMISSION_COLUMNS.DRIVER_NAME,
+      CONFIG.SUBMISSION_COLUMNS.TRACK,
+      CONFIG.SUBMISSION_COLUMNS.CAR,
+      CONFIG.SUBMISSION_COLUMNS.TIME,
+      CONFIG.SUBMISSION_COLUMNS.STATUS
     ];
 
-    const raceConfig = {
-      aardvark: { name: "Erdferkel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      aerion: { name: "Aerion", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      apollo10: { name: "Apollo 10", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      aurora: { name: "Aurora", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      axiom: { name: "Axiom", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      backincontrol: { name: "Wieder Unter Kontrolle", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      bamboo: { name: "Bambus", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      bannister: { name: "Geländer", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      battlemachine: { name: "Kampfmaschine", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      blackbird: { name: "Schwarzer Vogel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      bolt: { name: "Blitz", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      bullet: { name: "Kugel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      callout: { name: "Herausforderung", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      carsonextreme: { name: "Carson Extrem", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      caspianseamonster: { name: "Kaspisches Seemonster", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      cheyenne: { name: "Cheyenne", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      cityexpress: { name: "Stadt-Express", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      columbia: { name: "Columbia", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      crossmountains: { name: "Über die Berge", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      crossfield: { name: "Querfeld", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      crossover: { name: "Kreuzungspunkt", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      cuttingcorners: { name: "Kurven schneiden", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      desertgod: { name: "Wüstengott", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discovery: { name: "Entdeckung", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discoverya: { name: "Entdeckung A", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discoveryb: { name: "Entdeckung B", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      discoveryc: { name: "Entdeckung C", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      eagle: { name: "Adler", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      enterprise: { name: "Enterprise", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      farah: { name: "Farah", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      flanker: { name: "Flankierer", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      flashback: { name: "Rückblende", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      flyingdutchman: { name: "Der Fliegende Holländer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      foxbat: { name: "Fuchsfledermaus", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      fury: { name: "Zorn", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      gazelle: { name: "Gazelle", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      goldenarrow: { name: "Goldener Pfeil", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      gonzales: { name: "Gonzales", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      greenbird: { name: "Grüner Vogel", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      hardstop: { name: "Vollbremsung", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      hawkermech: { name: "Hawker Mech", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      helios2: { name: "Helios 2", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      iplane: { name: "I-Plane", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      initiation: { name: "Initiation", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      intimidator: { name: "Einschüchterer", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      jstorm: { name: "J. Storm", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      juno: { name: "Juno", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      kingdakar: { name: "König Dakar", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      larry: { name: "Larry", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      lightning: { name: "Blitzschlag", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      luckycharm: { name: "Glücksbringer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      maoriventure: { name: "Maori-Unternehmen", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      marinara: { name: "Marinara", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      marlin: { name: "Marlin", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      mcqueen: { name: "McQueen", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      merciless: { name: "Gnadenlos", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      mercury: { name: "Merkur", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      milleniumf: { name: "Millennium F", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      nanospectrum: { name: "Nanospektrum", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      needletail: { name: "Nadelheck", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      newhorizons: { name: "Neue Horizonte", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      nightracer: { name: "Nachtracer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      nosless: { name: "Ohne NOS", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      noobaround: { name: "Noob-Runde", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      oceandrive: { name: "Ozeanfahrt", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      ohmygod: { name: "Oh mein Gott!", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      portview: { name: "Hafenblick", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      prestige: { name: "Prestige", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      problemchild: { name: "Problemkind", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      proton: { name: "Proton", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      qubit: { name: "Qubit", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      racinglines: { name: "Ideallinien", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      raptor: { name: "Raptor", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      rarebear: { name: "Seltener Bär", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      rayoflight: { name: "Lichtstrahl", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      reaction: { name: "Reaktion", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      redrocktornado: { name: "Roter Fels-Tornado", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      ringracer: { name: "Ring-Racer", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      rivals: { name: "Rivalen", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      rollercoaster: { name: "Achterbahn", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      runner: { name: "Läufer", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      savage: { name: "Wild", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      scorpion: { name: "Skorpion", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      scramjet: { name: "Staustrahl", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      serendipity: { name: "Glücksfall", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      shinkansen: { name: "Shinkansen", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      skyace: { name: "Himmelsass", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      sliptrick: { name: "Rutsch-Trick", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      sonic: { name: "Sonic", category: "Sprint", dayTime: "Tag", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      specter: { name: "Spektral", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      spike: { name: "Spike", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      spiral: { name: "Spirale", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      spiritofoz: { name: "Geist von Oz", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      stardust: { name: "Sternenstaub", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      steeldragon: { name: "Stahldrache", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      streamliner: { name: "Stromlinie", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      summit: { name: "Gipfel", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      sway: { name: "Schwung", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      tachyon: { name: "Tachyon", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      taranis: { name: "Taranis", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      theresortscircuit: { name: "Der Resort-Rundkurs", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      therun: { name: "Der Lauf", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      thrust: { name: "Schub", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      topthrill: { name: "Maximaler Kick", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      toptier: { name: "Spitzenklasse", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      tornado: { name: "Tornado", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      trikster: { name: "Trickster", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      tumbler: { name: "Taumler", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      ultimate: { name: "Ultimativ", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      ultrasharp: { name: "Ultrascharf", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      valkyrie: { name: "Walküre", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      venturi: { name: "Venturi", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      vesco: { name: "Vesco", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      vertigo: { name: "Vertigo", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      voyager: { name: "Voyager", category: "Rundkurs", dayTime: "Nacht", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" },
-      wildking: { name: "Wildkönig", category: "Sprint", dayTime: "Nacht", car: "Empfohlen: Sprint Build", type: "Palm City Event", target: "3:00.00" },
-      yoshikazu: { name: "Yoshikazu", category: "Rundkurs", dayTime: "Tag", car: "Empfohlen: Race Build", type: "Palm City Event", target: "3:00.00" }
-    };
+    if (!relevantColumns.includes(col)) return;
 
-    let sheetData = [];
-    let currentRace = Object.keys(raceConfig)[0];
+    updateSystem();
+  } catch (error) {
+    Logger.log("onEdit Fehler: " + error.message);
+  }
+}
 
-    const raceTabs = document.getElementById("raceTabs");
-    const memberSelect = document.getElementById("memberSelect");
-    const timeInput = document.getElementById("timeInput");
-    const countryInput = document.getElementById("countryInput");
-    const submitTimeBtn = document.getElementById("submitTimeBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
-    const statusMessage = document.getElementById("statusMessage");
-    const raceSearch = document.getElementById("raceSearch");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const timeFilter = document.getElementById("timeFilter");
+function updateSystem() {
+  const lock = LockService.getDocumentLock();
 
-    function parseTimeToMs(timeString) {
-      const clean = String(timeString).trim();
-      const match = clean.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
-      if (!match) return null;
+  try {
+    lock.waitLock(30000);
 
-      const minutes = parseInt(match[1], 10);
-      const seconds = parseInt(match[2], 10);
-      let millis = match[3];
+    updateDriversSheet();
+    updateCarsSheet();
+    updateTracksSheet();
+    updateLeaderboard();
+    setupValidation();
+  } catch (error) {
+    Logger.log("updateSystem Fehler: " + error.message);
+    throw error;
+  } finally {
+    lock.releaseLock();
+  }
+}
 
-      if (millis.length === 1) millis += "00";
-      if (millis.length === 2) millis += "0";
-      millis = parseInt(millis, 10);
+function updateDriversSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const inputSheet = ss.getSheetByName(CONFIG.SHEETS.SUBMISSIONS);
+  const driverSheet = ss.getSheetByName(CONFIG.SHEETS.DRIVERS);
 
-      return (minutes * 60 * 1000) + (seconds * 1000) + millis;
+  if (!inputSheet || !driverSheet) {
+    throw new Error('Blätter "Einreichungen" oder "Fahrer" nicht gefunden.');
+  }
+
+  const data = inputSheet.getDataRange().getValues();
+
+  driverSheet.clear();
+  driverSheet.getRange(1, 1, 1, 2).setValues([["Discord-ID", "Fahrername"]]);
+
+  if (data.length < 2) {
+    formatSimpleSheet(driverSheet, 2, 0);
+    return;
+  }
+
+  const driversMap = {};
+
+  for (let i = 1; i < data.length; i++) {
+    const discordId = String(data[i][CONFIG.SUBMISSION_COLUMNS.DISCORD_ID - 1] || "").trim();
+    const driverName = String(data[i][CONFIG.SUBMISSION_COLUMNS.DRIVER_NAME - 1] || "").trim();
+
+    if (!discordId || !driverName) continue;
+
+    if (!driversMap[discordId]) {
+      driversMap[discordId] = driverName;
     }
+  }
 
-    function sortEntries(entries) {
-      return entries.sort((a, b) => parseTimeToMs(a.time) - parseTimeToMs(b.time));
-    }
+  const drivers = Object.keys(driversMap)
+    .map(id => [id, driversMap[id]])
+    .sort((a, b) => a[1].localeCompare(b[1], "de"));
 
-    function getTodayDate() {
-      const now = new Date();
-      const d = String(now.getDate()).padStart(2, "0");
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const y = now.getFullYear();
-      return `${d}.${m}.${y}`;
-    }
+  if (drivers.length > 0) {
+    driverSheet.getRange(2, 1, drivers.length, 2).setValues(drivers);
+  }
 
-    function fillMembers() {
-      memberSelect.innerHTML = "";
-      members.forEach(member => {
-        const option = document.createElement("option");
-        option.value = member;
-        option.textContent = member;
-        memberSelect.appendChild(option);
-      });
-    }
+  formatSimpleSheet(driverSheet, 2, drivers.length);
+}
 
-    function getFilteredRaceKeys() {
-      const search = raceSearch.value.toLowerCase().trim();
-      const category = categoryFilter.value;
-      const dayTime = timeFilter.value;
+function updateCarsSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const inputSheet = ss.getSheetByName(CONFIG.SHEETS.SUBMISSIONS);
+  const carSheet = ss.getSheetByName(CONFIG.SHEETS.CARS);
 
-      return Object.keys(raceConfig).filter(key => {
-        const race = raceConfig[key];
-        const matchSearch = !search || race.name.toLowerCase().includes(search);
-        const matchCategory = category === "all" || race.category === category;
-        const matchTime = dayTime === "all" || race.dayTime === dayTime;
-        return matchSearch && matchCategory && matchTime;
-      });
-    }
+  if (!inputSheet || !carSheet) {
+    throw new Error('Blätter "Einreichungen" oder "Autos" nicht gefunden.');
+  }
 
-    function ensureCurrentRaceVisible() {
-      const filtered = getFilteredRaceKeys();
-      if (!filtered.includes(currentRace)) {
-        currentRace = filtered.length ? filtered[0] : Object.keys(raceConfig)[0];
-      }
-    }
+  const data = inputSheet.getDataRange().getValues();
+  const existingCars = getExistingSingleColumnValues(carSheet);
 
-    function createTabs() {
-      raceTabs.innerHTML = "";
-      const filtered = getFilteredRaceKeys();
+  for (let i = 1; i < data.length; i++) {
+    const car = String(data[i][CONFIG.SUBMISSION_COLUMNS.CAR - 1] || "").trim();
+    if (car) existingCars.add(car);
+  }
 
-      filtered.forEach(key => {
-        const btn = document.createElement("button");
-        btn.className = "race-tab" + (key === currentRace ? " active" : "");
-        btn.textContent = raceConfig[key].name;
-        btn.addEventListener("click", () => {
-          currentRace = key;
-          renderAll();
-        });
-        raceTabs.appendChild(btn);
-      });
+  const cars = Array.from(existingCars)
+    .sort((a, b) => a.localeCompare(b, "de"))
+    .map(car => [car]);
 
-      if (filtered.length === 0) {
-        raceTabs.innerHTML = '<div class="empty-state">Keine Rennen gefunden.</div>';
-      }
-    }
+  carSheet.clear();
+  carSheet.getRange(1, 1, 1, 1).setValues([["Auto"]]);
 
-    function getEntriesForCurrentRace() {
-      return sheetData
-        .filter(item => item.raceKey === currentRace)
-        .map(item => ({
-          member: item.member || "",
-          country: item.country || "",
-          time: item.time || "",
-          date: item.date || ""
-        }))
-        .filter(item => parseTimeToMs(item.time) !== null);
-    }
+  if (cars.length > 0) {
+    carSheet.getRange(2, 1, cars.length, 1).setValues(cars);
+  }
 
-    function renderRaceInfo() {
-      const cfg = raceConfig[currentRace];
-      document.getElementById("raceCategory").textContent = cfg.category;
-      document.getElementById("raceTimeMode").textContent = cfg.dayTime;
-      document.getElementById("raceName").textContent = cfg.name;
-      document.getElementById("raceCar").textContent = cfg.car || "";
-      document.getElementById("raceType").textContent = cfg.type || "Palm City Event";
-      document.getElementById("targetTime").textContent = cfg.target;
+  formatSimpleSheet(carSheet, 1, cars.length);
+}
 
-      const entries = sortEntries(getEntriesForCurrentRace());
-      document.getElementById("entryCount").textContent = "Einträge: " + entries.length;
+function updateTracksSheet() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const inputSheet = ss.getSheetByName(CONFIG.SHEETS.SUBMISSIONS);
+  const trackSheet = ss.getSheetByName(CONFIG.SHEETS.TRACKS);
 
-      const targetMs = parseTimeToMs(cfg.target);
-      const beatCount = entries.filter(e => parseTimeToMs(e.time) < targetMs).length;
-      document.getElementById("beatCount").textContent = "Unter Zielzeit: " + beatCount;
-      document.getElementById("rankingCount").textContent = entries.length + " Fahrer";
-    }
+  if (!inputSheet || !trackSheet) {
+    throw new Error('Blätter "Einreichungen" oder "Strecken" nicht gefunden.');
+  }
 
-    function renderPodium() {
-      const podium = document.getElementById("podium");
-      podium.innerHTML = "";
+  const data = inputSheet.getDataRange().getValues();
+  const existingTrackTypes = getExistingTrackTypes(trackSheet);
+  const allTracks = new Set(Object.keys(existingTrackTypes));
 
-      const entries = sortEntries(getEntriesForCurrentRace());
-      const first = entries[0];
-      const second = entries[1];
-      const third = entries[2];
+  for (let i = 1; i < data.length; i++) {
+    const track = String(data[i][CONFIG.SUBMISSION_COLUMNS.TRACK - 1] || "").trim();
+    if (track) allTracks.add(track);
+  }
 
-      const podiumData = [
-        { item: second, rank: 2, className: "silver" },
-        { item: first, rank: 1, className: "gold" },
-        { item: third, rank: 3, className: "bronze" }
-      ];
+  const tracks = Array.from(allTracks)
+    .sort((a, b) => a.localeCompare(b, "de"))
+    .map(track => [track, existingTrackTypes[track] || ""]);
 
-      podiumData.forEach(slot => {
-        const card = document.createElement("div");
-        card.className = "podium-card";
+  trackSheet.clear();
+  trackSheet.getRange(1, 1, 1, 2).setValues([["Strecke", "Renntyp"]]);
 
-        if (slot.item) {
-          card.innerHTML = `
-            <div class="podium-rank ${slot.className}">${slot.rank}</div>
-            <h4>${slot.item.member}</h4>
-            <div class="podium-time">${slot.item.time}</div>
-            <div class="podium-date">${slot.item.date} · ${slot.item.country}</div>
-          `;
-        } else {
-          card.innerHTML = `
-            <div class="podium-rank ${slot.className}">${slot.rank}</div>
-            <h4>Frei</h4>
-            <div class="podium-time">--:--.--</div>
-            <div class="podium-date">Kein Eintrag</div>
-          `;
-        }
+  if (tracks.length > 0) {
+    trackSheet.getRange(2, 1, tracks.length, 2).setValues(tracks);
+  }
 
-        podium.appendChild(card);
-      });
-    }
+  formatSimpleSheet(trackSheet, 2, tracks.length);
+}
 
-    function renderRankings() {
-      const rankList = document.getElementById("rankList");
-      rankList.innerHTML = "";
+function updateLeaderboard() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const inputSheet = ss.getSheetByName(CONFIG.SHEETS.SUBMISSIONS);
+  const leaderboardSheet = ss.getSheetByName(CONFIG.SHEETS.LEADERBOARD);
 
-      const cfg = raceConfig[currentRace];
-      const targetMs = parseTimeToMs(cfg.target);
-      const entries = sortEntries(getEntriesForCurrentRace());
+  if (!inputSheet || !leaderboardSheet) {
+    throw new Error('Blätter "Einreichungen" oder "Leaderboard" nicht gefunden.');
+  }
 
-      if (entries.length === 0) {
-        rankList.innerHTML = '<div class="empty-state">Noch keine Zeiten aus Google Sheets geladen.</div>';
-        return;
-      }
+  const data = inputSheet.getDataRange().getValues();
 
-      entries.forEach((entry, index) => {
-        const row = document.createElement("div");
-        row.className = "rank-row";
+  leaderboardSheet.clear();
+  leaderboardSheet.getRange(1, 1, 1, 5).setValues([["Rang", "Fahrer", "Strecke", "Fahrzeug", "Beste Zeit"]]);
 
-        const beatTarget = parseTimeToMs(entry.time) < targetMs;
-        const badgeText = beatTarget ? "Ziel geknackt" : "Eingetragen";
+  if (data.length < 2) {
+    formatLeaderboardSheet(leaderboardSheet, 0, 5);
+    return;
+  }
 
-        row.innerHTML = `
-          <div class="rank-position">#${index + 1}</div>
-          <div>
-            <div class="rank-name">${entry.member}</div>
-            <div class="rank-meta">${entry.date} · ${entry.country}</div>
-          </div>
-          <div class="rank-type">${cfg.dayTime}</div>
-          <div class="rank-badge">${badgeText}</div>
-          <div class="rank-time">${entry.time}</div>
-        `;
+  const bestTimes = {};
 
-        rankList.appendChild(row);
-      });
-    }
+  for (let i = 1; i < data.length; i++) {
+    const driver = String(data[i][CONFIG.SUBMISSION_COLUMNS.DRIVER_NAME - 1] || "").trim();
+    const track = String(data[i][CONFIG.SUBMISSION_COLUMNS.TRACK - 1] || "").trim();
+    const car = String(data[i][CONFIG.SUBMISSION_COLUMNS.CAR - 1] || "").trim();
+    const rawTime = data[i][CONFIG.SUBMISSION_COLUMNS.TIME - 1];
+    const status = normalizeStatus(data[i][CONFIG.SUBMISSION_COLUMNS.STATUS - 1]);
 
-    function renderAll() {
-      ensureCurrentRaceVisible();
-      createTabs();
-      renderRaceInfo();
-      renderPodium();
-      renderRankings();
-    }
+    if (!driver || !track || !car || rawTime === "" || rawTime === null) continue;
+    if (status !== CONFIG.STATUS.ACCEPTED.toLowerCase()) continue;
 
-    async function loadSheetData() {
-      if (!SCRIPT_URL || SCRIPT_URL.includes("HIER_DEINE")) {
-        statusMessage.textContent = "Bitte zuerst deine Google Apps Script URL eintragen.";
-        return;
-      }
+    const timeMs = parseTimeToMilliseconds(rawTime);
+    if (timeMs === null) continue;
 
-      statusMessage.textContent = "Lade Daten aus Google Sheets...";
+    const key = driver + "||" + track;
 
-      try {
-        const response = await fetch(SCRIPT_URL);
-        const data = await response.json();
-        sheetData = Array.isArray(data) ? data : [];
-        renderAll();
-        statusMessage.textContent = "Daten erfolgreich geladen.";
-      } catch (error) {
-        console.error(error);
-        statusMessage.textContent = "Fehler beim Laden aus Google Sheets.";
-      }
-    }
-
-    async function submitTime() {
-      const member = memberSelect.value.trim();
-      const time = timeInput.value.trim();
-      const country = (countryInput.value.trim() || "DE").toUpperCase();
-      const cfg = raceConfig[currentRace];
-
-      if (!member || !time) {
-        statusMessage.textContent = "Bitte Mitglied und Zeit ausfüllen.";
-        return;
-      }
-
-      if (!parseTimeToMs(time)) {
-        statusMessage.textContent = "Ungültiges Format. Nutze z. B. 2:43.15";
-        return;
-      }
-
-      if (!SCRIPT_URL || SCRIPT_URL.includes("HIER_DEINE")) {
-        statusMessage.textContent = "Bitte zuerst deine Google Apps Script URL eintragen.";
-        return;
-      }
-
-      const payload = {
-        raceKey: currentRace,
-        raceName: cfg.name,
-        category: cfg.category,
-        dayTime: cfg.dayTime,
-        member: member,
-        country: country,
-        time: time,
-        date: getTodayDate()
+    if (!bestTimes[key] || timeMs < bestTimes[key].timeMs) {
+      bestTimes[key] = {
+        driver: driver,
+        track: track,
+        car: car,
+        timeMs: timeMs
       };
-
-      statusMessage.textContent = "Sende Eintrag an Google Sheets...";
-
-      try {
-        const response = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          timeInput.value = "";
-          countryInput.value = "";
-          statusMessage.textContent = "Zeit erfolgreich gespeichert.";
-          await loadSheetData();
-        } else {
-          statusMessage.textContent = "Speichern fehlgeschlagen.";
-        }
-      } catch (error) {
-        console.error(error);
-        statusMessage.textContent = "Fehler beim Senden an Google Sheets.";
-      }
     }
+  }
 
-    submitTimeBtn.addEventListener("click", submitTime);
-    refreshBtn.addEventListener("click", loadSheetData);
-    raceSearch.addEventListener("input", renderAll);
-    categoryFilter.addEventListener("change", renderAll);
-    timeFilter.addEventListener("change", renderAll);
+  const leaderboard = Object.values(bestTimes)
+    .sort((a, b) => a.timeMs - b.timeMs)
+    .map((entry, index) => [
+      index + 1,
+      entry.driver,
+      entry.track,
+      entry.car,
+      formatMilliseconds(entry.timeMs)
+    ]);
 
-    fillMembers();
-    renderAll();
-    loadSheetData();
-  </script>
-</body>
-</html>
+  if (leaderboard.length > 0) {
+    leaderboardSheet.getRange(2, 1, leaderboard.length, 5).setValues(leaderboard);
+  }
+
+  formatLeaderboardSheet(leaderboardSheet, leaderboard.length, 5);
+}
+
+function setupValidation() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const inputSheet = ss.getSheetByName(CONFIG.SHEETS.SUBMISSIONS);
+  const driverSheet = ss.getSheetByName(CONFIG.SHEETS.DRIVERS);
+  const trackSheet = ss.getSheetByName(CONFIG.SHEETS.TRACKS);
+  const carSheet = ss.getSheetByName(CONFIG.SHEETS.CARS);
+
+  if (!inputSheet || !driverSheet || !trackSheet || !carSheet) {
+    throw new Error("Ein oder mehrere Blätter fehlen.");
+  }
+
+  const maxRows = Math.max(inputSheet.getMaxRows(), 2);
+
+  const driverLastRow = Math.max(driverSheet.getLastRow(), 2);
+  const trackLastRow = Math.max(trackSheet.getLastRow(), 2);
+  const carLastRow = Math.max(carSheet.getLastRow(), 2);
+
+  const driverRule = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(driverSheet.getRange(2, 2, driverLastRow - 1, 1), true)
+    .setAllowInvalid(true)
+    .build();
+
+  const trackRule = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(trackSheet.getRange(2, 1, trackLastRow - 1, 1), true)
+    .setAllowInvalid(true)
+    .build();
+
+  const carRule = SpreadsheetApp.newDataValidation()
+    .requireValueInRange(carSheet.getRange(2, 1, carLastRow - 1, 1), true)
+    .setAllowInvalid(true)
+    .build();
+
+  const statusRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(
+      [CONFIG.STATUS.OPEN, CONFIG.STATUS.ACCEPTED, CONFIG.STATUS.REJECTED],
+      true
+    )
+    .setAllowInvalid(false)
+    .build();
+
+  inputSheet.getRange(2, CONFIG.SUBMISSION_COLUMNS.DRIVER_NAME, maxRows - 1, 1).setDataValidation(driverRule);
+  inputSheet.getRange(2, CONFIG.SUBMISSION_COLUMNS.TRACK, maxRows - 1, 1).setDataValidation(trackRule);
+  inputSheet.getRange(2, CONFIG.SUBMISSION_COLUMNS.CAR, maxRows - 1, 1).setDataValidation(carRule);
+  inputSheet.getRange(2, CONFIG.SUBMISSION_COLUMNS.STATUS, maxRows - 1, 1).setDataValidation(statusRule);
+}
+
+function getExistingSingleColumnValues(sheet) {
+  const lastRow = sheet.getLastRow();
+  const values = new Set();
+
+  if (lastRow < 2) return values;
+
+  const data = sheet.getRange(2, 1, lastRow - 1, 1).getValues();
+
+  for (let i = 0; i < data.length; i++) {
+    const value = String(data[i][0] || "").trim();
+    if (value) values.add(value);
+  }
+
+  return values;
+}
+
+function getExistingTrackTypes(sheet) {
+  const lastRow = sheet.getLastRow();
+  const map = {};
+
+  if (lastRow < 2) return map;
+
+  const data = sheet.getRange(2, 1, lastRow - 1, 2).getValues();
+
+  for (let i = 0; i < data.length; i++) {
+    const track = String(data[i][0] || "").trim();
+    const type = String(data[i][1] || "").trim();
+
+    if (track) {
+      map[track] = type;
+    }
+  }
+
+  return map;
+}
+
+function normalizeStatus(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function parseTimeToMilliseconds(timeValue) {
+  if (timeValue instanceof Date) {
+    return (
+      timeValue.getHours() * 3600000 +
+      timeValue.getMinutes() * 60000 +
+      timeValue.getSeconds() * 1000 +
+      timeValue.getMilliseconds()
+    );
+  }
+
+  const str = String(timeValue).trim();
+
+  let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
+  if (match) {
+    const minutes = parseInt(match[1], 10);
+    const seconds = parseInt(match[2], 10);
+    const millis = parseInt(match[3].padEnd(3, "0"), 10);
+    return minutes * 60000 + seconds * 1000 + millis;
+  }
+
+  match = str.match(/^(\d+):(\d{1,2}):(\d{1,3})$/);
+  if (match) {
+    const minutes = parseInt(match[1], 10);
+    const seconds = parseInt(match[2], 10);
+    const millis = parseInt(match[3].padEnd(3, "0"), 10);
+    return minutes * 60000 + seconds * 1000 + millis;
+  }
+
+  match = str.match(/^(\d+):(\d{1,2})$/);
+  if (match) {
+    const minutes = parseInt(match[1], 10);
+    const seconds = parseInt(match[2], 10);
+    return minutes * 60000 + seconds * 1000;
+  }
+
+  if (!isNaN(str) && str !== "") {
+    return Math.round(parseFloat(str) * 24 * 60 * 60 * 1000);
+  }
+
+  return null;
+}
+
+function formatMilliseconds(ms) {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  const millis = ms % 1000;
+
+  return `${minutes}:${String(seconds).padStart(2, "0")}.${String(millis).padStart(3, "0")}`;
+}
+
+function formatSimpleSheet(sheet, colCount, rowCount) {
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, colCount);
+
+  const headerRange = sheet.getRange(1, 1, 1, colCount);
+  headerRange.setFontWeight("bold");
+  headerRange.setBackground("#111827");
+  headerRange.setFontColor("#ffffff");
+  headerRange.setHorizontalAlignment("center");
+
+  if (rowCount > 0) {
+    const dataRange = sheet.getRange(2, 1, rowCount, colCount);
+    dataRange.setHorizontalAlignment("center");
+    dataRange.setVerticalAlignment("middle");
+  }
+}
+
+function formatLeaderboardSheet(sheet, rowCount, colCount) {
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, colCount);
+
+  const headerRange = sheet.getRange(1, 1, 1, colCount);
+  headerRange.setFontWeight("bold");
+  headerRange.setBackground("#111827");
+  headerRange.setFontColor("#ffffff");
+  headerRange.setHorizontalAlignment("center");
+
+  if (rowCount > 0) {
+    const dataRange = sheet.getRange(2, 1, rowCount, colCount);
+    dataRange.setHorizontalAlignment("center");
+    dataRange.setVerticalAlignment("middle");
+  }
+
+  if (rowCount >= 1) {
+    sheet.getRange(2, 1, 1, colCount).setBackground("#ffd700").setFontWeight("bold");
+  }
+
+  if (rowCount >= 2) {
+    sheet.getRange(3, 1, 1, colCount).setBackground("#c0c0c0").setFontWeight("bold");
+  }
+
+  if (rowCount >= 3) {
+    sheet.getRange(4, 1, 1, colCount).setBackground("#cd7f32").setFontWeight("bold");
+  }
+}
