@@ -58,6 +58,11 @@
       outline: none;
     }
 
+    input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.15);
+    }
+
     .row {
       display: flex;
       gap: 12px;
@@ -74,6 +79,7 @@
       cursor: pointer;
       font-size: 15px;
       font-weight: 700;
+      transition: 0.2s ease;
     }
 
     .btn-primary {
@@ -81,10 +87,18 @@
       color: white;
     }
 
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
     .btn-secondary {
       background: #1f2937;
       color: #e5e7eb;
       border: 1px solid #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #273244;
     }
 
     .message {
@@ -121,14 +135,14 @@
 <body>
   <div class="card">
     <h1>Fahrer hinzufügen</h1>
-    <p>Neuen Fahrer speichern und echte Serverantwort anzeigen.</p>
+    <p>Neuen Fahrer speichern und direkt im Sheet verfügbar machen.</p>
 
     <form id="driverForm">
       <label for="driverName">Fahrername</label>
-      <input type="text" id="driverName" name="driverName" required>
+      <input type="text" id="driverName" required>
 
       <label for="discordId">Discord-ID optional</label>
-      <input type="text" id="discordId" name="discordId">
+      <input type="text" id="discordId">
 
       <div class="row">
         <button type="submit" class="btn btn-primary">Fahrer speichern</button>
@@ -153,12 +167,20 @@
     form.addEventListener("submit", async function(event) {
       event.preventDefault();
 
-      const formData = new FormData();
-      formData.append("action", "addDriver");
-      formData.append("driverName", document.getElementById("driverName").value.trim());
-      formData.append("discordId", document.getElementById("discordId").value.trim());
+      const driverName = document.getElementById("driverName").value.trim();
+      const discordId = document.getElementById("discordId").value.trim();
+
+      if (!driverName) {
+        showMessage("error", "Bitte Fahrername eingeben.");
+        return;
+      }
 
       showMessage("info", "Speichere Fahrer...");
+
+      const formData = new FormData();
+      formData.append("action", "addDriver");
+      formData.append("driverName", driverName);
+      formData.append("discordId", discordId);
 
       try {
         const response = await fetch(API_URL, {
@@ -172,7 +194,7 @@
         try {
           result = JSON.parse(text);
         } catch (e) {
-          throw new Error("Keine gültige JSON-Antwort:\n" + text);
+          throw new Error("Ungültige Serverantwort: " + text);
         }
 
         if (!result.success) {
@@ -181,7 +203,7 @@
 
         showMessage(
           "success",
-          "Gespeichert.\n" +
+          (result.message || "Gespeichert") + "\n" +
           "Spreadsheet: " + (result.data?.spreadsheetName || "-") + "\n" +
           "Sheet: " + (result.data?.sheetName || "-") + "\n" +
           "Fahrer: " + (result.data?.driverName || "-") + "\n" +
