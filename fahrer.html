@@ -80,6 +80,7 @@
       font-size: 15px;
       font-weight: 700;
       transition: 0.2s ease;
+      text-align: center;
     }
 
     .btn-primary {
@@ -107,6 +108,7 @@
       border-radius: 12px;
       display: none;
       line-height: 1.4;
+      white-space: pre-wrap;
     }
 
     .message.success {
@@ -133,7 +135,7 @@
 <body>
   <div class="card">
     <h1>Fahrer hinzufügen</h1>
-    <p>Lege hier neue Fahrer für das Leaderboard an. Nach dem Speichern ist der Fahrer direkt im System verfügbar.</p>
+    <p>Lege hier neue Fahrer für das Leaderboard an.</p>
 
     <form id="driverForm">
       <label for="driverName">Fahrername</label>
@@ -149,14 +151,20 @@
     </form>
 
     <div id="message" class="message"></div>
-    <div class="hint">Falls der Fahrer bereits existiert, wird kein doppelter Eintrag angelegt.</div>
+    <div class="hint">Der Eintrag wird im Blatt „Fahrer“ gespeichert.</div>
   </div>
 
   <script>
-    const API_URL = "DEINE_WEBAPP_URL_HIER";
+    const API_URL = "https://script.google.com/macros/s/AKfycbwV3RleYLpZ3oaLJnf8-GNcp-tL52I_goIjx_RQRhdJlG2CgIlTSEsAylyQUTkq6-7E/exec";
 
     const form = document.getElementById("driverForm");
     const messageBox = document.getElementById("message");
+
+    function showMessage(type, text) {
+      messageBox.className = "message " + type;
+      messageBox.textContent = text;
+      messageBox.style.display = "block";
+    }
 
     form.addEventListener("submit", async function(event) {
       event.preventDefault();
@@ -181,19 +189,23 @@
           })
         });
 
-        const result = await response.json();
+        const text = await response.text();
+
+        let result;
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          throw new Error("Ungültige Serverantwort:\n" + text);
+        }
 
         if (result.success) {
-          messageBox.className = "message success";
-          messageBox.textContent = result.message;
+          showMessage("success", result.message || "Fahrer gespeichert");
           form.reset();
         } else {
-          messageBox.className = "message error";
-          messageBox.textContent = result.message || "Fehler beim Speichern";
+          showMessage("error", result.message || "Fehler beim Speichern");
         }
       } catch (error) {
-        messageBox.className = "message error";
-        messageBox.textContent = "Verbindung zum Server fehlgeschlagen";
+        showMessage("error", error.message || "Verbindung zum Server fehlgeschlagen");
       }
     });
   </script>
