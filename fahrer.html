@@ -58,11 +58,6 @@
       outline: none;
     }
 
-    input:focus {
-      border-color: #60a5fa;
-      box-shadow: 0 0 0 3px rgba(96,165,250,0.15);
-    }
-
     .row {
       display: flex;
       gap: 12px;
@@ -79,16 +74,11 @@
       cursor: pointer;
       font-size: 15px;
       font-weight: 700;
-      transition: 0.2s ease;
     }
 
     .btn-primary {
       background: #2563eb;
       color: white;
-    }
-
-    .btn-primary:hover {
-      background: #1d4ed8;
     }
 
     .btn-secondary {
@@ -97,16 +87,13 @@
       border: 1px solid #374151;
     }
 
-    .btn-secondary:hover {
-      background: #273244;
-    }
-
     .message {
       margin-top: 18px;
       padding: 14px 16px;
       border-radius: 12px;
       display: none;
       line-height: 1.45;
+      white-space: pre-wrap;
     }
 
     .message.success {
@@ -129,36 +116,19 @@
       color: #bfdbfe;
       border: 1px solid rgba(59,130,246,0.35);
     }
-
-    iframe {
-      display: none;
-    }
-
-    .hint {
-      margin-top: 16px;
-      font-size: 13px;
-      color: #94a3b8;
-    }
   </style>
 </head>
 <body>
   <div class="card">
     <h1>Fahrer hinzufügen</h1>
-    <p>Lege hier einen neuen Fahrer für dein Leaderboard an.</p>
+    <p>Neuen Fahrer speichern und echte Serverantwort anzeigen.</p>
 
-    <form
-      id="driverForm"
-      action="https://script.google.com/macros/s/AKfycbwV3RleYLpZ3oaLJnf8-GNcp-tL52I_goIjx_RQRhdJlG2CgIlTSEsAylyQUTkq6-7E/exec"
-      method="POST"
-      target="hidden_iframe"
-    >
-      <input type="hidden" name="action" value="addDriver">
-
+    <form id="driverForm">
       <label for="driverName">Fahrername</label>
-      <input type="text" id="driverName" name="driverName" placeholder="z. B. Ulf" required>
+      <input type="text" id="driverName" name="driverName" required>
 
       <label for="discordId">Discord-ID optional</label>
-      <input type="text" id="discordId" name="discordId" placeholder="z. B. 123456789012345678">
+      <input type="text" id="discordId" name="discordId">
 
       <div class="row">
         <button type="submit" class="btn btn-primary">Fahrer speichern</button>
@@ -166,17 +136,13 @@
       </div>
     </form>
 
-    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
-
     <div id="message" class="message"></div>
-    <div class="hint">Wenn gespeichert wurde, steht der Fahrer im Blatt „Fahrer“.</div>
   </div>
 
   <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwV3RleYLpZ3oaLJnf8-GNcp-tL52I_goIjx_RQRhdJlG2CgIlTSEsAylyQUTkq6-7E/exec";
     const form = document.getElementById("driverForm");
-    const iframe = document.getElementById("hidden_iframe");
     const message = document.getElementById("message");
-    let submitted = false;
 
     function showMessage(type, text) {
       message.className = "message " + type;
@@ -184,16 +150,48 @@
       message.style.display = "block";
     }
 
-    form.addEventListener("submit", function() {
-      submitted = true;
-      showMessage("info", "Fahrer wird gespeichert...");
-    });
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
 
-    iframe.addEventListener("load", function() {
-      if (!submitted) return;
-      submitted = false;
-      showMessage("success", "Anfrage gesendet. Prüfe jetzt dein Google Sheet „Fahrer“.");
-      form.reset();
+      const formData = new FormData();
+      formData.append("action", "addDriver");
+      formData.append("driverName", document.getElementById("driverName").value.trim());
+      formData.append("discordId", document.getElementById("discordId").value.trim());
+
+      showMessage("info", "Speichere Fahrer...");
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        const text = await response.text();
+
+        let result;
+        try {
+          result = JSON.parse(text);
+        } catch (e) {
+          throw new Error("Keine gültige JSON-Antwort:\n" + text);
+        }
+
+        if (!result.success) {
+          throw new Error(result.message || "Speichern fehlgeschlagen");
+        }
+
+        showMessage(
+          "success",
+          "Gespeichert.\n" +
+          "Spreadsheet: " + (result.data?.spreadsheetName || "-") + "\n" +
+          "Sheet: " + (result.data?.sheetName || "-") + "\n" +
+          "Fahrer: " + (result.data?.driverName || "-") + "\n" +
+          "Zeile: " + (result.data?.lastRow || "-")
+        );
+
+        form.reset();
+      } catch (error) {
+        showMessage("error", error.message || "Fehler beim Speichern");
+      }
     });
   </script>
 </body>
