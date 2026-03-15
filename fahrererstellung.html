@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fahrer hinzufügen</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0b0f16, #111827);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(17, 24, 39, 0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    h1 {
+      margin: 0 0 10px 0;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 0 0 20px 0;
+      color: #b6c2d9;
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      margin-top: 16px;
+      font-weight: 700;
+      color: #dfe7f5;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #2b3648;
+      background: #0b1220;
+      color: #ffffff;
+      font-size: 15px;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96,165,250,0.15);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 180px;
+      padding: 14px 16px;
+      border: 0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #1f2937;
+      color: #e5e7eb;
+      border: 1px solid #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #273244;
+    }
+
+    .message {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(34, 197, 94, 0.12);
+      color: #9ae6b4;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .hint {
+      margin-top: 16px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Fahrer hinzufügen</h1>
+    <p>Lege hier neue Fahrer für das Leaderboard an. Nach dem Speichern ist der Fahrer direkt im System verfügbar.</p>
+
+    <form id="driverForm">
+      <label for="driverName">Fahrername</label>
+      <input type="text" id="driverName" name="driverName" placeholder="z. B. Ulf" required>
+
+      <label for="discordId">Discord-ID optional</label>
+      <input type="text" id="discordId" name="discordId" placeholder="z. B. 123456789012345678">
+
+      <div class="row">
+        <button type="submit" class="btn btn-primary">Fahrer speichern</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='index.html'">Zum Leaderboard</button>
+      </div>
+    </form>
+
+    <div id="message" class="message"></div>
+    <div class="hint">Falls der Fahrer bereits existiert, wird kein doppelter Eintrag angelegt.</div>
+  </div>
+
+  <script>
+    const API_URL = "DEINE_WEBAPP_URL_HIER";
+
+    const form = document.getElementById("driverForm");
+    const messageBox = document.getElementById("message");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const driverName = document.getElementById("driverName").value.trim();
+      const discordId = document.getElementById("discordId").value.trim();
+
+      messageBox.className = "message";
+      messageBox.style.display = "none";
+      messageBox.textContent = "";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            action: "addDriver",
+            driverName: driverName,
+            discordId: discordId
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          messageBox.className = "message success";
+          messageBox.textContent = result.message;
+          form.reset();
+        } else {
+          messageBox.className = "message error";
+          messageBox.textContent = result.message || "Fehler beim Speichern";
+        }
+      } catch (error) {
+        messageBox.className = "message error";
+        messageBox.textContent = "Verbindung zum Server fehlgeschlagen";
+      }
+    });
+  </script>
+</body>
+</html>
