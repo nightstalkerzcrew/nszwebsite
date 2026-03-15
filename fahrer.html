@@ -9,7 +9,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background: linear-gradient(180deg, #0b0f16, #111827);
-      color: #ffffff;
+      color: #fff;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -20,11 +20,11 @@
     .card {
       width: 100%;
       max-width: 520px;
-      background: rgba(17, 24, 39, 0.95);
+      background: rgba(17, 24, 39, 0.96);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 18px;
       padding: 28px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.45);
     }
 
     h1 {
@@ -40,21 +40,21 @@
 
     label {
       display: block;
-      margin-bottom: 8px;
       margin-top: 16px;
+      margin-bottom: 8px;
       font-weight: 700;
       color: #dfe7f5;
     }
 
     input {
       width: 100%;
+      box-sizing: border-box;
       padding: 14px 16px;
       border-radius: 12px;
       border: 1px solid #2b3648;
       background: #0b1220;
-      color: #ffffff;
+      color: #fff;
       font-size: 15px;
-      box-sizing: border-box;
       outline: none;
     }
 
@@ -80,7 +80,6 @@
       font-size: 15px;
       font-weight: 700;
       transition: 0.2s ease;
-      text-align: center;
     }
 
     .btn-primary {
@@ -107,22 +106,32 @@
       padding: 14px 16px;
       border-radius: 12px;
       display: none;
-      line-height: 1.4;
-      white-space: pre-wrap;
+      line-height: 1.45;
     }
 
     .message.success {
       display: block;
-      background: rgba(34, 197, 94, 0.12);
+      background: rgba(34,197,94,0.12);
       color: #9ae6b4;
-      border: 1px solid rgba(34, 197, 94, 0.35);
+      border: 1px solid rgba(34,197,94,0.35);
     }
 
     .message.error {
       display: block;
-      background: rgba(239, 68, 68, 0.12);
+      background: rgba(239,68,68,0.12);
       color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.35);
+      border: 1px solid rgba(239,68,68,0.35);
+    }
+
+    .message.info {
+      display: block;
+      background: rgba(59,130,246,0.12);
+      color: #bfdbfe;
+      border: 1px solid rgba(59,130,246,0.35);
+    }
+
+    iframe {
+      display: none;
     }
 
     .hint {
@@ -135,9 +144,16 @@
 <body>
   <div class="card">
     <h1>Fahrer hinzufügen</h1>
-    <p>Lege hier neue Fahrer für das Leaderboard an.</p>
+    <p>Lege hier einen neuen Fahrer für dein Leaderboard an.</p>
 
-    <form id="driverForm">
+    <form
+      id="driverForm"
+      action="https://script.google.com/macros/s/AKfycbwV3RleYLpZ3oaLJnf8-GNcp-tL52I_goIjx_RQRhdJlG2CgIlTSEsAylyQUTkq6-7E/exec"
+      method="POST"
+      target="hidden_iframe"
+    >
+      <input type="hidden" name="action" value="addDriver">
+
       <label for="driverName">Fahrername</label>
       <input type="text" id="driverName" name="driverName" placeholder="z. B. Ulf" required>
 
@@ -150,63 +166,34 @@
       </div>
     </form>
 
+    <iframe name="hidden_iframe" id="hidden_iframe"></iframe>
+
     <div id="message" class="message"></div>
-    <div class="hint">Der Eintrag wird im Blatt „Fahrer“ gespeichert.</div>
+    <div class="hint">Wenn gespeichert wurde, steht der Fahrer im Blatt „Fahrer“.</div>
   </div>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwV3RleYLpZ3oaLJnf8-GNcp-tL52I_goIjx_RQRhdJlG2CgIlTSEsAylyQUTkq6-7E/exec";
-
     const form = document.getElementById("driverForm");
-    const messageBox = document.getElementById("message");
+    const iframe = document.getElementById("hidden_iframe");
+    const message = document.getElementById("message");
+    let submitted = false;
 
     function showMessage(type, text) {
-      messageBox.className = "message " + type;
-      messageBox.textContent = text;
-      messageBox.style.display = "block";
+      message.className = "message " + type;
+      message.textContent = text;
+      message.style.display = "block";
     }
 
-    form.addEventListener("submit", async function(event) {
-      event.preventDefault();
+    form.addEventListener("submit", function() {
+      submitted = true;
+      showMessage("info", "Fahrer wird gespeichert...");
+    });
 
-      const driverName = document.getElementById("driverName").value.trim();
-      const discordId = document.getElementById("discordId").value.trim();
-
-      messageBox.className = "message";
-      messageBox.style.display = "none";
-      messageBox.textContent = "";
-
-      try {
-        const response = await fetch(API_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            action: "addDriver",
-            driverName: driverName,
-            discordId: discordId
-          })
-        });
-
-        const text = await response.text();
-
-        let result;
-        try {
-          result = JSON.parse(text);
-        } catch (e) {
-          throw new Error("Ungültige Serverantwort:\n" + text);
-        }
-
-        if (result.success) {
-          showMessage("success", result.message || "Fahrer gespeichert");
-          form.reset();
-        } else {
-          showMessage("error", result.message || "Fehler beim Speichern");
-        }
-      } catch (error) {
-        showMessage("error", error.message || "Verbindung zum Server fehlgeschlagen");
-      }
+    iframe.addEventListener("load", function() {
+      if (!submitted) return;
+      submitted = false;
+      showMessage("success", "Anfrage gesendet. Prüfe jetzt dein Google Sheet „Fahrer“.");
+      form.reset();
     });
   </script>
 </body>
