@@ -305,12 +305,13 @@
       <div>
         <h1>NFS Heat Leaderboard</h1>
         <p class="sub">
-          Fahrerzeiten laden, filtern und neue Zeiten direkt über Webseite einreichen.
+          Fahrerzeiten laden, filtern und neue Zeiten direkt über die Webseite einreichen.
         </p>
       </div>
 
       <div class="actions">
         <button class="btn secondary" id="reloadBtn" type="button">Neu laden</button>
+        <button class="btn secondary" id="addDriverBtn" type="button">Fahrer erstellen</button>
         <button class="btn" id="scrollSubmitBtn" type="button">Zeit einreichen</button>
       </div>
     </section>
@@ -438,7 +439,7 @@
     </section>
 
     <div class="footer-note">
-      GT7 Leaderboard mit Google Sheets + Google Apps Script
+      NFS Heat Leaderboard mit Google Sheets + Google Apps Script
     </div>
   </div>
 
@@ -472,6 +473,7 @@
       loadStatus: document.getElementById("loadStatus"),
       reloadBtn: document.getElementById("reloadBtn"),
       scrollSubmitBtn: document.getElementById("scrollSubmitBtn"),
+      addDriverBtn: document.getElementById("addDriverBtn"),
       submitCard: document.getElementById("submitCard"),
 
       searchInput: document.getElementById("searchInput"),
@@ -543,10 +545,6 @@
         throw new Error("Ungültige Serverantwort: " + raw);
       }
 
-      if (!res.ok) {
-        throw new Error("HTTP-Fehler: " + res.status);
-      }
-
       if (!json.success) {
         throw new Error(json.message || "Serverfehler");
       }
@@ -612,15 +610,15 @@
       }
 
       if (sort === "driver") {
-        rows.sort((a, b) => String(a.fahrer).localeCompare(String(b.fahrer), "de"));
+        rows.sort((a, b) => String(a.fahrer || "").localeCompare(String(b.fahrer || ""), "de"));
       } else if (sort === "track") {
-        rows.sort((a, b) => String(a.strecke).localeCompare(String(b.strecke), "de"));
+        rows.sort((a, b) => String(a.strecke || "").localeCompare(String(b.strecke || ""), "de"));
       } else if (sort === "car") {
-        rows.sort((a, b) => String(a.fahrzeug).localeCompare(String(b.fahrzeug), "de"));
+        rows.sort((a, b) => String(a.fahrzeug || "").localeCompare(String(b.fahrzeug || ""), "de"));
       } else if (sort === "time") {
         rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
       } else {
-        rows.sort((a, b) => Number(a.rang) - Number(b.rang));
+        rows.sort((a, b) => Number(a.rang || 0) - Number(b.rang || 0));
       }
 
       return rows;
@@ -722,12 +720,21 @@
       setStatus(el.submitStatus, "Eintrag wird gesendet ...", "warn");
 
       try {
+        const formData = new FormData();
+        formData.append("discordId", payload.discordId);
+        formData.append("driverName", payload.driverName);
+        formData.append("fahrer", payload.driverName);
+        formData.append("track", payload.track);
+        formData.append("strecke", payload.track);
+        formData.append("car", payload.car);
+        formData.append("fahrzeug", payload.car);
+        formData.append("time", payload.time);
+        formData.append("proof", payload.proof);
+        formData.append("comment", payload.comment);
+
         const res = await fetch(SCRIPT_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "text/plain;charset=utf-8"
-          },
-          body: JSON.stringify(payload)
+          body: formData
         });
 
         const raw = await res.text();
@@ -737,10 +744,6 @@
           json = JSON.parse(raw);
         } catch (error) {
           throw new Error("Server liefert kein gültiges JSON: " + raw);
-        }
-
-        if (!res.ok) {
-          throw new Error("HTTP-Fehler: " + res.status);
         }
 
         if (!json.success) {
@@ -770,8 +773,13 @@
     el.filterTrack.addEventListener("change", renderLeaderboard);
     el.filterCar.addEventListener("change", renderLeaderboard);
     el.sortMode.addEventListener("change", renderLeaderboard);
+
     el.scrollSubmitBtn.addEventListener("click", () => {
       el.submitCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    el.addDriverBtn.addEventListener("click", () => {
+      window.location.href = "fahrer.html";
     });
 
     loadAllData();
