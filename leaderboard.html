@@ -12,8 +12,8 @@
     }
 
     :root {
-      --bg-1: rgba(15, 15, 25, 0.72);
-      --bg-2: rgba(255,255,255,0.04);
+      --bg-1: rgba(15, 15, 25, 0.78);
+      --bg-2: rgba(255,255,255,0.05);
       --line: rgba(255,255,255,0.08);
       --text-soft: rgba(255,255,255,0.72);
       --cyan: #00eaff;
@@ -39,8 +39,9 @@
       font-family: Arial, sans-serif;
       color: #fff;
       background:
-        linear-gradient(135deg, rgba(255, 0, 128, 0.35), rgba(0, 255, 255, 0.18)),
-        linear-gradient(180deg, rgba(10, 10, 20, 0.92), rgba(0, 0, 0, 0.97));
+        linear-gradient(135deg, rgba(255, 0, 128, 0.28), rgba(0, 255, 255, 0.14)),
+        linear-gradient(180deg, rgba(10, 10, 20, 0.84), rgba(0, 0, 0, 0.94)),
+        url("HIER_DEIN_GITHUB_BANNER_LINK_EINFUEGEN") center center / cover no-repeat fixed;
       overflow-x: hidden;
     }
 
@@ -325,7 +326,7 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
       gap: 12px;
       margin-bottom: 20px;
     }
@@ -463,7 +464,7 @@
 
     table {
       width: 100%;
-      min-width: 980px;
+      min-width: 1080px;
       border-collapse: collapse;
     }
 
@@ -559,6 +560,17 @@
       word-break: break-word;
     }
 
+    .platform-pill {
+      display: inline-block;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255, 0, 127, 0.16);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #ffd0ea;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
     .empty-block {
       padding: 22px;
       color: rgba(255,255,255,0.65);
@@ -603,7 +615,7 @@
       }
 
       table {
-        min-width: 860px;
+        min-width: 960px;
       }
     }
   </style>
@@ -700,7 +712,7 @@
         <main class="card" id="leaderboardSection">
           <h2>Alle Strecken</h2>
           <p class="subtext">
-            Alle Strecken & Auto´s kommen aus einer internen Tabelle es könnten noch welche fehlen. Pro Strecke wird nur die beste Zeit je Fahrer gerankt.
+            Alle Strecken und Autos kommen aus einer internen Tabelle. Pro Strecke wird nur die beste Zeit je Fahrer gerankt.
           </p>
 
           <div class="toolbar">
@@ -711,6 +723,12 @@
             <select id="filterCar">
               <option value="">Alle Fahrzeuge</option>
             </select>
+            <select id="filterPlatform">
+              <option value="">Alle Plattformen</option>
+              <option value="PC">PC</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="Xbox">Xbox</option>
+            </select>
           </div>
 
           <div id="groupedLeaderboard" class="leaderboard-groups">
@@ -720,7 +738,7 @@
           <div id="loadStatus" class="status"></div>
 
           <div class="footer-note">
-            NFS Heat Leaderboard 
+            NFS Heat Leaderboard
           </div>
         </main>
       </div>
@@ -734,7 +752,8 @@
       drivers: [],
       tracks: [],
       cars: [],
-      leaderboard: []
+      leaderboard: [],
+      driverPlatformMap: {}
     };
 
     const el = {
@@ -761,7 +780,8 @@
 
       searchInput: document.getElementById("searchInput"),
       filterTrack: document.getElementById("filterTrack"),
-      filterCar: document.getElementById("filterCar")
+      filterCar: document.getElementById("filterCar"),
+      filterPlatform: document.getElementById("filterPlatform")
     };
 
     function setStatus(node, text, type = "") {
@@ -837,16 +857,23 @@
       return "";
     }
 
+    function getPlatformByDriverName(driverName) {
+      const key = String(driverName || "").trim().toLowerCase();
+      return state.driverPlatformMap[key] || "";
+    }
+
     function mapLeaderboardRow(row) {
+      const fahrer = getRowValue(row, ["fahrer", "driverName", "driver"]);
       return {
-        fahrer: getRowValue(row, ["fahrer", "driverName", "driver"]),
+        fahrer: fahrer,
         strecke: getRowValue(row, ["strecke", "track"]),
         fahrzeug: getRowValue(row, ["fahrzeug", "car", "auto"]),
         besteZeit: getRowValue(row, ["besteZeit", "time"]),
         discordId: getRowValue(row, ["discordId", "discord", "discordID"]),
         proof: getRowValue(row, ["proof", "beweis"]),
         comment: getRowValue(row, ["comment", "kommentar"]),
-        timestamp: getRowValue(row, ["timestamp", "createdAt", "date"])
+        timestamp: getRowValue(row, ["timestamp", "createdAt", "date"]),
+        plattform: getPlatformByDriverName(fahrer)
       };
     }
 
@@ -889,6 +916,21 @@
         option.textContent = val;
         select.appendChild(option);
       });
+    }
+
+    function buildDriverPlatformMap() {
+      const map = {};
+
+      state.drivers.forEach(driver => {
+        const fahrer = String(driver.fahrer || "").trim().toLowerCase();
+        const plattform = String(driver.plattform || "").trim();
+
+        if (fahrer) {
+          map[fahrer] = plattform;
+        }
+      });
+
+      state.driverPlatformMap = map;
     }
 
     function updateStats() {
@@ -936,7 +978,6 @@
       if (!top3.length) return "";
 
       const classes = ["gold", "silver", "bronze"];
-
       let html = `<div class="podium">`;
 
       top3.forEach((row, index) => {
@@ -945,6 +986,7 @@
         const discord = escapeHtml(row.discordId || "-");
         const time = escapeHtml(row.besteZeit || "-");
         const name = escapeHtml(row.fahrer || "-");
+        const platform = escapeHtml(row.plattform || "-");
 
         html += `
           <div class="podium-card ${classes[index] || ""}">
@@ -953,6 +995,7 @@
             <div class="podium-time">${time}</div>
             <div class="podium-meta">Fahrzeug: ${car}</div>
             <div class="podium-meta">Discord: ${discord}</div>
+            <div class="podium-meta">Plattform: ${platform}</div>
           </div>
         `;
       });
@@ -965,6 +1008,7 @@
       const search = el.searchInput.value.trim().toLowerCase();
       const selectedTrack = el.filterTrack.value.trim().toLowerCase();
       const selectedCar = el.filterCar.value.trim().toLowerCase();
+      const selectedPlatform = el.filterPlatform.value.trim().toLowerCase();
 
       const groupedRows = {};
 
@@ -1002,6 +1046,12 @@
           );
         }
 
+        if (selectedPlatform) {
+          rows = rows.filter(row =>
+            String(row.plattform || "").trim().toLowerCase() === selectedPlatform
+          );
+        }
+
         if (search) {
           rows = rows.filter(row => {
             const text = [
@@ -1010,7 +1060,8 @@
               row.fahrzeug,
               row.besteZeit,
               row.discordId,
-              row.comment
+              row.comment,
+              row.plattform
             ].join(" ").toLowerCase();
 
             return text.includes(search);
@@ -1049,6 +1100,7 @@
                   <tr>
                     <th>Rang</th>
                     <th>Fahrer</th>
+                    <th>Plattform</th>
                     <th>Fahrzeug</th>
                     <th>Beste Zeit</th>
                     <th>Discord</th>
@@ -1083,6 +1135,7 @@
               <tr>
                 <td><span class="rank ${rankClass}">${rank}</span></td>
                 <td>${escapeHtml(row.fahrer || "-")}</td>
+                <td><span class="platform-pill">${escapeHtml(row.plattform || "-")}</span></td>
                 <td>${escapeHtml(row.fahrzeug || "-")}</td>
                 <td><span class="time-pill">${escapeHtml(row.besteZeit || "-")}</span></td>
                 <td>${discord}</td>
@@ -1120,6 +1173,7 @@
         state.drivers = Array.isArray(drivers) ? drivers : [];
         state.tracks = Array.isArray(tracks) ? tracks : [];
         state.cars = Array.isArray(cars) ? cars : [];
+        buildDriverPlatformMap();
         state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
 
         fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
@@ -1229,6 +1283,7 @@
     el.searchInput.addEventListener("input", renderGroupedLeaderboards);
     el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
     el.filterCar.addEventListener("change", renderGroupedLeaderboards);
+    el.filterPlatform.addEventListener("change", renderGroupedLeaderboards);
 
     el.scrollBtn.addEventListener("click", () => {
       el.leaderboardSection.scrollIntoView({ behavior: "smooth", block: "start" });
