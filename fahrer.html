@@ -138,7 +138,8 @@
       color: #f3f3f3;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       padding: 14px 14px;
       border-radius: 14px;
@@ -154,9 +155,14 @@
       color: rgba(255,255,255,0.45);
     }
 
-    input:focus {
+    input:focus,
+    select:focus {
       border-color: #00eaff;
       box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.14);
+    }
+
+    select option {
+      color: #000;
     }
 
     .actions {
@@ -243,16 +249,34 @@
       align-items: center;
     }
 
+    .driver-main {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
     .driver-name {
       font-weight: 800;
       color: #fff;
       letter-spacing: 0.5px;
     }
 
-    .driver-discord {
+    .driver-meta {
       color: #00f7ff;
       font-size: 14px;
       word-break: break-all;
+      line-height: 1.5;
+    }
+
+    .driver-platform {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      background: rgba(255, 0, 127, 0.14);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #ffd0ea;
+      white-space: nowrap;
     }
 
     .empty {
@@ -299,7 +323,7 @@
         <div class="card">
           <h2>Neuen Fahrer anlegen</h2>
           <p class="subtext">
-            Fahrername wird auf vorhandene Einträge geprüft. Die Discord-ID darf mehrfach genutzt werden, für weitere Fahrer.
+            Fahrername wird auf vorhandene Einträge geprüft. Die Plattform wird beim Fahrer gespeichert.
           </p>
 
           <label for="fahrername">Fahrername</label>
@@ -307,6 +331,14 @@
 
           <label for="discordId">Discord ID</label>
           <input type="text" id="discordId" placeholder="Zum Beispiel: 123456789012345678" />
+
+          <label for="platform">Plattform</label>
+          <select id="platform">
+            <option value="">Bitte wählen</option>
+            <option value="PC">PC</option>
+            <option value="PlayStation">PlayStation</option>
+            <option value="Xbox">Xbox</option>
+          </select>
 
           <div class="actions">
             <button class="btn btn-primary" onclick="fahrerSpeichern()">Fahrer speichern</button>
@@ -316,14 +348,14 @@
           <div id="status" class="status"></div>
 
           <div class="info-bar">
-            Eindeutig ist nur der Fahrername. Eine Discord-ID kann bei mehreren Einträgen verwendet werden.
+            Eindeutig ist der Fahrername. Zusätzlich wird die Plattform für spätere Filter im Leaderboard gespeichert.
           </div>
         </div>
 
         <div class="card">
           <h2>Vorhandene Fahrer</h2>
           <p class="subtext">
-            Alle Fahrer werden aus einer internen Tabele hier geladen.
+            Alle Fahrer werden aus einer internen Tabelle geladen.
           </p>
 
           <div id="driverList" class="driver-list">
@@ -355,9 +387,15 @@
     async function fahrerSpeichern() {
       const fahrername = document.getElementById("fahrername").value.trim();
       const discordId = document.getElementById("discordId").value.trim();
+      const platform = document.getElementById("platform").value;
 
       if (!fahrername) {
         setStatus("red", "Bitte einen Fahrernamen eingeben.");
+        return;
+      }
+
+      if (!platform) {
+        setStatus("red", "Bitte eine Plattform auswählen.");
         return;
       }
 
@@ -366,6 +404,7 @@
         formData.append("action", "addDriver");
         formData.append("driverName", fahrername);
         formData.append("discordId", discordId);
+        formData.append("platform", platform);
 
         const response = await fetch(API_URL, {
           method: "POST",
@@ -379,6 +418,7 @@
           setStatus("green", result.message || "Fahrer erfolgreich gespeichert.");
           document.getElementById("fahrername").value = "";
           document.getElementById("discordId").value = "";
+          document.getElementById("platform").value = "";
           fahrerLaden();
         } else {
           setStatus("red", result.message || "Fahrer konnte nicht gespeichert werden.");
@@ -409,8 +449,11 @@
           item.className = "driver-item";
 
           item.innerHTML = `
-            <div class="driver-name">${escapeHtml(driver.fahrer || "-")}</div>
-            <div class="driver-discord">Discord ID: ${escapeHtml(driver.discordId || "-")}</div>
+            <div class="driver-main">
+              <div class="driver-name">${escapeHtml(driver.fahrer || "-")}</div>
+              <div class="driver-meta">Discord ID: ${escapeHtml(driver.discordId || "-")}</div>
+            </div>
+            <div class="driver-platform">${escapeHtml(driver.plattform || "-")}</div>
           `;
 
           driverList.appendChild(item);
