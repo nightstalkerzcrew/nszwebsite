@@ -1,172 +1,209 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NFS Heat Leaderboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard | NFS Heat Style</title>
   <style>
-    :root {
-      --bg: #0b1220;
-      --panel: #111827;
-      --panel-2: #0f172a;
-      --line: #334155;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --blue: #2563eb;
-      --blue-hover: #1d4ed8;
-      --ok: #22c55e;
-      --err: #ef4444;
-      --warn: #f59e0b;
-      --gold: #ffd700;
-      --silver: #c0c0c0;
-      --bronze: #cd7f32;
-    }
-
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      background: linear-gradient(180deg, #08111f 0%, #0b1220 100%);
-      color: var(--text);
+      min-height: 100vh;
       font-family: Arial, sans-serif;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(255, 0, 128, 0.35), rgba(0, 255, 255, 0.18)),
+        linear-gradient(180deg, rgba(10, 10, 20, 0.9), rgba(0, 0, 0, 0.95)),
+        url("") center center / cover no-repeat fixed;
+      overflow-x: hidden;
     }
 
-    .wrap {
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 0, 128, 0.18), transparent 25%),
+        radial-gradient(circle at 80% 30%, rgba(0, 255, 255, 0.15), transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12), transparent 30%);
+      pointer-events: none;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 16px;
+    }
+
+    .panel {
+      width: 100%;
       max-width: 1300px;
-      margin: 0 auto;
+      background: rgba(15, 15, 25, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      box-shadow:
+        0 0 30px rgba(255, 0, 128, 0.18),
+        0 0 60px rgba(0, 255, 255, 0.08),
+        0 12px 60px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 22px 24px;
+      background: linear-gradient(90deg, rgba(255, 0, 128, 0.18), rgba(0, 255, 255, 0.12));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand small {
+      color: #00f7ff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .brand h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(255, 0, 128, 0.5);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link,
+    .action-link {
+      text-decoration: none;
+      color: #fff;
+      background: linear-gradient(90deg, #ff007f, #00eaff);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
+      border: none;
+      cursor: pointer;
+    }
+
+    .nav-link:hover,
+    .action-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 234, 255, 0.35);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
       padding: 24px;
     }
 
-    .hero {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-bottom: 24px;
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
     }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: 38px;
+    .card h2 {
+      margin-bottom: 16px;
+      font-size: 22px;
+      color: #ffffff;
     }
 
-    .sub {
-      margin: 0;
-      color: var(--muted);
-      max-width: 800px;
+    .subtext {
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 18px;
       line-height: 1.5;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 10px;
-      padding: 12px 16px;
-      cursor: pointer;
-      font-weight: bold;
-      background: var(--blue);
-      color: white;
-    }
-
-    .btn:hover {
-      background: var(--blue-hover);
-    }
-
-    .btn.secondary {
-      background: #1e293b;
-      border: 1px solid var(--line);
     }
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
-    .stat {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 18px;
+    .stat-box {
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .stat-label {
-      color: var(--muted);
       font-size: 13px;
+      color: rgba(255,255,255,0.68);
       margin-bottom: 8px;
     }
 
     .stat-value {
-      font-size: 30px;
-      font-weight: bold;
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
     }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 24px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 20px;
-    }
-
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-
-    .desc {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-      margin-bottom: 18px;
-    }
-
-    .field {
-      margin-bottom: 14px;
-    }
-
-    .field label {
+    label {
       display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-      color: #cbd5e1;
+      margin-bottom: 8px;
+      margin-top: 14px;
+      font-weight: 700;
+      color: #f3f3f3;
     }
 
-    .field input,
-    .field select,
-    .field textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 12px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: var(--panel-2);
-      color: var(--text);
-      font-size: 14px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .field textarea {
-      min-height: 90px;
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #00eaff;
+      box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.14);
+    }
+
+    textarea {
+      min-height: 100px;
       resize: vertical;
-    }
-
-    .helper {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
     }
 
     .row-2 {
@@ -175,271 +212,330 @@
       gap: 12px;
     }
 
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    .actions {
+      display: flex;
       gap: 12px;
-      margin-bottom: 16px;
+      margin-top: 18px;
+      flex-wrap: wrap;
     }
 
-    .toolbar input,
-    .toolbar select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: var(--panel-2);
-      color: var(--text);
+    .btn {
+      flex: 1;
+      border: none;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+      color: #fff;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, #ff007f, #ff7b00);
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.28);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(90deg, #00eaff, #007bff);
+      box-shadow: 0 0 20px rgba(0, 234, 255, 0.24);
+    }
+
+    .helper {
+      margin-top: 8px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
+    }
+
+    .status {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      display: none;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(40, 167, 69, 0.18);
+      color: #b9f7c8;
+      box-shadow: 0 0 20px rgba(40, 167, 69, 0.12);
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(220, 53, 69, 0.18);
+      color: #ffb8c0;
+      box-shadow: 0 0 20px rgba(220, 53, 69, 0.12);
+    }
+
+    .status.warn {
+      display: block;
+      background: rgba(255, 193, 7, 0.18);
+      color: #ffe9a8;
+      box-shadow: 0 0 20px rgba(255, 193, 7, 0.12);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
     .table-wrap {
-      overflow: auto;
-      border: 1px solid var(--line);
-      border-radius: 12px;
+      overflow-x: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
     }
 
     table {
       width: 100%;
-      min-width: 850px;
+      min-width: 800px;
       border-collapse: collapse;
-      background: var(--panel);
     }
 
-    th, td {
-      padding: 13px 12px;
-      border-bottom: 1px solid var(--line);
-      text-align: center;
-      white-space: nowrap;
+    th,
+    td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
     th {
-      background: var(--panel-2);
-      color: #e2e8f0;
       font-size: 13px;
+      color: #00f7ff;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 1px;
+      background: rgba(255,255,255,0.04);
     }
 
-    tr:nth-child(1) .rank {
-      color: var(--gold);
-      font-weight: bold;
+    td {
+      color: #fff;
     }
 
-    tr:nth-child(2) .rank {
-      color: var(--silver);
-      font-weight: bold;
+    tr:hover td {
+      background: rgba(255,255,255,0.03);
     }
 
-    tr:nth-child(3) .rank {
-      color: var(--bronze);
-      font-weight: bold;
+    .rank {
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .rank-1 {
+      color: #ffd700;
+    }
+
+    .rank-2 {
+      color: #c0c0c0;
+    }
+
+    .rank-3 {
+      color: #cd7f32;
     }
 
     .time-pill {
       display: inline-block;
-      padding: 6px 10px;
+      padding: 8px 12px;
       border-radius: 999px;
-      background: rgba(37, 99, 235, 0.15);
-      border: 1px solid rgba(37, 99, 235, 0.25);
+      background: rgba(0, 234, 255, 0.12);
+      border: 1px solid rgba(0, 234, 255, 0.2);
+      color: #bffcff;
+      font-weight: 700;
     }
 
-    .status {
-      min-height: 22px;
-      margin-top: 12px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .status.success {
-      color: #86efac;
-    }
-
-    .status.error {
-      color: #fca5a5;
-    }
-
-    .status.warn {
-      color: #fde68a;
+    .empty {
+      color: rgba(255,255,255,0.6);
+      padding: 18px;
+      text-align: center;
+      border: 1px dashed rgba(255,255,255,0.15);
+      border-radius: 14px;
     }
 
     .footer-note {
-      margin-top: 20px;
-      color: var(--muted);
-      font-size: 12px;
+      margin-top: 18px;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
       text-align: center;
     }
 
     @media (max-width: 1100px) {
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
+      .content {
+        grid-template-columns: 1fr;
       }
 
-      .layout {
-        grid-template-columns: 1fr;
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
     @media (max-width: 700px) {
-      .wrap {
-        padding: 16px;
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      h1 {
-        font-size: 28px;
-      }
-
-      .stats {
-        grid-template-columns: 1fr;
-      }
-
+      .toolbar,
       .row-2,
-      .toolbar {
+      .stats,
+      .actions {
         grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+
+      .brand h1 {
+        font-size: 24px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <section class="hero">
-      <div>
-        <h1>NFS Heat Leaderboard</h1>
-        <p class="sub">
-          Fahrerzeiten laden, filtern und neue Zeiten direkt über die Webseite einreichen.
-        </p>
-      </div>
-
-      <div class="actions">
-        <button class="btn secondary" id="reloadBtn" type="button">Neu laden</button>
-        <button class="btn secondary" id="addDriverBtn" type="button">Fahrer erstellen</button>
-        <button class="btn" id="scrollSubmitBtn" type="button">Zeit einreichen</button>
-      </div>
-    </section>
-
-    <section class="stats">
-      <div class="stat">
-        <div class="stat-label">Leaderboard Einträge</div>
-        <div class="stat-value" id="statLeaderboard">0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Fahrer</div>
-        <div class="stat-value" id="statDrivers">0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Strecken</div>
-        <div class="stat-value" id="statTracks">0</div>
-      </div>
-      <div class="stat">
-        <div class="stat-label">Autos</div>
-        <div class="stat-value" id="statCars">0</div>
-      </div>
-    </section>
-
-    <section class="layout">
-      <aside class="card" id="submitCard">
-        <h2>Zeit einreichen</h2>
-        <div class="desc">
-          Neue Einträge landen im Tab <strong>Einreichungen</strong>. Im Leaderboard erscheinen standardmäßig nur Zeiten mit Status <strong>Akzeptiert</strong>.
+  <div class="page">
+    <div class="panel">
+      <div class="topbar">
+        <div class="brand">
+          <small>Street Racing Control</small>
+          <h1>Leaderboard</h1>
         </div>
 
-        <div class="field">
+        <div class="top-actions">
+          <button class="action-link" id="reloadBtn" type="button">Neu laden</button>
+          <a class="nav-link" href="fahrer.html">Zur Fahrerseite</a>
+        </div>
+      </div>
+
+      <div class="content">
+        <aside class="card" id="submitCard">
+          <h2>Zeit einreichen</h2>
+          <p class="subtext">
+            Neue Zeiten werden eingereicht. Das Leaderboard wird pro Strecke separat angezeigt.
+          </p>
+
+          <div class="stats">
+            <div class="stat-box">
+              <div class="stat-label">Einträge</div>
+              <div class="stat-value" id="statLeaderboard">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Fahrer</div>
+              <div class="stat-value" id="statDrivers">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Strecken</div>
+              <div class="stat-value" id="statTracks">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Autos</div>
+              <div class="stat-value" id="statCars">0</div>
+            </div>
+          </div>
+
           <label for="driverSelect">Fahrer</label>
           <select id="driverSelect">
             <option value="">Bitte Fahrer wählen</option>
           </select>
-        </div>
 
-        <div class="row-2">
-          <div class="field">
-            <label for="trackSelect">Strecke</label>
-            <select id="trackSelect">
-              <option value="">Bitte Strecke wählen</option>
-            </select>
+          <div class="row-2">
+            <div>
+              <label for="trackSelect">Strecke</label>
+              <select id="trackSelect">
+                <option value="">Bitte Strecke wählen</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="carSelect">Fahrzeug</label>
+              <select id="carSelect">
+                <option value="">Bitte Fahrzeug wählen</option>
+              </select>
+            </div>
           </div>
 
-          <div class="field">
-            <label for="carSelect">Fahrzeug</label>
-            <select id="carSelect">
-              <option value="">Bitte Fahrzeug wählen</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
           <label for="timeInput">Zeit</label>
-          <input id="timeInput" type="text" placeholder="z. B. 4:21.222">
+          <input id="timeInput" type="text" placeholder="z. B. 4:21.222" />
           <div class="helper">Erlaubte Formate: 4:21.222, 4:21:222 oder 4:21</div>
-        </div>
 
-        <div class="row-2">
-          <div class="field">
-            <label for="discordIdInput">Discord-ID</label>
-            <input id="discordIdInput" type="text" placeholder="optional">
+          <div class="row-2">
+            <div>
+              <label for="discordIdInput">Discord-ID</label>
+              <input id="discordIdInput" type="text" placeholder="optional" />
+            </div>
+
+            <div>
+              <label for="proofInput">Beweis</label>
+              <input id="proofInput" type="text" placeholder="Link oder Hinweis" />
+            </div>
           </div>
 
-          <div class="field">
-            <label for="proofInput">Beweis</label>
-            <input id="proofInput" type="text" placeholder="Link oder Hinweis">
-          </div>
-        </div>
-
-        <div class="field">
           <label for="commentInput">Kommentar</label>
           <textarea id="commentInput" placeholder="Optionaler Kommentar"></textarea>
-        </div>
 
-        <button class="btn" id="submitBtn" type="button">Zeit absenden</button>
-        <div id="submitStatus" class="status"></div>
-      </aside>
+          <div class="actions">
+            <button class="btn btn-primary" id="submitBtn" type="button">Zeit absenden</button>
+            <button class="btn btn-secondary" id="scrollTableBtn" type="button">Zum Leaderboard</button>
+          </div>
 
-      <main class="card">
-        <h2>Leaderboard</h2>
-        <div class="desc">
-          Suche nach Fahrer, Strecke oder Auto und filtere die Tabelle direkt im Browser.
-        </div>
+          <div id="submitStatus" class="status"></div>
+        </aside>
 
-        <div class="toolbar">
-          <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Auto oder Zeit">
-          <select id="filterTrack">
-            <option value="">Alle Strecken</option>
-          </select>
-          <select id="filterCar">
-            <option value="">Alle Fahrzeuge</option>
-          </select>
-          <select id="sortMode">
-            <option value="rank">Sortierung: Rang</option>
-            <option value="driver">Sortierung: Fahrer</option>
-            <option value="track">Sortierung: Strecke</option>
-            <option value="car">Sortierung: Fahrzeug</option>
-            <option value="time">Sortierung: Zeit</option>
-          </select>
-        </div>
+        <main class="card" id="tableCard">
+          <h2>Strecken-Leaderboard</h2>
+          <p class="subtext">
+            Jede Strecke hat ihr eigenes separates Leaderboard. Wähle eine Strecke aus oder suche direkt nach Fahrer, Auto oder Zeit.
+          </p>
 
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Rang</th>
-                <th>Fahrer</th>
-                <th>Strecke</th>
-                <th>Fahrzeug</th>
-                <th>Beste Zeit</th>
-              </tr>
-            </thead>
-            <tbody id="leaderboardBody">
-              <tr>
-                <td colspan="5">Lade Daten ...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div class="toolbar">
+            <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Auto oder Zeit" />
+            <select id="filterTrack">
+              <option value="">Alle Strecken</option>
+            </select>
+            <select id="filterCar">
+              <option value="">Alle Fahrzeuge</option>
+            </select>
+            <select id="sortMode">
+              <option value="rank">Sortierung: Rang</option>
+              <option value="driver">Sortierung: Fahrer</option>
+              <option value="track">Sortierung: Strecke</option>
+              <option value="car">Sortierung: Fahrzeug</option>
+              <option value="time">Sortierung: Zeit</option>
+            </select>
+          </div>
 
-        <div id="loadStatus" class="status"></div>
-      </main>
-    </section>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rang</th>
+                  <th>Fahrer</th>
+                  <th>Strecke</th>
+                  <th>Fahrzeug</th>
+                  <th>Beste Zeit</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardBody">
+                <tr>
+                  <td colspan="5">Lade Daten ...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-    <div class="footer-note">
-      NFS Heat Leaderboard mit Google Sheets + Google Apps Script
+          <div id="loadStatus" class="status"></div>
+
+          <div class="footer-note">
+            NFS Heat Leaderboard mit Google Sheets + Google Apps Script
+          </div>
+        </main>
+      </div>
     </div>
   </div>
 
@@ -472,9 +568,8 @@
       leaderboardBody: document.getElementById("leaderboardBody"),
       loadStatus: document.getElementById("loadStatus"),
       reloadBtn: document.getElementById("reloadBtn"),
-      scrollSubmitBtn: document.getElementById("scrollSubmitBtn"),
-      addDriverBtn: document.getElementById("addDriverBtn"),
-      submitCard: document.getElementById("submitCard"),
+      scrollTableBtn: document.getElementById("scrollTableBtn"),
+      tableCard: document.getElementById("tableCard"),
 
       searchInput: document.getElementById("searchInput"),
       filterTrack: document.getElementById("filterTrack"),
@@ -580,6 +675,26 @@
       el.statCars.textContent = String(state.cars.length);
     }
 
+    function buildSeparateTrackRanking(rows) {
+      const grouped = {};
+
+      rows.forEach(row => {
+        const trackName = String(row.strecke || "Unbekannt").trim();
+        if (!grouped[trackName]) grouped[trackName] = [];
+        grouped[trackName].push(row);
+      });
+
+      Object.keys(grouped).forEach(track => {
+        grouped[track].sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
+        grouped[track] = grouped[track].map((row, index) => ({
+          ...row,
+          rankLocal: index + 1
+        }));
+      });
+
+      return grouped;
+    }
+
     function getFilteredRows() {
       const search = el.searchInput.value.trim().toLowerCase();
       const track = el.filterTrack.value.trim().toLowerCase();
@@ -618,7 +733,8 @@
       } else if (sort === "time") {
         rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
       } else {
-        rows.sort((a, b) => Number(a.rang || 0) - Number(b.rang || 0));
+        const grouped = buildSeparateTrackRanking(rows);
+        rows = Object.values(grouped).flat();
       }
 
       return rows;
@@ -636,15 +752,30 @@
         return;
       }
 
-      el.leaderboardBody.innerHTML = rows.map(row => `
-        <tr>
-          <td><span class="rank">${escapeHtml(row.rang)}</span></td>
-          <td>${escapeHtml(row.fahrer)}</td>
-          <td>${escapeHtml(row.strecke)}</td>
-          <td>${escapeHtml(row.fahrzeug)}</td>
-          <td><span class="time-pill">${escapeHtml(row.besteZeit)}</span></td>
-        </tr>
-      `).join("");
+      const grouped = buildSeparateTrackRanking(rows);
+      let html = "";
+
+      Object.keys(grouped).sort((a, b) => a.localeCompare(b, "de")).forEach(trackName => {
+        grouped[trackName].forEach((row, index) => {
+          const rank = row.rankLocal || index + 1;
+          let rankClass = "";
+          if (rank === 1) rankClass = "rank-1";
+          if (rank === 2) rankClass = "rank-2";
+          if (rank === 3) rankClass = "rank-3";
+
+          html += `
+            <tr>
+              <td><span class="rank ${rankClass}">${escapeHtml(rank)}</span></td>
+              <td>${escapeHtml(row.fahrer)}</td>
+              <td>${escapeHtml(row.strecke)}</td>
+              <td>${escapeHtml(row.fahrzeug)}</td>
+              <td><span class="time-pill">${escapeHtml(row.besteZeit)}</span></td>
+            </tr>
+          `;
+        });
+      });
+
+      el.leaderboardBody.innerHTML = html;
     }
 
     async function loadAllData() {
@@ -774,12 +905,8 @@
     el.filterCar.addEventListener("change", renderLeaderboard);
     el.sortMode.addEventListener("change", renderLeaderboard);
 
-    el.scrollSubmitBtn.addEventListener("click", () => {
-      el.submitCard.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    el.addDriverBtn.addEventListener("click", () => {
-      window.location.href = "fahrer.html";
+    el.scrollTableBtn.addEventListener("click", () => {
+      el.tableCard.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     loadAllData();
