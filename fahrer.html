@@ -1,234 +1,334 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fahrerseite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fahrer | NFS Heat Style</title>
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
       font-family: Arial, sans-serif;
-      color: white;
+      color: #fff;
       background:
-        linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
-        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80") center center / cover no-repeat fixed;
-      padding: 30px;
+        linear-gradient(135deg, rgba(255, 0, 128, 0.35), rgba(0, 255, 255, 0.18)),
+        linear-gradient(180deg, rgba(10, 10, 20, 0.9), rgba(0, 0, 0, 0.95)),
+        url("") center center / cover no-repeat fixed;
+      overflow-x: hidden;
     }
 
-    .container {
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 0, 128, 0.18), transparent 25%),
+        radial-gradient(circle at 80% 30%, rgba(0, 255, 255, 0.15), transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12), transparent 30%);
+      pointer-events: none;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 16px;
+    }
+
+    .panel {
+      width: 100%;
       max-width: 1100px;
-      margin: 0 auto;
+      background: rgba(15, 15, 25, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      box-shadow:
+        0 0 30px rgba(255, 0, 128, 0.18),
+        0 0 60px rgba(0, 255, 255, 0.08),
+        0 12px 60px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      gap: 12px;
+      padding: 22px 24px;
+      background: linear-gradient(90deg, rgba(255, 0, 128, 0.18), rgba(0, 255, 255, 0.12));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    .title {
-      font-size: 32px;
-      font-weight: bold;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
-    .leaderboard-link {
+    .brand small {
+      color: #00f7ff;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .brand h1 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(255, 0, 128, 0.5);
+    }
+
+    .nav-link {
       text-decoration: none;
-      background: #007bff;
-      color: white;
+      color: #fff;
+      background: linear-gradient(90deg, #ff007f, #00eaff);
       padding: 12px 18px;
-      border-radius: 8px;
-      font-weight: bold;
+      border-radius: 12px;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
     }
 
-    .leaderboard-link:hover {
-      background: #0056b3;
+    .nav-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 234, 255, 0.35);
     }
 
-    .grid {
+    .content {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
-
-    .box {
-      background: rgba(255, 255, 255, 0.92);
-      color: #222;
+      gap: 24px;
       padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
     }
 
-    h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
     }
 
-    p {
-      color: #555;
+    .card h2 {
       margin-bottom: 16px;
+      font-size: 22px;
+      color: #ffffff;
+    }
+
+    .subtext {
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 18px;
+      line-height: 1.5;
     }
 
     label {
       display: block;
+      margin-bottom: 8px;
       margin-top: 14px;
-      margin-bottom: 6px;
-      font-weight: bold;
+      font-weight: 700;
+      color: #f3f3f3;
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #bbb;
-      border-radius: 8px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
       font-size: 15px;
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .buttons {
+    input::placeholder {
+      color: rgba(255,255,255,0.45);
+    }
+
+    input:focus {
+      border-color: #00eaff;
+      box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.14);
+    }
+
+    .actions {
       display: flex;
-      gap: 10px;
+      gap: 12px;
       margin-top: 18px;
-      flex-wrap: wrap;
     }
 
-    button {
+    .btn {
       flex: 1;
-      min-width: 180px;
-      padding: 12px;
       border: none;
-      border-radius: 8px;
-      color: white;
-      font-size: 16px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 800;
       cursor: pointer;
-      font-weight: bold;
+      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .save-btn {
-      background: #28a745;
+    .btn:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
     }
 
-    .save-btn:hover {
-      background: #218838;
+    .btn-primary {
+      background: linear-gradient(90deg, #ff007f, #ff7b00);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(255, 0, 127, 0.28);
     }
 
-    .reload-btn {
-      background: #007bff;
-    }
-
-    .reload-btn:hover {
-      background: #0056b3;
+    .btn-secondary {
+      background: linear-gradient(90deg, #00eaff, #007bff);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0, 234, 255, 0.24);
     }
 
     .status {
-      margin-top: 16px;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: bold;
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 14px;
+      font-weight: 700;
       display: none;
-      color: white;
-    }
-
-    .status.green {
-      display: block;
-      background: #28a745;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .status.red {
       display: block;
-      background: #dc3545;
+      background: rgba(220, 53, 69, 0.18);
+      color: #ffb8c0;
+      box-shadow: 0 0 20px rgba(220, 53, 69, 0.12);
     }
 
-    .info {
-      margin-top: 12px;
+    .status.green {
+      display: block;
+      background: rgba(40, 167, 69, 0.18);
+      color: #b9f7c8;
+      box-shadow: 0 0 20px rgba(40, 167, 69, 0.12);
+    }
+
+    .info-bar {
+      margin-top: 14px;
       font-size: 14px;
-      color: #666;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
     }
 
     .driver-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      max-height: 500px;
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+      max-height: 480px;
       overflow-y: auto;
+      padding-right: 4px;
     }
 
     .driver-item {
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background: #f8f8f8;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: center;
     }
 
     .driver-name {
-      font-weight: bold;
-      margin-bottom: 4px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.5px;
     }
 
     .driver-discord {
-      color: #444;
+      color: #00f7ff;
       font-size: 14px;
+      word-break: break-all;
     }
 
     .empty {
-      color: #777;
-      padding: 12px;
-      border: 1px dashed #bbb;
-      border-radius: 8px;
+      color: rgba(255,255,255,0.6);
+      padding: 18px;
       text-align: center;
-      background: #fafafa;
+      border: 1px dashed rgba(255,255,255,0.15);
+      border-radius: 14px;
     }
 
     @media (max-width: 900px) {
-      .grid {
+      .content {
         grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .driver-item {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar">
-      <div class="title">Fahrerseite</div>
-      <a class="leaderboard-link" href="leaderboard.html">Zum Leaderboard</a>
-    </div>
-
-    <div class="grid">
-      <div class="box">
-        <h2>Fahrer anlegen</h2>
-        <p>Beim Laden der Seite werden alle vorhandenen Fahrer aus Google Sheets angezeigt.</p>
-
-        <label for="fahrername">Fahrername</label>
-        <input type="text" id="fahrername" placeholder="Fahrername eingeben">
-
-        <label for="discordId">Discord ID</label>
-        <input type="text" id="discordId" placeholder="Discord ID eingeben">
-
-        <div class="buttons">
-          <button class="save-btn" onclick="fahrerSpeichern()">Fahrer speichern</button>
-          <button class="reload-btn" onclick="fahrerLaden()">Liste neu laden</button>
+  <div class="page">
+    <div class="panel">
+      <div class="topbar">
+        <div class="brand">
+          <small>Street Racing Control</small>
+          <h1>Fahrerseite</h1>
         </div>
-
-        <div id="status" class="status"></div>
-
-        <div class="info">
-          Hinweis: Dein Apps Script blockiert aktuell doppelte Fahrernamen und doppelte Discord-IDs.
-        </div>
+        <a class="nav-link" href="leaderboard.html">Zum Leaderboard</a>
       </div>
 
-      <div class="box">
-        <h2>Vorhandene Fahrer</h2>
-        <p>Diese Liste wird direkt aus dem Tabellenblatt <strong>Fahrer</strong> geladen.</p>
+      <div class="content">
+        <div class="card">
+          <h2>Neuen Fahrer anlegen</h2>
+          <p class="subtext">
+            Fahrername wird auf vorhandene Einträge geprüft. Die Discord-ID darf mehrfach genutzt werden.
+          </p>
 
-        <div id="driverList" class="driver-list">
-          <div class="empty">Lade Fahrer...</div>
+          <label for="fahrername">Fahrername</label>
+          <input type="text" id="fahrername" placeholder="Zum Beispiel: NightRacer" />
+
+          <label for="discordId">Discord ID</label>
+          <input type="text" id="discordId" placeholder="Zum Beispiel: 123456789012345678" />
+
+          <div class="actions">
+            <button class="btn btn-primary" onclick="fahrerSpeichern()">Fahrer speichern</button>
+            <button class="btn btn-secondary" onclick="fahrerLaden()">Liste neu laden</button>
+          </div>
+
+          <div id="status" class="status"></div>
+
+          <div class="info-bar">
+            Eindeutig ist nur der Fahrername. Eine Discord-ID kann bei mehreren Einträgen verwendet werden.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Vorhandene Fahrer</h2>
+          <p class="subtext">
+            Alle Fahrer aus Google Sheets werden hier geladen.
+          </p>
+
+          <div id="driverList" class="driver-list">
+            <div class="empty">Lade Fahrer...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -284,7 +384,7 @@
           setStatus("red", result.message || "Fahrer konnte nicht gespeichert werden.");
         }
       } catch (error) {
-        setStatus("red", "Fehler bei der Verbindung zum Server.");
+        setStatus("red", "Verbindung zum Server fehlgeschlagen.");
       }
     }
 
@@ -297,12 +397,7 @@
         const text = await response.text();
         const result = JSON.parse(text);
 
-        if (!result.success) {
-          driverList.innerHTML = '<div class="empty">Fehler beim Laden der Fahrer.</div>';
-          return;
-        }
-
-        if (!result.data || result.data.length === 0) {
+        if (!result.success || !result.data || result.data.length === 0) {
           driverList.innerHTML = '<div class="empty">Keine Fahrer vorhanden.</div>';
           return;
         }
@@ -312,10 +407,12 @@
         result.data.forEach(driver => {
           const item = document.createElement("div");
           item.className = "driver-item";
+
           item.innerHTML = `
-            <div class="driver-name">${escapeHtml(driver.fahrer)}</div>
+            <div class="driver-name">${escapeHtml(driver.fahrer || "-")}</div>
             <div class="driver-discord">Discord ID: ${escapeHtml(driver.discordId || "-")}</div>
           `;
+
           driverList.appendChild(item);
         });
       } catch (error) {
