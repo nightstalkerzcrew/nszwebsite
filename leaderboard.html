@@ -30,7 +30,7 @@
       margin-bottom: 20px;
     }
 
-    select, button, input {
+    select, button {
       padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid #2d3748;
@@ -77,17 +77,17 @@
       background: #111827;
     }
 
-    .muted {
-      color: #9ca3af;
-      margin-top: 12px;
-    }
-
     .pill {
       display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
       background: #243041;
       font-size: 12px;
+    }
+
+    .muted {
+      color: #9ca3af;
+      margin-top: 12px;
     }
 
     .loading, .error, .empty {
@@ -133,7 +133,7 @@
 
     <div class="table-wrap">
       <div id="status" class="loading">Lade Leaderboard...</div>
-      <table id="leaderboardTable" style="display: none;">
+      <table id="leaderboardTable" style="display:none;">
         <thead>
           <tr>
             <th>Rang</th>
@@ -141,7 +141,7 @@
             <th>Plattform</th>
             <th>Strecke</th>
             <th>Fahrzeug</th>
-            <th>Beste Zeit</th>
+            <th>Zeit</th>
           </tr>
         </thead>
         <tbody id="leaderboardBody"></tbody>
@@ -155,6 +155,7 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbz93Qa2kM8DRh1kIxaxVlCK-uGpDjqid2Rj1lpy7x8bIRMoQ6ZvhVqpu_IH_8tDWVHf/exec";
 
     let leaderboardData = [];
+    let driverPlatformMap = {};
 
     const statusEl = document.getElementById("status");
     const tableEl = document.getElementById("leaderboardTable");
@@ -166,31 +167,56 @@
     const fahrzeugFilterEl = document.getElementById("fahrzeugFilter");
     const resetBtnEl = document.getElementById("resetBtn");
 
-    async function loadLeaderboard() {
-      showStatus("Lade Leaderboard...", "loading");
+    async function loadData() {
+      showStatus("Lade Daten...", "loading");
 
       try {
-        const res = await fetch(`${API_URL}?type=leaderboard`);
-        const json = await res.json();
+        const [leaderboardRes, driversRes] = await Promise.all([
+          fetch(`${API_URL}?type=leaderboard`),
+          fetch(`${API_URL}?type=drivers`)
+        ]);
 
-        if (!json.success || !Array.isArray(json.data)) {
+        const leaderboardJson = await leaderboardRes.json();
+        const driversJson = await driversRes.json();
+
+        if (!leaderboardJson.success || !Array.isArray(leaderboardJson.data)) {
           throw new Error("Ungültige Leaderboard-Daten");
         }
 
-        leaderboardData = json.data.map(row => ({
-          rang: row.rang ?? "",
-          fahrer: row.fahrer ?? "",
-          plattform: row.plattform ?? "",
-          strecke: row.strecke ?? "",
-          fahrzeug: row.fahrzeug ?? "",
-          zeit: row.zeit ?? ""
-        }));
+        if (!driversJson.success || !Array.isArray(driversJson.data)) {
+          throw new Error("Ungültige Fahrer-Daten");
+        }
+
+        driverPlatformMap = {};
+        driversJson.data.forEach(driver => {
+          const name = normalize(driver.fahrer);
+          if (name) {
+            driverPlatformMap[name] = driver.plattform || "";
+          }
+        });
+
+        leaderboardData = leaderboardJson.data.map(row => {
+          const fallbackPlatform = driverPlatformMap[normalize(row.fahrer)] || "";
+
+          return {
+            rang: row.rang ?? "",
+            fahrer: row.fahrer ?? "",
+            plattform: row.plattform || fallbackPlatform || "",
+            strecke: row.strecke ?? "",
+            fahrzeug: row.fahrzeug ?? "",
+            zeit: row.zeit ?? row.besteZeit ?? ""
+          };
+        });
 
         buildFilters(leaderboardData);
         renderTable();
       } catch (err) {
         showStatus(`Fehler beim Laden: ${err.message}`, "error");
       }
+    }
+
+    function normalize(value) {
+      return String(value || "").trim().toLowerCase();
     }
 
     function buildFilters(data) {
@@ -285,7 +311,7 @@
       renderTable();
     });
 
-    loadLeaderboard();
+    loadData();
   </script>
 </body>
 </html>
