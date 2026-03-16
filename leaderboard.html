@@ -17,8 +17,7 @@
       color: #fff;
       background:
         linear-gradient(135deg, rgba(255, 0, 128, 0.35), rgba(0, 255, 255, 0.18)),
-        linear-gradient(180deg, rgba(10, 10, 20, 0.9), rgba(0, 0, 0, 0.95)),
-        url("") center center / cover no-repeat fixed;
+        linear-gradient(180deg, rgba(10, 10, 20, 0.9), rgba(0, 0, 0, 0.95));
       overflow-x: hidden;
     }
 
@@ -38,13 +37,13 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       padding: 30px 16px;
     }
 
     .panel {
       width: 100%;
-      max-width: 1300px;
+      max-width: 1450px;
       background: rgba(15, 15, 25, 0.72);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 24px;
@@ -285,21 +284,72 @@
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1.3fr 1fr 1fr 1fr;
+      grid-template-columns: 1.4fr 1fr 1fr;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
+    }
+
+    .leaderboard-groups {
+      display: grid;
+      gap: 18px;
+    }
+
+    .track-block {
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      overflow: hidden;
+      box-shadow: 0 0 24px rgba(0,0,0,0.15);
+    }
+
+    .track-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 20px;
+      background: linear-gradient(90deg, rgba(255, 0, 127, 0.14), rgba(0, 234, 255, 0.08));
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+    }
+
+    .track-kicker {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: #00f7ff;
+      margin-bottom: 4px;
+    }
+
+    .track-header h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .track-meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
     }
 
     .table-wrap {
       overflow-x: auto;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
     }
 
     table {
       width: 100%;
-      min-width: 800px;
+      min-width: 700px;
       border-collapse: collapse;
     }
 
@@ -353,12 +403,10 @@
       font-weight: 700;
     }
 
-    .empty {
-      color: rgba(255,255,255,0.6);
-      padding: 18px;
+    .empty-block {
+      padding: 20px;
+      color: rgba(255,255,255,0.65);
       text-align: center;
-      border: 1px dashed rgba(255,255,255,0.15);
-      border-radius: 14px;
     }
 
     .footer-note {
@@ -368,28 +416,26 @@
       text-align: center;
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width: 1150px) {
       .content {
         grid-template-columns: 1fr;
       }
-
-      .toolbar {
-        grid-template-columns: 1fr 1fr;
-      }
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 760px) {
+      .toolbar,
+      .row-2,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
       .topbar {
         flex-direction: column;
         align-items: flex-start;
-      }
-
-      .toolbar,
-      .row-2,
-      .stats,
-      .actions {
-        grid-template-columns: 1fr;
-        flex-direction: column;
       }
 
       .brand h1 {
@@ -414,10 +460,10 @@
       </div>
 
       <div class="content">
-        <aside class="card" id="submitCard">
+        <aside class="card">
           <h2>Zeit einreichen</h2>
           <p class="subtext">
-            Neue Zeiten werden eingereicht. Das Leaderboard wird pro Strecke separat angezeigt.
+            Neue Zeiten werden gespeichert. Alle Strecken werden automatisch aus Google Sheets geladen.
           </p>
 
           <div class="stats">
@@ -481,52 +527,30 @@
 
           <div class="actions">
             <button class="btn btn-primary" id="submitBtn" type="button">Zeit absenden</button>
-            <button class="btn btn-secondary" id="scrollTableBtn" type="button">Zum Leaderboard</button>
+            <button class="btn btn-secondary" id="scrollBtn" type="button">Zu den Strecken</button>
           </div>
 
           <div id="submitStatus" class="status"></div>
         </aside>
 
-        <main class="card" id="tableCard">
-          <h2>Strecken-Leaderboard</h2>
+        <main class="card" id="leaderboardSection">
+          <h2>Alle Strecken</h2>
           <p class="subtext">
-            Jede Strecke hat ihr eigenes separates Leaderboard. Wähle eine Strecke aus oder suche direkt nach Fahrer, Auto oder Zeit.
+            Jede Strecke wird direkt aus Google Sheets geladen und als eigener Leaderboard-Block dargestellt.
           </p>
 
           <div class="toolbar">
-            <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Auto oder Zeit" />
+            <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Fahrzeug oder Zeit" />
             <select id="filterTrack">
               <option value="">Alle Strecken</option>
             </select>
             <select id="filterCar">
               <option value="">Alle Fahrzeuge</option>
             </select>
-            <select id="sortMode">
-              <option value="rank">Sortierung: Rang</option>
-              <option value="driver">Sortierung: Fahrer</option>
-              <option value="track">Sortierung: Strecke</option>
-              <option value="car">Sortierung: Fahrzeug</option>
-              <option value="time">Sortierung: Zeit</option>
-            </select>
           </div>
 
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Rang</th>
-                  <th>Fahrer</th>
-                  <th>Strecke</th>
-                  <th>Fahrzeug</th>
-                  <th>Beste Zeit</th>
-                </tr>
-              </thead>
-              <tbody id="leaderboardBody">
-                <tr>
-                  <td colspan="5">Lade Daten ...</td>
-                </tr>
-              </tbody>
-            </table>
+          <div id="groupedLeaderboard" class="leaderboard-groups">
+            <div class="empty-block">Lade Daten ...</div>
           </div>
 
           <div id="loadStatus" class="status"></div>
@@ -565,16 +589,15 @@
       submitBtn: document.getElementById("submitBtn"),
       submitStatus: document.getElementById("submitStatus"),
 
-      leaderboardBody: document.getElementById("leaderboardBody"),
-      loadStatus: document.getElementById("loadStatus"),
       reloadBtn: document.getElementById("reloadBtn"),
-      scrollTableBtn: document.getElementById("scrollTableBtn"),
-      tableCard: document.getElementById("tableCard"),
+      scrollBtn: document.getElementById("scrollBtn"),
+      leaderboardSection: document.getElementById("leaderboardSection"),
+      groupedLeaderboard: document.getElementById("groupedLeaderboard"),
+      loadStatus: document.getElementById("loadStatus"),
 
       searchInput: document.getElementById("searchInput"),
       filterTrack: document.getElementById("filterTrack"),
-      filterCar: document.getElementById("filterCar"),
-      sortMode: document.getElementById("sortMode")
+      filterCar: document.getElementById("filterCar")
     };
 
     function setStatus(node, text, type = "") {
@@ -644,10 +667,10 @@
         throw new Error(json.message || "Serverfehler");
       }
 
-      return json.data || [];
+      return Array.isArray(json.data) ? json.data : [];
     }
 
-    function fillSelect(select, items, placeholder, valueKey) {
+    function fillSelect(select, items, placeholder, keyName) {
       select.innerHTML = "";
 
       const first = document.createElement("option");
@@ -656,16 +679,14 @@
       select.appendChild(first);
 
       items.forEach(item => {
+        const val = String(item[keyName] || "").trim();
+        if (!val) return;
+
         const option = document.createElement("option");
-        option.value = item[valueKey] || "";
-        option.textContent = item[valueKey] || "";
+        option.value = val;
+        option.textContent = val;
         select.appendChild(option);
       });
-    }
-
-    function fillFilters() {
-      fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
-      fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
     }
 
     function updateStats() {
@@ -675,107 +696,129 @@
       el.statCars.textContent = String(state.cars.length);
     }
 
-    function buildSeparateTrackRanking(rows) {
-      const grouped = {};
-
-      rows.forEach(row => {
-        const trackName = String(row.strecke || "Unbekannt").trim();
-        if (!grouped[trackName]) grouped[trackName] = [];
-        grouped[trackName].push(row);
-      });
-
-      Object.keys(grouped).forEach(track => {
-        grouped[track].sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
-        grouped[track] = grouped[track].map((row, index) => ({
-          ...row,
-          rankLocal: index + 1
-        }));
-      });
-
-      return grouped;
-    }
-
-    function getFilteredRows() {
+    function renderGroupedLeaderboards() {
       const search = el.searchInput.value.trim().toLowerCase();
-      const track = el.filterTrack.value.trim().toLowerCase();
-      const car = el.filterCar.value.trim().toLowerCase();
-      const sort = el.sortMode.value;
+      const selectedTrack = el.filterTrack.value.trim().toLowerCase();
+      const selectedCar = el.filterCar.value.trim().toLowerCase();
 
-      let rows = [...state.leaderboard];
+      const groupedRows = {};
 
-      if (track) {
-        rows = rows.filter(row => String(row.strecke || "").toLowerCase() === track);
+      state.tracks.forEach(track => {
+        const trackName = String(track.strecke || "").trim();
+        if (trackName) {
+          groupedRows[trackName] = [];
+        }
+      });
+
+      state.leaderboard.forEach(row => {
+        const trackName = String(row.strecke || "Unbekannt").trim();
+        if (!groupedRows[trackName]) {
+          groupedRows[trackName] = [];
+        }
+        groupedRows[trackName].push(row);
+      });
+
+      let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
+
+      if (selectedTrack) {
+        trackNames = trackNames.filter(name => name.toLowerCase() === selectedTrack);
       }
 
-      if (car) {
-        rows = rows.filter(row => String(row.fahrzeug || "").toLowerCase() === car);
-      }
-
-      if (search) {
-        rows = rows.filter(row => {
-          const text = [
-            row.rang,
-            row.fahrer,
-            row.strecke,
-            row.fahrzeug,
-            row.besteZeit
-          ].join(" ").toLowerCase();
-          return text.includes(search);
-        });
-      }
-
-      if (sort === "driver") {
-        rows.sort((a, b) => String(a.fahrer || "").localeCompare(String(b.fahrer || ""), "de"));
-      } else if (sort === "track") {
-        rows.sort((a, b) => String(a.strecke || "").localeCompare(String(b.strecke || ""), "de"));
-      } else if (sort === "car") {
-        rows.sort((a, b) => String(a.fahrzeug || "").localeCompare(String(b.fahrzeug || ""), "de"));
-      } else if (sort === "time") {
-        rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
-      } else {
-        const grouped = buildSeparateTrackRanking(rows);
-        rows = Object.values(grouped).flat();
-      }
-
-      return rows;
-    }
-
-    function renderLeaderboard() {
-      const rows = getFilteredRows();
-
-      if (!rows.length) {
-        el.leaderboardBody.innerHTML = `
-          <tr>
-            <td colspan="5">Keine Einträge gefunden.</td>
-          </tr>
+      if (!trackNames.length) {
+        el.groupedLeaderboard.innerHTML = `
+          <div class="empty-block">Keine Strecken gefunden.</div>
         `;
         return;
       }
 
-      const grouped = buildSeparateTrackRanking(rows);
       let html = "";
 
-      Object.keys(grouped).sort((a, b) => a.localeCompare(b, "de")).forEach(trackName => {
-        grouped[trackName].forEach((row, index) => {
-          const rank = row.rankLocal || index + 1;
-          let rankClass = "";
-          if (rank === 1) rankClass = "rank-1";
-          if (rank === 2) rankClass = "rank-2";
-          if (rank === 3) rankClass = "rank-3";
+      trackNames.forEach(trackName => {
+        let rows = [...groupedRows[trackName]];
+
+        if (selectedCar) {
+          rows = rows.filter(row =>
+            String(row.fahrzeug || "").trim().toLowerCase() === selectedCar
+          );
+        }
+
+        if (search) {
+          rows = rows.filter(row => {
+            const text = [
+              row.fahrer,
+              row.strecke,
+              row.fahrzeug,
+              row.besteZeit
+            ].join(" ").toLowerCase();
+
+            return text.includes(search);
+          });
+        }
+
+        rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
+
+        html += `
+          <section class="track-block">
+            <div class="track-header">
+              <div>
+                <div class="track-kicker">Strecke</div>
+                <h3>${escapeHtml(trackName)}</h3>
+              </div>
+              <div class="track-meta">
+                <span class="meta-pill">${rows.length} Einträge</span>
+              </div>
+            </div>
+        `;
+
+        if (!rows.length) {
+          html += `
+            <div class="empty-block">
+              Für diese Strecke gibt es aktuell keine passenden Einträge.
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rang</th>
+                    <th>Fahrer</th>
+                    <th>Fahrzeug</th>
+                    <th>Beste Zeit</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+
+          rows.forEach((row, index) => {
+            const rank = index + 1;
+            let rankClass = "";
+            if (rank === 1) rankClass = "rank-1";
+            if (rank === 2) rankClass = "rank-2";
+            if (rank === 3) rankClass = "rank-3";
+
+            html += `
+              <tr>
+                <td><span class="rank ${rankClass}">${rank}</span></td>
+                <td>${escapeHtml(row.fahrer || "")}</td>
+                <td>${escapeHtml(row.fahrzeug || "")}</td>
+                <td><span class="time-pill">${escapeHtml(row.besteZeit || "")}</span></td>
+              </tr>
+            `;
+          });
 
           html += `
-            <tr>
-              <td><span class="rank ${rankClass}">${escapeHtml(rank)}</span></td>
-              <td>${escapeHtml(row.fahrer)}</td>
-              <td>${escapeHtml(row.strecke)}</td>
-              <td>${escapeHtml(row.fahrzeug)}</td>
-              <td><span class="time-pill">${escapeHtml(row.besteZeit)}</span></td>
-            </tr>
+                </tbody>
+              </table>
+            </div>
           `;
-        });
+        }
+
+        html += `</section>`;
       });
 
-      el.leaderboardBody.innerHTML = html;
+      el.groupedLeaderboard.innerHTML = html;
     }
 
     async function loadAllData() {
@@ -798,17 +841,17 @@
         fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
         fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
         fillSelect(el.carSelect, state.cars, "Bitte Fahrzeug wählen", "auto");
-        fillFilters();
+        fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
+        fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
+
         updateStats();
-        renderLeaderboard();
+        renderGroupedLeaderboards();
 
         setStatus(el.loadStatus, "Daten erfolgreich geladen.", "success");
       } catch (error) {
         console.error(error);
-        el.leaderboardBody.innerHTML = `
-          <tr>
-            <td colspan="5">Fehler beim Laden.</td>
-          </tr>
+        el.groupedLeaderboard.innerHTML = `
+          <div class="empty-block">Fehler beim Laden der Daten.</div>
         `;
         setStatus(el.loadStatus, "Fehler: " + error.message, "error");
       } finally {
@@ -900,13 +943,12 @@
 
     el.reloadBtn.addEventListener("click", loadAllData);
     el.submitBtn.addEventListener("click", submitTime);
-    el.searchInput.addEventListener("input", renderLeaderboard);
-    el.filterTrack.addEventListener("change", renderLeaderboard);
-    el.filterCar.addEventListener("change", renderLeaderboard);
-    el.sortMode.addEventListener("change", renderLeaderboard);
+    el.searchInput.addEventListener("input", renderGroupedLeaderboards);
+    el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
+    el.filterCar.addEventListener("change", renderGroupedLeaderboards);
 
-    el.scrollTableBtn.addEventListener("click", () => {
-      el.tableCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    el.scrollBtn.addEventListener("click", () => {
+      el.leaderboardSection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     loadAllData();
