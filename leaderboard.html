@@ -88,6 +88,7 @@
     .muted {
       color: #9ca3af;
       margin-top: 12px;
+      white-space: pre-wrap;
     }
 
     .loading, .error, .empty {
@@ -132,7 +133,7 @@
     </div>
 
     <div class="table-wrap">
-      <div id="status" class="loading">Lade Leaderboard...</div>
+      <div id="status" class="loading">Lade Daten...</div>
       <table id="leaderboardTable" style="display:none;">
         <thead>
           <tr>
@@ -149,6 +150,7 @@
     </div>
 
     <div class="muted" id="countInfo"></div>
+    <div class="muted" id="debugInfo"></div>
   </div>
 
   <script>
@@ -161,11 +163,33 @@
     const tableEl = document.getElementById("leaderboardTable");
     const bodyEl = document.getElementById("leaderboardBody");
     const countInfoEl = document.getElementById("countInfo");
+    const debugInfoEl = document.getElementById("debugInfo");
 
     const plattformFilterEl = document.getElementById("plattformFilter");
     const streckeFilterEl = document.getElementById("streckeFilter");
     const fahrzeugFilterEl = document.getElementById("fahrzeugFilter");
     const resetBtnEl = document.getElementById("resetBtn");
+
+    function normalize(value) {
+      return String(value || "").trim().toLowerCase();
+    }
+
+    function val(obj, keys) {
+      for (const key of keys) {
+        if (obj && obj[key] !== undefined && obj[key] !== null && obj[key] !== "") {
+          return obj[key];
+        }
+      }
+      return "";
+    }
+
+    function extractArray(json) {
+      if (Array.isArray(json)) return json;
+      if (json && Array.isArray(json.data)) return json.data;
+      if (json && Array.isArray(json.items)) return json.items;
+      if (json && Array.isArray(json.result)) return json.result;
+      return [];
+    }
 
     async function loadData() {
       showStatus("Lade Daten...", "loading");
@@ -179,44 +203,46 @@
         const leaderboardJson = await leaderboardRes.json();
         const driversJson = await driversRes.json();
 
-        if (!leaderboardJson.success || !Array.isArray(leaderboardJson.data)) {
-          throw new Error("Ungültige Leaderboard-Daten");
-        }
-
-        if (!driversJson.success || !Array.isArray(driversJson.data)) {
-          throw new Error("Ungültige Fahrer-Daten");
-        }
+        const leaderboardArr = extractArray(leaderboardJson);
+        const driversArr = extractArray(driversJson);
 
         driverPlatformMap = {};
-        driversJson.data.forEach(driver => {
-          const name = normalize(driver.fahrer);
+
+        driversArr.forEach(driver => {
+          const name = normalize(val(driver, ["fahrer", "name", "driver", "driverName", "username"]));
+          const platform = val(driver, ["plattform", "platform", "system", "console"]);
           if (name) {
-            driverPlatformMap[name] = driver.plattform || "";
+            driverPlatformMap[name] = platform || "";
           }
         });
 
-        leaderboardData = leaderboardJson.data.map(row => {
-          const fallbackPlatform = driverPlatformMap[normalize(row.fahrer)] || "";
+        leaderboardData = leaderboardArr.map(row => {
+          const fahrer = val(row, ["fahrer", "name", "driver", "driverName", "username"]);
+          const fallbackPlatform = driverPlatformMap[normalize(fahrer)] || "";
 
           return {
-            rang: row.rang ?? "",
-            fahrer: row.fahrer ?? "",
-            plattform: row.plattform || fallbackPlatform || "",
-            strecke: row.strecke ?? "",
-            fahrzeug: row.fahrzeug ?? "",
-            zeit: row.zeit ?? row.besteZeit ?? ""
+            rang: val(row, ["rang", "rank", "position"]),
+            fahrer: fahrer,
+            plattform: val(row, ["plattform", "platform", "system", "console"]) || fallbackPlatform || "",
+            strecke: val(row, ["strecke", "track", "circuit"]),
+            fahrzeug: val(row, ["fahrzeug", "vehicle", "car"]),
+            zeit: val(row, ["zeit", "besteZeit", "bestTime", "time"])
           };
         });
+
+        debugInfoEl.textContent =
+          `Leaderboard-Einträge: ${leaderboardArr.length}\n` +
+          `Driver-Einträge: ${driversArr.length}\n` +
+          `Platform-Mappings: ${Object.keys(driverPlatformMap).length}\n` +
+          `Beispiel Driver Keys: ${driversArr[0] ? Object.keys(driversArr[0]).join(", ") : "-"}\n` +
+          `Beispiel Leaderboard Keys: ${leaderboardArr[0] ? Object.keys(leaderboardArr[0]).join(", ") : "-"}`;
 
         buildFilters(leaderboardData);
         renderTable();
       } catch (err) {
         showStatus(`Fehler beim Laden: ${err.message}`, "error");
+        debugInfoEl.textContent = err.stack || "";
       }
-    }
-
-    function normalize(value) {
-      return String(value || "").trim().toLowerCase();
     }
 
     function buildFilters(data) {
@@ -241,7 +267,7 @@
     }
 
     function uniqueSorted(arr) {
-      return [...new Set(arr)].sort((a, b) => a.localeCompare(b, "de"));
+      return [...new Set(arr)].sort((a, b) => String(a).localeCompare(String(b), "de"));
     }
 
     function getFilteredData() {
@@ -292,7 +318,7 @@
     }
 
     function escapeHtml(value) {
-      return String(value)
+      return String(value ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
