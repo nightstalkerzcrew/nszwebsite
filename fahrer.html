@@ -412,11 +412,15 @@
       .nav{
         flex-direction:column;
         justify-content:center;
+        gap:14px;
       }
 
       .nav-actions{
-        width:100%;
+        width:auto;
         justify-content:center;
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
       }
 
       .actions{
@@ -443,6 +447,31 @@
         letter-spacing:0.12em;
       }
 
+      .nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .nav-actions .btn{
+        width:100%;
+        min-height:44px;
+        padding:10px 14px;
+        border-radius:12px;
+        font-size:0.9rem;
+      }
+
+      .nav-actions .btn-primary,
+      .nav-actions .btn-secondary{
+        box-shadow:none;
+      }
+
+      .nav-actions .btn-secondary{
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.10);
+      }
+
       .hero{
         padding:65px 0 26px;
       }
@@ -465,7 +494,7 @@
         padding:22px;
       }
 
-      .btn{
+      .actions .btn{
         width:100%;
       }
     }
