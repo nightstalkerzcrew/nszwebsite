@@ -11,8 +11,6 @@
     :root{
       --bg:#040509;
       --bg2:#0a0d14;
-      --card:rgba(255,255,255,0.06);
-      --line:rgba(255,255,255,0.11);
       --text:#f3f6ff;
       --muted:#9fa8c3;
       --rainbow:linear-gradient(90deg,#ff004c,#ff7a00,#ffd500,#00ff99,#00d9ff,#6f5cff,#ff00c8,#ff004c);
@@ -58,17 +56,16 @@
 
     .nav{
       display:flex;
+      justify-content:center;
       align-items:center;
-      justify-content:space-between;
-      padding:18px 0;
-      gap:20px;
+      padding:22px 0;
     }
 
     .logo{
       font-family:'Orbitron',sans-serif;
       font-weight:900;
-      font-size:1.15rem;
-      letter-spacing:0.18em;
+      font-size:1.35rem;
+      letter-spacing:0.22em;
       text-transform:uppercase;
       background:var(--rainbow);
       background-size:300% auto;
@@ -76,44 +73,14 @@
       background-clip:text;
       color:transparent;
       animation:rainbowMove 6s linear infinite;
-    }
-
-    .nav-links{
-      list-style:none;
-      display:flex;
-      gap:22px;
-      flex-wrap:wrap;
-    }
-
-    .nav-links a{
-      text-decoration:none;
-      color:var(--muted);
-      font-weight:600;
-      transition:0.25s ease;
-    }
-
-    .nav-links a:hover{
-      color:var(--text);
-    }
-
-    .nav-cta{
-      text-decoration:none;
-      color:#fff;
-      padding:12px 18px;
-      border-radius:14px;
-      background:var(--rainbow);
-      background-size:300% auto;
-      animation:rainbowMove 6s linear infinite;
-      font-weight:800;
-      box-shadow:var(--rainbow-shadow);
+      text-align:center;
     }
 
     .hero{
-      padding:90px 0 70px;
-      display:grid;
-      grid-template-columns:1.1fr 0.9fr;
-      gap:30px;
-      align-items:center;
+      padding:110px 0 80px;
+      text-align:center;
+      max-width:900px;
+      margin:0 auto;
     }
 
     .badge{
@@ -125,7 +92,7 @@
       border:1px solid rgba(255,255,255,0.11);
       background:rgba(255,255,255,0.04);
       color:var(--muted);
-      margin-bottom:22px;
+      margin-bottom:24px;
     }
 
     .badge-dot{
@@ -142,7 +109,7 @@
       font-size:clamp(3rem,7vw,6rem);
       line-height:0.94;
       text-transform:uppercase;
-      margin-bottom:18px;
+      margin-bottom:22px;
     }
 
     .rainbow-text{
@@ -156,16 +123,17 @@
 
     .hero p{
       color:var(--muted);
-      line-height:1.85;
-      margin-bottom:28px;
-      max-width:650px;
+      line-height:1.9;
+      margin:0 auto 30px;
+      max-width:720px;
+      font-size:1.05rem;
     }
 
     .hero-actions{
       display:flex;
       gap:16px;
       flex-wrap:wrap;
-      margin-bottom:20px;
+      justify-content:center;
     }
 
     .btn{
@@ -195,69 +163,6 @@
 
     .btn:hover{
       transform:translateY(-4px);
-    }
-
-    .mini-tags{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-
-    .mini-tags span{
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      color:var(--muted);
-    }
-
-    .hero-card{
-      min-height:480px;
-      border-radius:30px;
-      padding:24px;
-      position:relative;
-      overflow:hidden;
-      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
-      border:1px solid rgba(255,255,255,0.10);
-      box-shadow:var(--shadow), var(--rainbow-shadow);
-    }
-
-    .hero-card::before{
-      content:"";
-      position:absolute;
-      inset:-30%;
-      background:conic-gradient(from 90deg, #ff004c, #ff7a00, #ffd500, #00ff99, #00d9ff, #6f5cff, #ff00c8, #ff004c);
-      filter:blur(90px);
-      opacity:0.2;
-      animation:spin 14s linear infinite;
-    }
-
-    .hero-panel{
-      position:relative;
-      z-index:1;
-      display:grid;
-      gap:16px;
-    }
-
-    .info-box{
-      padding:18px;
-      border-radius:20px;
-      background:rgba(9,13,22,0.58);
-      border:1px solid rgba(255,255,255,0.10);
-      backdrop-filter:blur(10px);
-    }
-
-    .info-box small{
-      display:block;
-      color:var(--muted);
-      margin-bottom:8px;
-      text-transform:uppercase;
-      letter-spacing:0.08em;
-    }
-
-    .info-box strong{
-      font-family:'Orbitron',sans-serif;
-      font-size:1.1rem;
     }
 
     .section{
@@ -404,22 +309,10 @@
       100%{background-position:300% 50%;}
     }
 
-    @keyframes spin{
-      0%{transform:rotate(0deg);}
-      100%{transform:rotate(360deg);}
-    }
-
     @media (max-width: 1000px){
-      .hero,
       .grid-2,
       .grid-3{
         grid-template-columns:1fr;
-      }
-    }
-
-    @media (max-width: 780px){
-      .nav-links{
-        display:none;
       }
     }
   </style>
@@ -429,70 +322,30 @@
   <header>
     <div class="container nav">
       <div class="logo">NightStalkerZ</div>
-
-      <ul class="nav-links">
-        <li><a href="#about">Über uns</a></li>
-        <li><a href="#games">Games</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#events">Events</a></li>
-        <li><a href="#join">Join</a></li>
-      </ul>
-
-      <a href="#" class="nav-cta">Discord Join</a>
     </div>
   </header>
 
   <main class="container">
     <section class="hero">
-      <div>
-        <div class="badge">
-          <span class="badge-dot"></span>
-          Need for Speed Community für OGs, Night Drives und Competition
-        </div>
-
-        <h1>
-          Welcome to<br>
-          <span class="rainbow-text">NightStalkerZ</span>
-        </h1>
-
-        <p>
-          NightStalkerZ ist eine NFS Community für Fahrer, Tuner und Racer, die Need for Speed Heat,
-          World, Most Wanted, Carbon und Underground 1-2 feiern. Der Fokus liegt auf spiel-spezifischen
-          Leaderboards, Community-Events und einer starken Street-Racing-Atmosphäre.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#" class="btn btn-primary">Discord beitreten</a>
-          <a href="#features" class="btn btn-secondary">Mehr erfahren</a>
-        </div>
-
-        <div class="mini-tags">
-          <span>Leaderboards</span>
-          <span>Night Rides</span>
-          <span>Tuning Treffen</span>
-          <span>Purge Night</span>
-        </div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Need for Speed Community für OGs, Night Drives und Competition
       </div>
 
-      <div class="hero-card">
-        <div class="hero-panel">
-          <div class="info-box">
-            <small>Community Fokus</small>
-            <strong>Spiel-spezifische Leaderboards</strong>
-          </div>
-          <div class="info-box">
-            <small>Beliebte Events</small>
-            <strong>Purge Night, Tuning Treffen, Night Rides</strong>
-          </div>
-          <div class="info-box">
-            <small>Unterstützte Spiele</small>
-            <strong>Heat, World, Most Wanted, Carbon, Underground 1-2</strong>
-          </div>
-          <div class="info-box">
-            <small>Status</small>
-            <strong>Street Racing Vibes rund um die Uhr</strong>
-          </div>
-        </div>
+      <h1>
+        Welcome to<br>
+        <span class="rainbow-text">NightStalkerZ</span>
+      </h1>
+
+      <p>
+        NightStalkerZ ist eine NFS Community für Fahrer, Tuner und Racer, die Need for Speed Heat,
+        World, Most Wanted, Carbon und Underground 1-2 feiern. Der Fokus liegt auf spiel-spezifischen
+        Leaderboards, Community-Events und einer starken Street-Racing-Atmosphäre.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary">Discord beitreten</a>
+        <a href="#features" class="btn btn-secondary">Mehr erfahren</a>
       </div>
     </section>
 
@@ -677,7 +530,7 @@
           Werde Teil einer Community, die klassische und moderne Need for Speed Teile verbindet.
           Fahre Night Rides, nimm an Events teil, zeige deine Builds und climb das Leaderboard.
         </p>
-        <div class="hero-actions" style="justify-content:center;">
+        <div class="hero-actions">
           <a href="#" class="btn btn-primary">Discord beitreten</a>
           <a href="#events" class="btn btn-secondary">Events ansehen</a>
         </div>
