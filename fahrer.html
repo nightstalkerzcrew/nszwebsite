@@ -3,323 +3,503 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fahrer | NFS Heat Style</title>
+  <title>Fahrer Erstellung | NightStalkerZ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#040509;
+      --bg2:#0a0d14;
+      --text:#f3f6ff;
+      --muted:#9fa8c3;
+      --card:rgba(255,255,255,0.05);
+      --border:rgba(255,255,255,0.10);
+      --rainbow:linear-gradient(90deg,#ff004c,#ff7a00,#ffd500,#00ff99,#00d9ff,#6f5cff,#ff00c8,#ff004c);
+      --shadow:0 10px 40px rgba(0,0,0,0.45);
+      --rainbow-shadow:0 0 30px rgba(255,0,200,0.16),0 0 60px rgba(0,217,255,0.14),0 0 90px rgba(0,255,153,0.08);
     }
 
-    body {
-      min-height: 100vh;
-      font-family: Arial, sans-serif;
-      color: #fff;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
       background:
-        linear-gradient(135deg, rgba(255, 0, 128, 0.35), rgba(0, 255, 255, 0.18)),
-        linear-gradient(180deg, rgba(10, 10, 20, 0.9), rgba(0, 0, 0, 0.95)),
-        url("") center center / cover no-repeat fixed;
-      overflow-x: hidden;
+        radial-gradient(circle at 15% 20%, rgba(255,0,100,0.14), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(0,217,255,0.14), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(122,92,255,0.10), transparent 30%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255, 0, 128, 0.18), transparent 25%),
-        radial-gradient(circle at 80% 30%, rgba(0, 255, 255, 0.15), transparent 25%),
-        radial-gradient(circle at 50% 80%, rgba(255, 140, 0, 0.12), transparent 30%);
-      pointer-events: none;
+    .container{
+      width:min(1180px,92%);
+      margin:0 auto;
     }
 
-    .page {
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 16px;
+    header{
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter:blur(14px);
+      background:rgba(4,5,9,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
-    .panel {
-      width: 100%;
-      max-width: 1100px;
-      background: rgba(15, 15, 25, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      box-shadow:
-        0 0 30px rgba(255, 0, 128, 0.18),
-        0 0 60px rgba(0, 255, 255, 0.08),
-        0 12px 60px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(10px);
-      overflow: hidden;
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      padding:20px 0;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 22px 24px;
-      background: linear-gradient(90deg, rgba(255, 0, 128, 0.18), rgba(0, 255, 255, 0.12));
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+    .logo-wrap{
+      position:relative;
+      display:inline-block;
     }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .logo{
+      position:relative;
+      font-family:'Orbitron',sans-serif;
+      font-weight:900;
+      font-size:clamp(1.15rem,2.1vw,1.65rem);
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 6s linear infinite;
+      text-align:center;
+      line-height:1;
+      transition:transform 0.3s ease, filter 0.3s ease;
+      filter:drop-shadow(0 0 10px rgba(255,255,255,0.04));
     }
 
-    .brand small {
-      color: #00f7ff;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-size: 12px;
+    .logo::before,
+    .logo::after{
+      content:"NightStalkerZ";
+      position:absolute;
+      inset:0;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.28s ease, transform 0.28s ease;
     }
 
-    .brand h1 {
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      text-shadow: 0 0 12px rgba(255, 0, 128, 0.5);
+    .logo::before{
+      color:#00d9ff;
     }
 
-    .nav-link {
-      text-decoration: none;
-      color: #fff;
-      background: linear-gradient(90deg, #ff007f, #00eaff);
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-weight: 700;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 0 18px rgba(255, 0, 127, 0.3);
+    .logo::after{
+      color:#ff004c;
     }
 
-    .nav-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 25px rgba(0, 234, 255, 0.35);
+    .logo-wrap:hover .logo{
+      filter:drop-shadow(0 0 16px rgba(255,255,255,0.08));
     }
 
-    .content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      padding: 24px;
+    .logo-wrap:hover .logo::before{
+      opacity:0.14;
+      transform:translate(1px,0);
     }
 
-    .card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 22px;
-      box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
+    .logo-wrap:hover .logo::after{
+      opacity:0.14;
+      transform:translate(-1px,0);
     }
 
-    .card h2 {
-      margin-bottom: 16px;
-      font-size: 22px;
-      color: #ffffff;
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
-    .subtext {
-      color: rgba(255,255,255,0.72);
-      margin-bottom: 18px;
-      line-height: 1.5;
+    .btn{
+      text-decoration:none;
+      padding:15px 24px;
+      border-radius:16px;
+      font-weight:800;
+      transition:0.28s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:54px;
+      border:none;
+      cursor:pointer;
+      font-size:0.96rem;
+      font-family:'Inter',sans-serif;
     }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      margin-top: 14px;
-      font-weight: 700;
-      color: #f3f3f3;
+    .btn-primary{
+      color:#fff;
+      background:var(--rainbow);
+      background-size:300% auto;
+      animation:rainbowMove 6s linear infinite;
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .btn-secondary{
+      color:var(--text);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn:hover{
+      transform:translateY(-4px);
+    }
+
+    .hero{
+      padding:80px 0 30px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+
+    h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(2.4rem,7vw,4.8rem);
+      line-height:0.96;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .rainbow-text{
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 5s linear infinite;
+    }
+
+    .hero p{
+      color:var(--muted);
+      line-height:1.9;
+      margin:0 auto 10px;
+      max-width:780px;
+      font-size:1.02rem;
+      text-align:center;
+    }
+
+    .section{
+      padding:28px 0 80px;
+      text-align:center;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+      align-items:start;
+    }
+
+    .card{
+      padding:26px;
+      border-radius:24px;
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.10);
+      transition:0.3s ease;
+      box-shadow:var(--shadow);
+      text-align:left;
+      height:100%;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .card h2{
+      margin-bottom:12px;
+      font-size:1.22rem;
+      font-family:'Orbitron',sans-serif;
+      text-transform:uppercase;
+      text-align:left;
+    }
+
+    .subtext{
+      color:var(--muted);
+      margin-bottom:18px;
+      line-height:1.8;
+      text-align:left;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      margin-top:14px;
+      font-weight:700;
+      color:var(--text);
+      text-align:left;
     }
 
     input,
-    select {
-      width: 100%;
-      padding: 14px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-      transition: border 0.2s ease, box-shadow 0.2s ease;
+    select{
+      width:100%;
+      padding:15px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      font-size:15px;
+      outline:none;
+      transition:border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      font-family:'Inter',sans-serif;
     }
 
-    input::placeholder {
-      color: rgba(255,255,255,0.45);
+    input::placeholder{
+      color:rgba(255,255,255,0.42);
     }
 
     input:focus,
-    select:focus {
-      border-color: #00eaff;
-      box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.14);
+    select:focus{
+      border-color:#00d9ff;
+      box-shadow:0 0 0 3px rgba(0,217,255,0.14);
+      transform:translateY(-1px);
     }
 
-    select option {
-      color: #000;
+    select option{
+      color:#000;
     }
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 18px;
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:20px;
+      flex-wrap:wrap;
     }
 
-    .btn {
-      flex: 1;
-      border: none;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    .actions .btn{
+      flex:1;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.96;
+    .status{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      font-weight:700;
+      display:none;
+      border:1px solid rgba(255,255,255,0.08);
+      line-height:1.6;
     }
 
-    .btn-primary {
-      background: linear-gradient(90deg, #ff007f, #ff7b00);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(255, 0, 127, 0.28);
+    .status.red{
+      display:block;
+      background:rgba(255, 70, 95, 0.12);
+      color:#ffb8c0;
+      box-shadow:0 0 20px rgba(255, 70, 95, 0.08);
     }
 
-    .btn-secondary {
-      background: linear-gradient(90deg, #00eaff, #007bff);
-      color: #fff;
-      box-shadow: 0 0 20px rgba(0, 234, 255, 0.24);
+    .status.green{
+      display:block;
+      background:rgba(0, 255, 153, 0.10);
+      color:#bff8db;
+      box-shadow:0 0 20px rgba(0, 255, 153, 0.08);
     }
 
-    .status {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 14px;
-      font-weight: 700;
-      display: none;
-      border: 1px solid rgba(255,255,255,0.08);
+    .info-bar{
+      margin-top:16px;
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.7;
+      text-align:left;
     }
 
-    .status.red {
-      display: block;
-      background: rgba(220, 53, 69, 0.18);
-      color: #ffb8c0;
-      box-shadow: 0 0 20px rgba(220, 53, 69, 0.12);
+    .driver-list{
+      display:grid;
+      gap:14px;
+      margin-top:10px;
+      max-height:520px;
+      overflow-y:auto;
+      padding-right:4px;
     }
 
-    .status.green {
-      display: block;
-      background: rgba(40, 167, 69, 0.18);
-      color: #b9f7c8;
-      box-shadow: 0 0 20px rgba(40, 167, 69, 0.12);
+    .driver-item{
+      padding:16px 18px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      transition:0.28s ease;
     }
 
-    .info-bar {
-      margin-top: 14px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.5;
+    .driver-item:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--rainbow-shadow);
     }
 
-    .driver-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 8px;
-      max-height: 480px;
-      overflow-y: auto;
-      padding-right: 4px;
+    .driver-main{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
     }
 
-    .driver-item {
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: center;
+    .driver-name{
+      font-weight:800;
+      color:#fff;
+      letter-spacing:0.5px;
+      font-size:1rem;
     }
 
-    .driver-main {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .driver-meta{
+      color:var(--muted);
+      font-size:14px;
+      word-break:break-all;
+      line-height:1.6;
     }
 
-    .driver-name {
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 0.5px;
+    .driver-platform{
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      color:#ffffff;
+      white-space:nowrap;
+      text-align:center;
     }
 
-    .driver-meta {
-      color: #00f7ff;
-      font-size: 14px;
-      word-break: break-all;
-      line-height: 1.5;
+    .empty{
+      color:var(--muted);
+      padding:22px;
+      text-align:center;
+      border:1px dashed rgba(255,255,255,0.15);
+      border-radius:18px;
+      background:rgba(255,255,255,0.03);
     }
 
-    .driver-platform {
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 800;
-      background: rgba(255, 0, 127, 0.14);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #ffd0ea;
-      white-space: nowrap;
+    footer{
+      padding:30px 0 50px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.08);
     }
 
-    .empty {
-      color: rgba(255,255,255,0.6);
-      padding: 18px;
-      text-align: center;
-      border: 1px dashed rgba(255,255,255,0.15);
-      border-radius: 14px;
+    @keyframes rainbowMove{
+      0%{background-position:0% 50%;}
+      100%{background-position:300% 50%;}
     }
 
-    @media (max-width: 900px) {
-      .content {
-        grid-template-columns: 1fr;
+    @media (max-width: 900px){
+      .grid-2{
+        grid-template-columns:1fr;
       }
 
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
+      .nav{
+        flex-direction:column;
+        justify-content:center;
       }
 
-      .actions {
-        flex-direction: column;
+      .nav-actions{
+        width:100%;
+        justify-content:center;
       }
 
-      .driver-item {
-        flex-direction: column;
-        align-items: flex-start;
+      .actions{
+        flex-direction:column;
+      }
+
+      .actions .btn{
+        width:100%;
+      }
+
+      .driver-item{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+
+    @media (max-width: 680px){
+      .nav{
+        padding:18px 0;
+      }
+
+      .logo{
+        font-size:1.08rem;
+        letter-spacing:0.12em;
+      }
+
+      .hero{
+        padding:65px 0 26px;
+      }
+
+      h1{
+        font-size:clamp(1.9rem,9vw,3.2rem);
+        line-height:1.02;
+      }
+
+      .hero p{
+        font-size:0.97rem;
+        line-height:1.8;
+      }
+
+      .section{
+        padding:24px 0 70px;
+      }
+
+      .card{
+        padding:22px;
+      }
+
+      .btn{
+        width:100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <div class="panel">
-      <div class="topbar">
-        <div class="brand">
-          <small>Street Racing Control</small>
-          <h1>Fahrerseite</h1>
-        </div>
-        <a class="nav-link" href="leaderboard.html">Zum Leaderboard</a>
+  <header>
+    <div class="container nav">
+      <div class="logo-wrap">
+        <div class="logo">NightStalkerZ</div>
       </div>
 
-      <div class="content">
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="index.html">Startseite</a>
+        <a class="btn btn-primary" href="leaderboard.html">Zum Leaderboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>
+        Fahrer<br>
+        <span class="rainbow-text">Erstellung</span>
+      </h1>
+
+      <p>
+        Erstelle neue Fahrerprofile für NightStalkerZ und speichere Name, Discord ID und Plattform
+        für spätere Leaderboards, Events und Community-Vergleiche im gleichen Stil wie die Hauptseite.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="grid-2">
         <div class="card">
           <h2>Neuen Fahrer anlegen</h2>
           <p class="subtext">
@@ -355,7 +535,7 @@
         <div class="card">
           <h2>Vorhandene Fahrer</h2>
           <p class="subtext">
-            Alle Fahrer werden aus einer internen Tabelle geladen.
+            Alle Fahrer werden aus deiner internen Tabelle geladen und direkt in der Übersicht angezeigt.
           </p>
 
           <div id="driverList" class="driver-list">
@@ -363,8 +543,14 @@
           </div>
         </div>
       </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2025 NightStalkerZ — Need for Speed Community for night racers.
     </div>
-  </div>
+  </footer>
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbwVk7eC1kmqFhhZipoXpo4lmwiNT4oLYACVBQkJLolJjXMAsVGCzsdr85vY-y_-kPkf/exec";
