@@ -165,6 +165,12 @@
       transform:translateY(-4px);
     }
 
+    .btn:disabled{
+      opacity:0.7;
+      cursor:not-allowed;
+      transform:none;
+    }
+
     .hero{
       padding:80px 0 30px;
       text-align:center;
@@ -221,7 +227,8 @@
       transition:0.3s ease;
       box-shadow:var(--shadow);
       text-align:left;
-      height:100%;
+      height:auto;
+      align-self:start;
     }
 
     .card:hover{
@@ -252,7 +259,7 @@
     }
 
     .stat-box{
-      padding:16px;
+      padding:14px;
       border-radius:18px;
       background:rgba(255,255,255,0.05);
       border:1px solid rgba(255,255,255,0.08);
@@ -268,7 +275,7 @@
     }
 
     .stat-value{
-      font-size:26px;
+      font-size:24px;
       font-weight:800;
       color:#fff;
       font-family:'Orbitron',sans-serif;
@@ -369,13 +376,6 @@
       box-shadow:0 0 20px rgba(0, 255, 153, 0.08);
     }
 
-    .status.yellow{
-      display:block;
-      background:rgba(255, 213, 0, 0.10);
-      color:#ffe89b;
-      box-shadow:0 0 20px rgba(255, 213, 0, 0.06);
-    }
-
     .toolbar{
       display:grid;
       grid-template-columns:1.4fr 1fr 1fr 1fr;
@@ -420,14 +420,14 @@
 
     .track-title h3{
       font-family:'Orbitron',sans-serif;
-      font-size:1.2rem;
+      font-size:1.08rem;
       text-transform:uppercase;
     }
 
     .meta-pill{
-      padding:10px 14px;
+      padding:9px 13px;
       border-radius:999px;
-      font-size:13px;
+      font-size:12px;
       font-weight:800;
       background:rgba(255,255,255,0.06);
       border:1px solid rgba(255,255,255,0.10);
@@ -438,59 +438,59 @@
     .podium{
       display:grid;
       grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-bottom:16px;
+      gap:10px;
+      margin-bottom:14px;
     }
 
     .podium-card{
-      padding:16px;
-      border-radius:18px;
+      padding:12px 14px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,0.10);
       background:rgba(255,255,255,0.05);
     }
 
     .podium-card.gold{
-      box-shadow:0 0 22px rgba(255,215,0,0.12);
-      background:rgba(255,215,0,0.08);
+      box-shadow:0 0 16px rgba(255,215,0,0.10);
+      background:rgba(255,215,0,0.06);
     }
 
     .podium-card.silver{
-      box-shadow:0 0 22px rgba(192,192,192,0.10);
-      background:rgba(192,192,192,0.08);
+      box-shadow:0 0 16px rgba(192,192,192,0.08);
+      background:rgba(192,192,192,0.06);
     }
 
     .podium-card.bronze{
-      box-shadow:0 0 22px rgba(205,127,50,0.10);
-      background:rgba(205,127,50,0.08);
+      box-shadow:0 0 16px rgba(205,127,50,0.08);
+      background:rgba(205,127,50,0.06);
     }
 
     .podium-rank{
       display:inline-block;
-      margin-bottom:10px;
-      padding:7px 10px;
+      margin-bottom:8px;
+      padding:6px 9px;
       border-radius:999px;
       background:rgba(255,255,255,0.08);
-      font-size:12px;
+      font-size:11px;
       font-weight:800;
     }
 
     .podium-name{
       font-weight:800;
-      font-size:18px;
-      margin-bottom:8px;
+      font-size:15px;
+      margin-bottom:6px;
     }
 
     .podium-time{
       font-family:'Orbitron',sans-serif;
       font-weight:800;
-      margin-bottom:10px;
-      font-size:17px;
+      margin-bottom:8px;
+      font-size:14px;
     }
 
     .podium-meta{
       color:var(--muted);
-      font-size:13px;
-      line-height:1.6;
+      font-size:12px;
+      line-height:1.5;
       word-break:break-word;
     }
 
@@ -533,13 +533,14 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-width:36px;
-      height:36px;
+      min-width:34px;
+      height:34px;
       border-radius:50%;
       font-weight:900;
       font-family:'Orbitron',sans-serif;
       background:rgba(255,255,255,0.06);
       border:1px solid rgba(255,255,255,0.08);
+      font-size:14px;
     }
 
     .rank-1{
@@ -567,6 +568,7 @@
       font-weight:800;
       font-family:'Orbitron',sans-serif;
       white-space:nowrap;
+      font-size:13px;
     }
 
     .platform-pill{
@@ -578,6 +580,7 @@
       color:#fff;
       font-weight:700;
       white-space:nowrap;
+      font-size:13px;
     }
 
     .proof-link{
@@ -592,6 +595,7 @@
       background:var(--rainbow);
       background-size:300% auto;
       animation:rainbowMove 6s linear infinite;
+      font-size:13px;
     }
 
     .comment-cell{
@@ -859,8 +863,6 @@
           <div id="groupedLeaderboard" class="leaderboard-groups">
             <div class="empty">Lade Daten...</div>
           </div>
-
-          <div id="loadStatus" class="status"></div>
         </main>
       </div>
     </section>
@@ -902,7 +904,6 @@
 
       reloadBtnBottom: document.getElementById("reloadBtnBottom"),
       groupedLeaderboard: document.getElementById("groupedLeaderboard"),
-      loadStatus: document.getElementById("loadStatus"),
 
       searchInput: document.getElementById("searchInput"),
       filterTrack: document.getElementById("filterTrack"),
@@ -913,11 +914,6 @@
     function setStatus(node, type, message) {
       node.className = "status " + type;
       node.textContent = message;
-    }
-
-    function clearStatus(node) {
-      node.className = "status";
-      node.textContent = "";
     }
 
     function escapeHtml(text) {
@@ -1295,7 +1291,6 @@
 
     async function loadAllData() {
       el.reloadBtnBottom.disabled = true;
-      setStatus(el.loadStatus, "yellow", "Lade Daten ...");
 
       try {
         const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
@@ -1321,12 +1316,9 @@
         autofillDriverDiscord();
         updateStats();
         renderGroupedLeaderboards();
-
-        setStatus(el.loadStatus, "green", "Daten erfolgreich geladen.");
       } catch (error) {
         console.error(error);
         el.groupedLeaderboard.innerHTML = `<div class="empty">Fehler beim Laden der Daten.</div>`;
-        setStatus(el.loadStatus, "red", "Fehler: " + error.message);
       } finally {
         el.reloadBtnBottom.disabled = false;
       }
@@ -1364,7 +1356,7 @@
       }
 
       el.submitBtn.disabled = true;
-      setStatus(el.submitStatus, "yellow", "Eintrag wird gesendet ...");
+      setStatus(el.submitStatus, "green", "Eintrag wird gesendet ...");
 
       try {
         const formData = new FormData();
@@ -1409,7 +1401,10 @@
       }
     }
 
-    el.reloadBtnBottom.addEventListener("click", loadAllData);
+    el.reloadBtnBottom.addEventListener("click", async function () {
+      await loadAllData();
+    });
+
     el.driverSelect.addEventListener("change", autofillDriverDiscord);
     el.submitBtn.addEventListener("click", submitTime);
     el.searchInput.addEventListener("input", renderGroupedLeaderboards);
