@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NFS Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060a;
+      --bg-soft: rgba(255,255,255,0.04);
+      --card: rgba(255,255,255,0.06);
+      --text: #f5f7ff;
+      --muted: #a9b0c7;
+      --line: rgba(255,255,255,0.12);
+      --rainbow: linear-gradient(
+        90deg,
+        #ff004c,
+        #ff7a00,
+        #ffd500,
+        #00ff85,
+        #00cfff,
+        #7a5cff,
+        #ff00c8,
+        #ff004c
+      );
+      --shadow-rainbow: 0 0 30px rgba(255, 0, 200, 0.18), 0 0 60px rgba(0, 207, 255, 0.14);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 0, 120, 0.12), transparent 30%),
+        radial-gradient(circle at top right, rgba(0, 200, 255, 0.12), transparent 30%),
+        radial-gradient(circle at bottom center, rgba(120, 0, 255, 0.10), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        rgba(255,255,255,0.02) 0%,
+        rgba(255,255,255,0.00) 30%,
+        rgba(255,255,255,0.03) 50%,
+        rgba(255,255,255,0.00) 70%,
+        rgba(255,255,255,0.02) 100%
+      );
+      background-size: 200% 200%;
+      animation: shimmer 14s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(14px);
+      background: rgba(5, 6, 10, 0.55);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      z-index: 30;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--rainbow);
+      background-size: 300% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: rainbowMove 6s linear infinite;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      transition: 0.3s ease;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: var(--rainbow);
+      background-size: 200% auto;
+      transition: width 0.35s ease;
+      animation: rainbowMove 4s linear infinite;
+      border-radius: 999px;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      padding: 100px 0 70px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 38px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      border-radius: 999px;
+      color: var(--muted);
+      margin-bottom: 22px;
+      box-shadow: var(--shadow-rainbow);
+    }
+
+    .hero-badge span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--rainbow);
+      background-size: 200% auto;
+      animation: rainbowMove 3s linear infinite;
+      box-shadow: 0 0 15px rgba(255,255,255,0.25);
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .rainbow-text {
+      background: var(--rainbow);
+      background-size: 300% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: rainbowMove 5s linear infinite;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 30px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      text-decoration: none;
+      padding: 15px 24px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--rainbow);
+      background-size: 300% auto;
+      animation: rainbowMove 5s linear infinite;
+      box-shadow: 0 12px 35px rgba(255, 0, 140, 0.22);
+    }
+
+    .btn-secondary {
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 16px 45px rgba(0,0,0,0.35);
+    }
+
+    .visual-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 28px;
+      padding: 24px;
+      min-height: 420px;
+      overflow: hidden;
+      box-shadow: var(--shadow-rainbow);
+      backdrop-filter: blur(14px);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+
+    .visual-card:hover {
+      transform: translateY(-8px) rotate(-0.6deg);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .visual-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: var(--rainbow);
+      background-size: 300% auto;
+      animation: rainbowMove 5s linear infinite;
+      z-index: -1;
+      filter: blur(25px);
+      opacity: 0.35;
+    }
+
+    .car-shape {
+      position: absolute;
+      inset: auto 30px 30px 30px;
+      height: 190px;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.03)),
+        rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      transform: skewX(-12deg);
+      overflow: hidden;
+    }
+
+    .car-shape::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--rainbow);
+      background-size: 300% auto;
+      animation: rainbowMove 4s linear infinite;
+      mix-blend-mode: screen;
+      opacity: 0.75;
+    }
+
+    .speed-lines {
+      position: absolute;
+      inset: 40px 20px auto 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .speed-lines span {
+      display: block;
+      height: 4px;
+      width: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+      opacity: 0.5;
+      animation: slideLine 2.2s linear infinite;
+    }
+
+    .speed-lines span:nth-child(2) { animation-delay: 0.3s; width: 85%; }
+    .speed-lines span:nth-child(3) { animation-delay: 0.6s; width: 70%; }
+    .speed-lines span:nth-child(4) { animation-delay: 0.9s; width: 90%; }
+
+    @keyframes slideLine {
+      0% { transform: translateX(-40px); opacity: 0.15; }
+      50% { opacity: 0.65; }
+      100% { transform: translateX(40px); opacity: 0.15; }
+    }
+
+    @keyframes rainbowMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    .stats {
+      padding: 24px 0 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      transition: 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transition: 0.7s ease;
+    }
+
+    .stat:hover::before {
+      left: 100%;
+    }
+
+    .stat:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,255,255,0.18);
+      box-shadow: var(--shadow-rainbow);
+    }
+
+    .stat h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .stat p {
+      color: var(--muted);
+    }
+
+    .features {
+      padding: 30px 0 90px;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      max-width: 700px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 26px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--rainbow);
+      background-size: 300% auto;
+      animation: rainbowMove 5s linear infinite;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      mix-blend-mode: overlay;
+    }
+
+    .feature-card:hover::after {
+      opacity: 0.16;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-rainbow);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    .feature-card h3 {
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .cta {
+      padding: 20px 0 100px;
+    }
+
+    .cta-box {
+      text-align: center;
+      padding: 46px 24px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: var(--shadow-rainbow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-box::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--rainbow);
+      background-size: 300% auto;
+      animation: rainbowMove 5s linear infinite;
+      opacity: 0.08;
+    }
+
+    .cta-box h2 {
+      position: relative;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 16px;
+    }
+
+    .cta-box p {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto 26px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    footer {
+      padding: 30px 0 50px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .feature-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 70px;
+      }
+
+      nav ul {
+        display: none;
+      }
+
+      .visual-card {
+        min-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">NFS Community</div>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#stats">Stats</a></li>
+          <li><a href="#join">Join</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="container">
+    <section class="hero">
+      <div>
+        <div class="hero-badge">
+          <span></span>
+          Deine Community für Speed, Style und Street Racing Vibes
+        </div>
+        <h1>
+          Die <span class="rainbow-text">ultimative</span><br />
+          NFS Community
+        </h1>
+        <p>
+          Verbinde dich mit Racern, teile Builds, finde Crews, diskutiere über die besten Need for Speed Teile
+          und bringe deinen Style auf das nächste Level. Modernes Design, neon vibes und eine energiegeladene Atmosphäre.
+        </p>
+        <div class="hero-actions">
+          <a href="#join" class="btn btn-primary">Jetzt beitreten</a>
+          <a href="#features" class="btn btn-secondary">Mehr erfahren</a>
+        </div>
+      </div>
+
+      <div class="visual-card">
+        <div class="speed-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="car-shape"></div>
+      </div>
+    </section>
+
+    <section id="stats" class="stats">
+      <div class="stat">
+        <h3 class="rainbow-text">5K+</h3>
+        <p>Aktive Racer in der Community</p>
+      </div>
+      <div class="stat">
+        <h3 class="rainbow-text">250+</h3>
+        <p>Geteilte Builds und Setups</p>
+      </div>
+      <div class="stat">
+        <h3 class="rainbow-text">24/7</h3>
+        <p>Diskussionen, Events und Support</p>
+      </div>
+    </section>
+
+    <section id="features" class="features">
+      <h2 class="section-title">Was dich erwartet</h2>
+      <p class="section-subtitle">
+        Eine minimalistische Landingpage mit futuristischem Look, animierten Farbverläufen und smoothen Hover-Effekten.
+        Perfekt für eine moderne NFS-orientierte Community.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <h3>Rainbow Glow Design</h3>
+          <p>
+            Dynamische Farbverläufe, leichte Neon-Highlights und saubere Glasflächen sorgen für einen modernen Racing-Look.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>Hover Animationen</h3>
+          <p>
+            Interaktive Karten, Buttons und Navigationselemente reagieren weich und hochwertig auf Mausbewegungen.
+          </p>
+        </div>
+        <div class="feature-card">
+          <h3>Community Fokus</h3>
+          <p>
+            Ideal für Discord, Foren, Crews, Showcases, Events und alles rund um Need for Speed und Car Culture.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="join" class="cta">
+      <div class="cta-box">
+        <h2><span class="rainbow-text">Join the Ride</span></h2>
+        <p>
+          Erstelle deine Crew, teile deine Garage und werde Teil einer Community, die Geschwindigkeit, Style und Competition lebt.
+        </p>
+        <a href="#" class="btn btn-primary">Community betreten</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2025 NFS Community — Built for racers.
+    </div>
+  </footer>
+</body>
+</html>
