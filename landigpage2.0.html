@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg:#040509;
@@ -60,7 +61,7 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      padding:22px 0;
+      padding:20px 0;
     }
 
     .logo-wrap{
@@ -72,8 +73,8 @@
       position:relative;
       font-family:'Orbitron',sans-serif;
       font-weight:900;
-      font-size:clamp(1.3rem,2.5vw,1.8rem);
-      letter-spacing:0.24em;
+      font-size:clamp(1.15rem,2.1vw,1.65rem);
+      letter-spacing:0.16em;
       text-transform:uppercase;
       background:var(--rainbow);
       background-size:300% auto;
@@ -83,32 +84,40 @@
       animation:rainbowMove 6s linear infinite;
       text-align:center;
       line-height:1;
+      transition:transform 0.3s ease, filter 0.3s ease;
+      filter:drop-shadow(0 0 10px rgba(255,255,255,0.04));
     }
 
     .logo::before,
     .logo::after{
       content:"NightStalkerZ";
       position:absolute;
-      left:0;
-      top:0;
-      width:100%;
-      text-align:center;
+      inset:0;
+      opacity:0;
       pointer-events:none;
-      opacity:0.7;
+      transition:opacity 0.28s ease, transform 0.28s ease;
     }
 
     .logo::before{
       color:#00d9ff;
-      transform:translate(2px,0);
-      clip-path:polygon(0 0,100% 0,100% 35%,0 35%);
-      animation:glitch1 2.4s infinite linear alternate-reverse;
     }
 
     .logo::after{
       color:#ff004c;
-      transform:translate(-2px,0);
-      clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);
-      animation:glitch2 1.9s infinite linear alternate-reverse;
+    }
+
+    .logo-wrap:hover .logo{
+      filter:drop-shadow(0 0 16px rgba(255,255,255,0.08));
+    }
+
+    .logo-wrap:hover .logo::before{
+      opacity:0.14;
+      transform:translate(1px,0);
+    }
+
+    .logo-wrap:hover .logo::after{
+      opacity:0.14;
+      transform:translate(-1px,0);
     }
 
     .hero{
@@ -281,8 +290,11 @@
     .portal-card{
       text-decoration:none;
       color:inherit;
-      display:block;
-      padding:28px 22px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:32px 24px;
       border-radius:24px;
       background:linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.10);
@@ -292,10 +304,6 @@
       position:relative;
       overflow:hidden;
       min-height:220px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
     }
 
     .portal-card::before{
@@ -305,7 +313,7 @@
       background:var(--rainbow);
       background-size:300% auto;
       animation:rainbowMove 6s linear infinite;
-      opacity:0.06;
+      opacity:0.05;
     }
 
     .portal-card > *{
@@ -318,23 +326,9 @@
       box-shadow:var(--rainbow-shadow);
     }
 
-    .portal-icon{
-      width:58px;
-      height:58px;
-      border-radius:18px;
-      margin:0 auto 18px;
-      background:rgba(255,255,255,0.08);
-      border:1px solid rgba(255,255,255,0.10);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-family:'Orbitron',sans-serif;
-      font-size:1.1rem;
-    }
-
     .portal-card h3{
       font-family:'Orbitron',sans-serif;
-      margin-bottom:10px;
+      margin-bottom:12px;
       font-size:1.08rem;
       text-transform:uppercase;
     }
@@ -439,24 +433,6 @@
       100%{background-position:300% 50%;}
     }
 
-    @keyframes glitch1{
-      0%{transform:translate(0,0);}
-      20%{transform:translate(2px,-1px);}
-      40%{transform:translate(-2px,1px);}
-      60%{transform:translate(1px,0);}
-      80%{transform:translate(-1px,-1px);}
-      100%{transform:translate(0,0);}
-    }
-
-    @keyframes glitch2{
-      0%{transform:translate(0,0);}
-      20%{transform:translate(-2px,1px);}
-      40%{transform:translate(2px,-1px);}
-      60%{transform:translate(-1px,0);}
-      80%{transform:translate(1px,1px);}
-      100%{transform:translate(0,0);}
-    }
-
     @media (max-width: 1100px){
       .grid-4{
         grid-template-columns:repeat(2,1fr);
@@ -471,17 +447,13 @@
     }
 
     @media (max-width: 680px){
-      header{
-        position:sticky;
-      }
-
       .nav{
         padding:18px 0;
       }
 
       .logo{
-        letter-spacing:0.14em;
-        font-size:1.2rem;
+        font-size:1.08rem;
+        letter-spacing:0.12em;
       }
 
       .hero{
@@ -496,8 +468,8 @@
       }
 
       h1{
-        font-size:clamp(2.2rem,12vw,4rem);
-        line-height:1;
+        font-size:clamp(1.9rem,9vw,3.2rem);
+        line-height:1.02;
       }
 
       .hero p{
@@ -522,6 +494,7 @@
 
       .portal-card{
         min-height:190px;
+        padding:28px 20px;
       }
 
       .section{
@@ -562,7 +535,7 @@
 
       <p>
         NightStalkerZ ist eine NFS Community für Fahrer, Tuner und Racer, die Need for Speed Heat,
-        World, Most Wanted, Carbon und Underground 1-2 feiern. Der Fokus liegt auf spiel-spezifischen
+        World, Most Wanted, Carbon und Underground 1–2 feiern. Der Fokus liegt auf spiel-spezifischen
         Leaderboards, Community-Events und einer starken Street-Racing-Atmosphäre.
       </p>
 
@@ -575,31 +548,26 @@
     <section id="portal" class="section">
       <h2 class="section-title">Community Bereiche</h2>
       <p class="section-subtitle">
-        So kommst du clean auf die Unterseiten, ohne dass oben wieder Tabs nötig sind.
-        Die Startseite bleibt minimal, und die wichtigsten Bereiche sind direkt sichtbar.
+        Die wichtigsten Bereiche sind direkt erreichbar und im gleichen NightStalkerZ Stil aufgebaut.
       </p>
 
       <div class="grid-4">
         <a href="leaderboard.html" class="portal-card">
-          <div class="portal-icon">01</div>
           <h3>Leaderboard</h3>
           <p>Rankings, Bestzeiten, Rekorde und spiel-spezifische Platzierungen.</p>
         </a>
 
         <a href="fahrer-erstellung.html" class="portal-card">
-          <div class="portal-icon">02</div>
           <h3>Fahrer Erstellung</h3>
           <p>Erstelle dein Fahrerprofil im gleichen NightStalkerZ Design.</p>
         </a>
 
         <a href="gallery.html" class="portal-card">
-          <div class="portal-icon">03</div>
           <h3>Gallery</h3>
           <p>Screenshots, Nightshots, Event-Momente und Community-Media.</p>
         </a>
 
         <a href="builds.html" class="portal-card">
-          <div class="portal-icon">04</div>
           <h3>Builds</h3>
           <p>Fahrzeuge, Tuning-Setups, Styles und Showcase-Bereiche.</p>
         </a>
