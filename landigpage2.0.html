@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NFS Community | Premium Landingpage</title>
+  <title>NightStalkerZ | NFS Community</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,14 +12,12 @@
       --bg:#040509;
       --bg2:#0a0d14;
       --card:rgba(255,255,255,0.06);
-      --card-strong:rgba(255,255,255,0.08);
       --line:rgba(255,255,255,0.11);
       --text:#f3f6ff;
       --muted:#9fa8c3;
       --rainbow:linear-gradient(90deg,#ff004c,#ff7a00,#ffd500,#00ff99,#00d9ff,#6f5cff,#ff00c8,#ff004c);
       --shadow:0 10px 40px rgba(0,0,0,0.45);
       --rainbow-shadow:0 0 30px rgba(255,0,200,0.18),0 0 60px rgba(0,217,255,0.16),0 0 90px rgba(0,255,153,0.08);
-      --radius:24px;
     }
 
     *{
@@ -42,40 +40,11 @@
         linear-gradient(180deg, var(--bg), var(--bg2));
       min-height:100vh;
       overflow-x:hidden;
-      position:relative;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      background:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-      background-size:40px 40px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
-      pointer-events:none;
-      z-index:0;
-    }
-
-    .mouse-glow{
-      position:fixed;
-      width:420px;
-      height:420px;
-      border-radius:50%;
-      background:radial-gradient(circle, rgba(255,255,255,0.08), rgba(255,255,255,0.03) 28%, rgba(255,255,255,0) 68%);
-      transform:translate(-50%,-50%);
-      pointer-events:none;
-      z-index:1;
-      mix-blend-mode:screen;
-      filter:blur(18px);
     }
 
     .container{
-      width:min(1200px, 92%);
+      width:min(1200px,92%);
       margin:0 auto;
-      position:relative;
-      z-index:2;
     }
 
     header{
@@ -92,6 +61,7 @@
       align-items:center;
       justify-content:space-between;
       padding:18px 0;
+      gap:20px;
     }
 
     .logo{
@@ -109,39 +79,21 @@
     }
 
     .nav-links{
-      display:flex;
-      gap:24px;
       list-style:none;
+      display:flex;
+      gap:22px;
+      flex-wrap:wrap;
     }
 
     .nav-links a{
-      color:var(--muted);
       text-decoration:none;
+      color:var(--muted);
       font-weight:600;
       transition:0.25s ease;
-      position:relative;
-    }
-
-    .nav-links a::after{
-      content:"";
-      position:absolute;
-      left:0;
-      bottom:-7px;
-      width:0;
-      height:2px;
-      border-radius:999px;
-      background:var(--rainbow);
-      background-size:300% auto;
-      animation:rainbowMove 4s linear infinite;
-      transition:0.3s ease;
     }
 
     .nav-links a:hover{
       color:var(--text);
-    }
-
-    .nav-links a:hover::after{
-      width:100%;
     }
 
     .nav-cta{
@@ -152,34 +104,28 @@
       background:var(--rainbow);
       background-size:300% auto;
       animation:rainbowMove 6s linear infinite;
-      font-weight:700;
+      font-weight:800;
       box-shadow:var(--rainbow-shadow);
-      transition:0.25s ease;
-    }
-
-    .nav-cta:hover{
-      transform:translateY(-2px) scale(1.02);
     }
 
     .hero{
       padding:90px 0 70px;
       display:grid;
       grid-template-columns:1.1fr 0.9fr;
-      gap:34px;
+      gap:30px;
       align-items:center;
     }
 
     .badge{
       display:inline-flex;
       align-items:center;
-      gap:12px;
+      gap:10px;
       padding:10px 16px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,0.11);
       background:rgba(255,255,255,0.04);
       color:var(--muted);
       margin-bottom:22px;
-      box-shadow:var(--shadow);
     }
 
     .badge-dot{
@@ -189,16 +135,14 @@
       background:var(--rainbow);
       background-size:300% auto;
       animation:rainbowMove 4s linear infinite;
-      box-shadow:0 0 16px rgba(255,255,255,0.35);
     }
 
-    .hero h1{
+    h1{
       font-family:'Orbitron',sans-serif;
-      font-size:clamp(3rem, 7vw, 6.3rem);
-      line-height:0.92;
-      letter-spacing:-0.04em;
+      font-size:clamp(3rem,7vw,6rem);
+      line-height:0.94;
       text-transform:uppercase;
-      margin-bottom:20px;
+      margin-bottom:18px;
     }
 
     .rainbow-text{
@@ -208,22 +152,20 @@
       background-clip:text;
       color:transparent;
       animation:rainbowMove 5s linear infinite;
-      filter:drop-shadow(0 0 18px rgba(255,0,200,0.18));
     }
 
     .hero p{
       color:var(--muted);
       line-height:1.85;
-      max-width:660px;
-      margin-bottom:30px;
-      font-size:1.04rem;
+      margin-bottom:28px;
+      max-width:650px;
     }
 
     .hero-actions{
       display:flex;
       gap:16px;
       flex-wrap:wrap;
-      margin-bottom:24px;
+      margin-bottom:20px;
     }
 
     .btn{
@@ -235,8 +177,6 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      border:1px solid transparent;
-      will-change:transform;
     }
 
     .btn-primary{
@@ -250,402 +190,177 @@
     .btn-secondary{
       color:var(--text);
       background:rgba(255,255,255,0.04);
-      border-color:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.12);
     }
 
     .btn:hover{
-      transform:translateY(-4px) scale(1.02);
+      transform:translateY(-4px);
     }
 
-    .hero-mini{
+    .mini-tags{
       display:flex;
-      gap:16px;
+      gap:12px;
       flex-wrap:wrap;
-      color:var(--muted);
-      font-size:0.95rem;
     }
 
-    .hero-mini span{
+    .mini-tags span{
       padding:10px 14px;
       border-radius:999px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.08);
+      color:var(--muted);
     }
 
-    .hero-visual{
-      position:relative;
-      min-height:520px;
+    .hero-card{
+      min-height:480px;
       border-radius:30px;
+      padding:24px;
+      position:relative;
       overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.10);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
-        rgba(255,255,255,0.03);
       box-shadow:var(--shadow), var(--rainbow-shadow);
-      backdrop-filter:blur(12px);
     }
 
-    .hero-visual::before{
+    .hero-card::before{
       content:"";
       position:absolute;
       inset:-30%;
       background:conic-gradient(from 90deg, #ff004c, #ff7a00, #ffd500, #00ff99, #00d9ff, #6f5cff, #ff00c8, #ff004c);
       filter:blur(90px);
-      opacity:0.22;
+      opacity:0.2;
       animation:spin 14s linear infinite;
     }
 
-    .road{
-      position:absolute;
-      left:50%;
-      bottom:-20px;
-      transform:translateX(-50%) perspective(800px) rotateX(72deg);
-      width:110%;
-      height:220px;
-      background:
-        linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
-      opacity:0.16;
-    }
-
-    .road::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        repeating-linear-gradient(
-          90deg,
-          transparent 0 70px,
-          rgba(255,255,255,0.12) 70px 74px
-        );
-      animation:roadMove 1.2s linear infinite;
-    }
-
-    .car{
-      position:absolute;
-      left:50%;
-      top:55%;
-      transform:translate(-50%, -50%) skewX(-12deg);
-      width:min(88%, 460px);
-      height:210px;
-      border-radius:28px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.02)),
-        rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.13);
-      box-shadow:0 30px 80px rgba(0,0,0,0.45);
-      overflow:hidden;
-      animation:floatCar 4.5s ease-in-out infinite;
-    }
-
-    .car::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:var(--rainbow);
-      background-size:300% auto;
-      animation:rainbowMove 5s linear infinite;
-      mix-blend-mode:screen;
-      opacity:0.78;
-    }
-
-    .car::after{
-      content:"";
-      position:absolute;
-      left:-20%;
-      top:0;
-      width:30%;
-      height:100%;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      transform:skewX(-18deg);
-      animation:shine 3.4s linear infinite;
-    }
-
-    .wheel{
-      position:absolute;
-      bottom:18px;
-      width:72px;
-      height:72px;
-      border-radius:50%;
-      border:3px solid rgba(255,255,255,0.4);
-      background:radial-gradient(circle, rgba(255,255,255,0.18), rgba(0,0,0,0.75));
-      box-shadow:0 0 22px rgba(0,0,0,0.45);
-      animation:spin 1.2s linear infinite;
-    }
-
-    .wheel.left{ left:72px; }
-    .wheel.right{ right:72px; }
-
-    .hud{
-      position:absolute;
-      top:22px;
-      left:22px;
-      right:22px;
+    .hero-panel{
+      position:relative;
+      z-index:1;
       display:grid;
-      grid-template-columns:repeat(2,1fr);
       gap:16px;
     }
 
-    .hud-card{
-      padding:16px;
-      border-radius:18px;
-      background:rgba(6,10,18,0.48);
+    .info-box{
+      padding:18px;
+      border-radius:20px;
+      background:rgba(9,13,22,0.58);
       border:1px solid rgba(255,255,255,0.10);
       backdrop-filter:blur(10px);
     }
 
-    .hud-card small{
+    .info-box small{
       display:block;
       color:var(--muted);
       margin-bottom:8px;
       text-transform:uppercase;
-      letter-spacing:0.1em;
-      font-size:0.75rem;
+      letter-spacing:0.08em;
     }
 
-    .hud-card strong{
+    .info-box strong{
       font-family:'Orbitron',sans-serif;
-      font-size:1.2rem;
+      font-size:1.1rem;
     }
 
     .section{
-      padding:40px 0 100px;
+      padding:35px 0 90px;
     }
 
     .section-title{
       font-family:'Orbitron',sans-serif;
-      font-size:clamp(2rem, 4vw, 3rem);
+      font-size:clamp(2rem,4vw,3rem);
       margin-bottom:14px;
       text-transform:uppercase;
     }
 
     .section-subtitle{
       color:var(--muted);
-      max-width:760px;
       line-height:1.85;
       margin-bottom:30px;
+      max-width:760px;
     }
 
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-      margin-top:10px;
-    }
-
-    .stat-card{
-      padding:24px;
-      border-radius:22px;
-      background:var(--card);
-      border:1px solid var(--line);
-      transition:0.3s ease;
-      position:relative;
-      overflow:hidden;
-      backdrop-filter:blur(10px);
-    }
-
-    .stat-card::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-      transform:translateX(-100%);
-      transition:0.7s ease;
-    }
-
-    .stat-card:hover::before{
-      transform:translateX(100%);
-    }
-
-    .stat-card:hover{
-      transform:translateY(-8px);
-      box-shadow:var(--rainbow-shadow);
-      border-color:rgba(255,255,255,0.18);
-    }
-
-    .stat-number{
-      font-family:'Orbitron',sans-serif;
-      font-size:2rem;
-      margin-bottom:10px;
-      background:var(--rainbow);
-      background-size:300% auto;
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-      animation:rainbowMove 5s linear infinite;
-    }
-
-    .stat-card p{
-      color:var(--muted);
-      line-height:1.7;
-    }
-
-    .features-grid{
+    .grid-3{
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:20px;
     }
 
-    .feature{
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+    }
+
+    .card{
       padding:26px;
       border-radius:24px;
       background:rgba(255,255,255,0.045);
       border:1px solid rgba(255,255,255,0.10);
-      transition:0.32s ease;
-      position:relative;
-      overflow:hidden;
-      min-height:220px;
+      transition:0.3s ease;
+      box-shadow:var(--shadow);
     }
 
-    .feature::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:var(--rainbow);
-      background-size:300% auto;
-      animation:rainbowMove 6s linear infinite;
-      opacity:0;
-      transition:0.35s ease;
-      mix-blend-mode:overlay;
-    }
-
-    .feature:hover::before{
-      opacity:0.16;
-    }
-
-    .feature:hover{
+    .card:hover{
       transform:translateY(-8px);
-      border-color:rgba(255,255,255,0.18);
       box-shadow:var(--rainbow-shadow);
     }
 
-    .feature-icon{
-      width:56px;
-      height:56px;
-      border-radius:16px;
-      display:grid;
-      place-items:center;
-      margin-bottom:18px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.10);
-      font-size:1.3rem;
-      font-weight:800;
-      font-family:'Orbitron',sans-serif;
-    }
-
-    .feature h3{
+    .card h3{
       margin-bottom:12px;
       font-size:1.15rem;
-    }
-
-    .feature p{
-      color:var(--muted);
-      line-height:1.8;
-    }
-
-    .showcase{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:22px;
-    }
-
-    .panel{
-      padding:26px;
-      border-radius:26px;
-      background:rgba(255,255,255,0.045);
-      border:1px solid rgba(255,255,255,0.10);
-      box-shadow:var(--shadow);
-      transition:0.3s ease;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .panel:hover{
-      transform:translateY(-8px);
-      box-shadow:var(--rainbow-shadow);
-    }
-
-    .panel h3{
       font-family:'Orbitron',sans-serif;
-      margin-bottom:10px;
-      font-size:1.2rem;
     }
 
-    .panel p{
+    .card p{
       color:var(--muted);
       line-height:1.8;
-      margin-bottom:18px;
     }
 
-    .crew-list{
-      display:grid;
-      gap:12px;
-    }
-
-    .crew-item{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:14px 16px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      transition:0.25s ease;
-    }
-
-    .crew-item:hover{
-      transform:translateX(4px);
-      border-color:rgba(255,255,255,0.16);
-    }
-
-    .tag{
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.08);
-      color:var(--text);
-      font-size:0.9rem;
-    }
-
-    .events{
+    .list{
       display:grid;
       gap:14px;
     }
 
-    .event{
+    .list-item{
       padding:16px;
       border-radius:18px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.08);
-      transition:0.28s ease;
     }
 
-    .event:hover{
-      transform:scale(1.015);
-      box-shadow:var(--rainbow-shadow);
-    }
-
-    .event strong{
+    .list-item strong{
       display:block;
       margin-bottom:6px;
     }
 
-    .event span{
+    .list-item span{
       color:var(--muted);
       line-height:1.7;
-      display:block;
+    }
+
+    .games{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+
+    .game-tag{
+      padding:14px 18px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.10);
+      color:var(--text);
+      font-weight:700;
     }
 
     .cta-box{
       padding:46px 24px;
       text-align:center;
       border-radius:30px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)),
-        rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
       border:1px solid rgba(255,255,255,0.10);
+      box-shadow:var(--rainbow-shadow);
       position:relative;
       overflow:hidden;
-      box-shadow:var(--rainbow-shadow);
     }
 
     .cta-box::before{
@@ -655,50 +370,33 @@
       background:var(--rainbow);
       background-size:300% auto;
       animation:rainbowMove 5s linear infinite;
-      opacity:0.09;
+      opacity:0.08;
     }
 
     .cta-box > *{
       position:relative;
+      z-index:1;
     }
 
     .cta-box h2{
       font-family:'Orbitron',sans-serif;
-      font-size:clamp(2rem,4vw,3.2rem);
+      font-size:clamp(2rem,4vw,3rem);
       margin-bottom:14px;
       text-transform:uppercase;
     }
 
     .cta-box p{
       color:var(--muted);
+      line-height:1.8;
       max-width:760px;
       margin:0 auto 24px;
-      line-height:1.85;
-    }
-
-    .cta-actions{
-      display:flex;
-      gap:16px;
-      justify-content:center;
-      flex-wrap:wrap;
     }
 
     footer{
-      padding:26px 0 50px;
+      padding:30px 0 50px;
       text-align:center;
       color:var(--muted);
       border-top:1px solid rgba(255,255,255,0.08);
-    }
-
-    .reveal{
-      opacity:0;
-      transform:translateY(30px);
-      transition:opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .reveal.active{
-      opacity:1;
-      transform:translateY(0);
     }
 
     @keyframes rainbowMove{
@@ -706,187 +404,291 @@
       100%{background-position:300% 50%;}
     }
 
-    @keyframes shine{
-      0%{left:-35%;}
-      100%{left:120%;}
-    }
-
-    @keyframes roadMove{
-      0%{transform:translateX(0);}
-      100%{transform:translateX(74px);}
-    }
-
-    @keyframes floatCar{
-      0%,100%{transform:translate(-50%, -50%) skewX(-12deg) translateY(0);}
-      50%{transform:translate(-50%, -50%) skewX(-12deg) translateY(-10px);}
-    }
-
     @keyframes spin{
       0%{transform:rotate(0deg);}
       100%{transform:rotate(360deg);}
     }
 
-    @media (max-width: 1100px){
+    @media (max-width: 1000px){
       .hero,
-      .showcase{
+      .grid-2,
+      .grid-3{
         grid-template-columns:1fr;
-      }
-
-      .features-grid{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .stats{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .hero-visual{
-        min-height:460px;
       }
     }
 
-    @media (max-width: 760px){
+    @media (max-width: 780px){
       .nav-links{
         display:none;
       }
-
-      .hero{
-        padding-top:70px;
-      }
-
-      .features-grid,
-      .stats{
-        grid-template-columns:1fr;
-      }
-
-      .hero-visual{
-        min-height:400px;
-      }
-
-      .hud{
-        grid-template-columns:1fr;
-      }
-
-      .car{
-        height:180px;
-      }
-
-      .wheel{
-        width:58px;
-        height:58px;
-      }
-
-      .wheel.left{ left:52px; }
-      .wheel.right{ right:52px; }
     }
   </style>
 </head>
 <body>
-  <div class="mouse-glow" id="mouseGlow"></div>
 
   <header>
     <div class="container nav">
-      <div class="logo">NFS COMMUNITY</div>
+      <div class="logo">NightStalkerZ</div>
 
       <ul class="nav-links">
-        <li><a href="#home">Home</a></li>
-        <li><a href="#stats">Stats</a></li>
+        <li><a href="#about">Über uns</a></li>
+        <li><a href="#games">Games</a></li>
         <li><a href="#features">Features</a></li>
-        <li><a href="#showcase">Crews</a></li>
+        <li><a href="#events">Events</a></li>
         <li><a href="#join">Join</a></li>
       </ul>
 
-      <a href="#join" class="nav-cta">Discord Join</a>
+      <a href="#" class="nav-cta">Discord Join</a>
     </div>
   </header>
 
-  <main class="container" id="home">
+  <main class="container">
     <section class="hero">
-      <div class="reveal">
+      <div>
         <div class="badge">
           <span class="badge-dot"></span>
-          Street Racing Vibes, Rainbow Neon und echte Community Energy
+          Need for Speed Community für OGs, Night Drives und Competition
         </div>
 
         <h1>
-          Drive Fast<br>
-          <span class="rainbow-text">Own The Night</span>
+          Welcome to<br>
+          <span class="rainbow-text">NightStalkerZ</span>
         </h1>
 
         <p>
-          Die NFS Community für Racer, Crews, Car Builds, Events und Night-Drive Culture.
-          Dunkel, clean, aggressiv und modern — mit premium Neon-Look, flüssigen Animationen
-          und einer starken Gaming-Attitude.
+          NightStalkerZ ist eine NFS Community für Fahrer, Tuner und Racer, die Need for Speed Heat,
+          World, Most Wanted, Carbon und Underground 1-2 feiern. Der Fokus liegt auf spiel-spezifischen
+          Leaderboards, Community-Events und einer starken Street-Racing-Atmosphäre.
         </p>
 
         <div class="hero-actions">
-          <a href="#join" class="btn btn-primary">Jetzt beitreten</a>
-          <a href="#features" class="btn btn-secondary">Features ansehen</a>
+          <a href="#" class="btn btn-primary">Discord beitreten</a>
+          <a href="#features" class="btn btn-secondary">Mehr erfahren</a>
         </div>
 
-        <div class="hero-mini">
-          <span>Crews & Clans</span>
-          <span>Build Showcases</span>
-          <span>Events & Tournaments</span>
+        <div class="mini-tags">
+          <span>Leaderboards</span>
+          <span>Night Rides</span>
+          <span>Tuning Treffen</span>
+          <span>Purge Night</span>
         </div>
       </div>
 
-      <div class="hero-visual reveal">
-        <div class="hud">
-          <div class="hud-card">
-            <small>Top Speed</small>
-            <strong>320 KM/H</strong>
+      <div class="hero-card">
+        <div class="hero-panel">
+          <div class="info-box">
+            <small>Community Fokus</small>
+            <strong>Spiel-spezifische Leaderboards</strong>
           </div>
-          <div class="hud-card">
-            <small>Active Racers</small>
-            <strong>5.247 Online</strong>
+          <div class="info-box">
+            <small>Beliebte Events</small>
+            <strong>Purge Night, Tuning Treffen, Night Rides</strong>
           </div>
-        </div>
-
-        <div class="car">
-          <div class="wheel left"></div>
-          <div class="wheel right"></div>
-        </div>
-
-        <div class="road"></div>
-      </div>
-    </section>
-
-    <section class="section reveal" id="stats">
-      <h2 class="section-title">Community Stats</h2>
-      <p class="section-subtitle">
-        Eine starke Szene lebt von Aktivität, Competition und Style. Diese Werte kannst du später natürlich durch deine echten Zahlen ersetzen.
-      </p>
-
-      <div class="stats">
-        <div class="stat-card">
-          <div class="stat-number counter" data-target="5200">0</div>
-          <p>Mitglieder in der Community und täglich neue Racer.</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number counter" data-target="340">0</div>
-          <p>Geteilte Car Builds, Setups und Design-Konfigurationen.</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number counter" data-target="48">0</div>
-          <p>Crews, Teams und Gruppen für verschiedene Spielstile.</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number counter" data-target="24">0</div>
-          <p>Stunden Action mit Diskussionen, Support und Events.</p>
+          <div class="info-box">
+            <small>Unterstützte Spiele</small>
+            <strong>Heat, World, Most Wanted, Carbon, Underground 1-2</strong>
+          </div>
+          <div class="info-box">
+            <small>Status</small>
+            <strong>Street Racing Vibes rund um die Uhr</strong>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section reveal" id="features">
-      <h2 class="section-title">Premium Features</h2>
+    <section id="about" class="section">
+      <h2 class="section-title">Über NightStalkerZ</h2>
       <p class="section-subtitle">
-        Diese Landingpage ist nicht nur clean, sondern bewusst auf Gaming, Community-Aufbau und starke visuelle Wirkung ausgelegt.
+        NightStalkerZ verbindet klassische und moderne Need for Speed Teile in einer Community.
+        Hier treffen sich Spieler, die nicht nur fahren, sondern auch tunen, vergleichen, sich messen
+        und gemeinsam Events im Spiel erleben wollen.
       </p>
 
-      <div class="features-grid">
-        <div class="feature">
-          <div class="feature-icon">01</div>
-          <h3>Rainbow Neon Effects</h3>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Community Spirit</h3>
           <p>
-            Animierte Farbverläufe, Glows und Lichtakzente sorgen für einen auffälligen Hardcore-N
+            Eine Szene für Spieler, die Underground, Carbon, Most Wanted und Heat nicht nur kennen,
+            sondern wirklich fühlen. Von OG-Vibes bis modernen Night Sessions.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Competitive Focus</h3>
+          <p>
+            Mit spiel-spezifischen Leaderboards können Fahrer ihre Zeiten, Builds und Leistungen
+            vergleichen und sich in der Community nach oben arbeiten.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Ingame Events</h3>
+          <p>
+            Regelmäßige Community-Aktivitäten sorgen für Bewegung. Dazu gehören Purge Night,
+            Tuning Treffen und entspannte Night Rides.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="games" class="section">
+      <h2 class="section-title">Gespielte NFS Teile</h2>
+      <p class="section-subtitle">
+        NightStalkerZ ist nicht auf nur ein Spiel beschränkt. Die Community verbindet mehrere Generationen
+        von Need for Speed und schafft Raum für verschiedene Spielstile.
+      </p>
+
+      <div class="games">
+        <div class="game-tag">Need for Speed Heat</div>
+        <div class="game-tag">Need for Speed World</div>
+        <div class="game-tag">Need for Speed Most Wanted</div>
+        <div class="game-tag">Need for Speed Carbon</div>
+        <div class="game-tag">Need for Speed Underground</div>
+        <div class="game-tag">Need for Speed Underground 2</div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2 class="section-title">Features</h2>
+      <p class="section-subtitle">
+        Basierend auf deinen Angaben und sinnvoll ergänzt, damit NightStalkerZ wie eine echte,
+        aktive Racing-Community wirkt.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Spiel-spezifische Leaderboards</h3>
+          <p>
+            Eigene Rankings pro NFS-Titel für Zeiten, Siege, Top Speed oder andere Community-Wertungen.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Build Showcase</h3>
+          <p>
+            Mitglieder präsentieren ihre besten Fahrzeuge, Tuning-Setups und Designs aus verschiedenen NFS-Teilen.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Night Ride Sessions</h3>
+          <p>
+            Gemeinsame Fahrten, entspannte Meets und Street-Racing-Vibes in einer aktiven Community.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Purge Night</h3>
+          <p>
+            Spezielle Event-Nächte mit freier Action, Duellen, Challenges und maximaler Night-Drive-Energie.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Tuning Treffen</h3>
+          <p>
+            Community-Treffen im Spiel, bei denen Fahrzeuge gezeigt, bewertet und verglichen werden.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Hall of Fame</h3>
+          <p>
+            Ein Bereich für legendäre Fahrer, starke Builds, Event-Gewinner und Community-Momente.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="events" class="section">
+      <h2 class="section-title">Events</h2>
+      <p class="section-subtitle">
+        Ingame-Events geben der Community Struktur, Aktivität und einen wiedererkennbaren Stil.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Aktuelle Event-Ideen</h3>
+          <div class="list">
+            <div class="list-item">
+              <strong>Purge Night</strong>
+              <span>Freie Race-Nacht mit aggressiverem Stil, spontanen Duellen und maximaler Action.</span>
+            </div>
+            <div class="list-item">
+              <strong>Tuning Treffen</strong>
+              <span>Fahrzeuge präsentieren, Setups vergleichen und über Styles, Performance und Optik diskutieren.</span>
+            </div>
+            <div class="list-item">
+              <strong>Night Rides</strong>
+              <span>Gemeinsame entspannte Ausfahrten durch die Nacht mit Community-Fokus.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Weitere starke Event-Vorschläge</h3>
+          <div class="list">
+            <div class="list-item">
+              <strong>Build of the Week</strong>
+              <span>Die Community stimmt wöchentlich über das beste Auto oder Setup ab.</span>
+            </div>
+            <div class="list-item">
+              <strong>Crew Battle</strong>
+              <span>Teams oder Gruppen treten in ausgewählten Challenges gegeneinander an.</span>
+            </div>
+            <div class="list-item">
+              <strong>Screenshot Contest</strong>
+              <span>Mitglieder posten ihre besten Nightshots, Tuning-Szenen oder Verfolgungsmomente.</span>
+            </div>
+            <div class="list-item">
+              <strong>Time Attack Challenge</strong>
+              <span>Wöchentliche Strecken-Challenge mit Eintragung ins jeweilige Leaderboard.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Was du noch ergänzen könntest</h2>
+      <p class="section-subtitle">
+        Damit NightStalkerZ noch größer und professioneller wirkt, kannst du später weitere Bereiche hinzufügen.
+      </p>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Crew System</h3>
+          <p>
+            Eigene Teams oder Gruppen für verschiedene NFS-Spiele, Fahrstile oder Event-Formate.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Discord Rollen</h3>
+          <p>
+            Rollen nach Spiel, Aktivität, Crew, Event-Teilnahme oder Skill-Level für mehr Struktur.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Media & Clips</h3>
+          <p>
+            Ein Bereich für Highlights, Screenshots, kurze Clips und legendäre Community-Momente.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="join" class="section">
+      <div class="cta-box">
+        <h2><span class="rainbow-text">Join NightStalkerZ</span></h2>
+        <p>
+          Werde Teil einer Community, die klassische und moderne Need for Speed Teile verbindet.
+          Fahre Night Rides, nimm an Events teil, zeige deine Builds und climb das Leaderboard.
+        </p>
+        <div class="hero-actions" style="justify-content:center;">
+          <a href="#" class="btn btn-primary">Discord beitreten</a>
+          <a href="#events" class="btn btn-secondary">Events ansehen</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2025 NightStalkerZ — Need for Speed Community for night racers.
+    </div>
+  </footer>
+</body>
+</html>
