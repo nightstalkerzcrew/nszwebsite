@@ -5,1393 +5,1419 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Leaderboard | NightStalkerZ</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#040509;
+      --bg2:#0a0d14;
+      --text:#f3f6ff;
+      --muted:#9fa8c3;
+      --card:rgba(255,255,255,0.05);
+      --border:rgba(255,255,255,0.10);
+      --rainbow:linear-gradient(90deg,#ff004c,#ff7a00,#ffd500,#00ff99,#00d9ff,#6f5cff,#ff00c8,#ff004c);
+      --shadow:0 10px 40px rgba(0,0,0,0.45);
+      --rainbow-shadow:0 0 30px rgba(255,0,200,0.16),0 0 60px rgba(0,217,255,0.14),0 0 90px rgba(0,255,153,0.08);
     }
 
-    :root {
-      --bg-dark: #070b14;
-      --bg-deeper: #04070d;
-      --card-bg: rgba(10, 14, 24, 0.78);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --text-main: #ffffff;
-      --text-soft: rgba(255, 255, 255, 0.72);
-      --text-muted: rgba(255, 255, 255, 0.55);
-
-      --cyan: #00eaff;
-      --blue: #3b82f6;
-      --purple: #8b5cf6;
-      --pink: #ff007f;
-      --orange: #ff7a00;
-
-      --gold: #ffd700;
-      --silver: #c0c0c0;
-      --bronze: #cd7f32;
-
-      --gradient-main: linear-gradient(90deg, #ff007f 0%, #8b5cf6 35%, #00eaff 100%);
-      --gradient-warm: linear-gradient(90deg, #ff007f 0%, #ff7a00 100%);
-      --gradient-cool: linear-gradient(90deg, #00eaff 0%, #3b82f6 100%);
-      --shadow-main: 0 0 30px rgba(0, 234, 255, 0.12), 0 0 40px rgba(255, 0, 127, 0.12);
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --radius-sm: 14px;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
+    html{
+      scroll-behavior:smooth;
     }
 
-    body {
-      min-height: 100vh;
-      font-family: 'Inter', sans-serif;
-      color: var(--text-main);
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
       background:
-        radial-gradient(circle at top left, rgba(255, 0, 127, 0.18), transparent 30%),
-        radial-gradient(circle at top right, rgba(0, 234, 255, 0.14), transparent 30%),
-        linear-gradient(135deg, rgba(255, 0, 128, 0.10), rgba(0, 255, 255, 0.05)),
-        linear-gradient(180deg, rgba(7, 11, 20, 0.92), rgba(4, 7, 13, 0.98)),
-        url("HIER_DEIN_GITHUB_BANNER_LINK_EINFUEGEN") center center / cover no-repeat fixed;
-      overflow-x: hidden;
+        radial-gradient(circle at 15% 20%, rgba(255,0,100,0.14), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(0,217,255,0.14), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(122,92,255,0.10), transparent 30%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(255, 0, 127, 0.12), transparent 22%),
-        radial-gradient(circle at 85% 25%, rgba(0, 234, 255, 0.10), transparent 22%),
-        radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.08), transparent 28%);
-      z-index: 0;
+    .container{
+      width:min(1180px,92%);
+      margin:0 auto;
     }
 
-    *::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+    header{
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter:blur(14px);
+      background:rgba(4,5,9,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.08);
     }
 
-    *::-webkit-scrollbar-thumb {
-      background: var(--gradient-main);
-      border-radius: 999px;
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      padding:20px 0;
     }
 
-    *::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.04);
+    .logo-wrap{
+      position:relative;
+      display:inline-block;
     }
 
-    .page {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      min-height: 100vh;
-      padding: 28px 16px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+    .logo{
+      position:relative;
+      font-family:'Orbitron',sans-serif;
+      font-weight:900;
+      font-size:clamp(1.15rem,2.1vw,1.65rem);
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 6s linear infinite;
+      text-align:center;
+      line-height:1;
+      transition:transform 0.3s ease, filter 0.3s ease;
+      filter:drop-shadow(0 0 10px rgba(255,255,255,0.04));
     }
 
-    .panel {
-      width: 100%;
-      max-width: 1500px;
-      background: rgba(8, 12, 20, 0.75);
-      border: 1px solid var(--card-border);
-      border-radius: 28px;
-      backdrop-filter: blur(18px);
-      box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.45),
-        0 0 30px rgba(255, 0, 127, 0.10),
-        0 0 30px rgba(0, 234, 255, 0.08);
-      overflow: hidden;
+    .logo::before,
+    .logo::after{
+      content:"NightStalkerZ";
+      position:absolute;
+      inset:0;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.28s ease, transform 0.28s ease;
     }
 
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      padding: 24px 28px;
-      background:
-        linear-gradient(90deg, rgba(255, 0, 127, 0.16), rgba(0, 234, 255, 0.10)),
-        rgba(255,255,255,0.02);
-      border-bottom: 1px solid var(--card-border);
-      flex-wrap: wrap;
+    .logo::before{
+      color:#00d9ff;
     }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .logo::after{
+      color:#ff004c;
     }
 
-    .brand small {
-      color: var(--cyan);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: 'Orbitron', sans-serif;
+    .logo-wrap:hover .logo{
+      filter:drop-shadow(0 0 16px rgba(255,255,255,0.08));
     }
 
-    .brand h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 30px;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      text-shadow: 0 0 16px rgba(255, 0, 127, 0.35);
+    .logo-wrap:hover .logo::before{
+      opacity:0.14;
+      transform:translate(1px,0);
     }
 
-    .top-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    .logo-wrap:hover .logo::after{
+      opacity:0.14;
+      transform:translate(-1px,0);
     }
 
-    .nav-link,
-    .action-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: #fff;
-      background: var(--gradient-main);
-      padding: 12px 18px;
-      border-radius: 14px;
-      font-weight: 800;
-      font-size: 14px;
-      border: 1px solid rgba(255,255,255,0.08);
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-      box-shadow: 0 0 18px rgba(255, 0, 127, 0.18);
-      font-family: 'Inter', sans-serif;
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
-    .nav-link:hover,
-    .action-link:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 28px rgba(0, 234, 255, 0.20);
+    .btn{
+      text-decoration:none;
+      padding:15px 24px;
+      border-radius:16px;
+      font-weight:800;
+      transition:0.28s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:54px;
+      border:none;
+      cursor:pointer;
+      font-size:0.96rem;
+      font-family:'Inter',sans-serif;
     }
 
-    .nav-link:disabled,
-    .action-link:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-      transform: none;
+    .btn-primary{
+      color:#fff;
+      background:var(--rainbow);
+      background-size:300% auto;
+      animation:rainbowMove 6s linear infinite;
+      box-shadow:var(--rainbow-shadow);
     }
 
-    .content {
-      display: grid;
-      grid-template-columns: 400px 1fr;
-      gap: 24px;
-      padding: 24px;
+    .btn-secondary{
+      color:var(--text);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.12);
     }
 
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      backdrop-filter: blur(14px);
-      box-shadow: inset 0 0 20px rgba(255,255,255,0.02), var(--shadow-main);
+    .btn:hover{
+      transform:translateY(-4px);
     }
 
-    .card h2 {
-      margin-bottom: 14px;
-      font-size: 24px;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      letter-spacing: 0.5px;
+    .hero{
+      padding:80px 0 30px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
     }
 
-    .subtext {
-      color: var(--text-soft);
-      margin-bottom: 18px;
-      line-height: 1.6;
-      font-size: 14px;
+    h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(2.4rem,7vw,4.8rem);
+      line-height:0.96;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      text-align:center;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 18px;
+    .rainbow-text{
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 5s linear infinite;
     }
 
-    .stat-box {
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: inset 0 0 12px rgba(255,255,255,0.02);
+    .hero p{
+      color:var(--muted);
+      line-height:1.9;
+      margin:0 auto 10px;
+      max-width:780px;
+      font-size:1.02rem;
+      text-align:center;
     }
 
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      font-weight: 700;
+    .section{
+      padding:28px 0 80px;
+      text-align:center;
     }
 
-    .stat-value {
-      font-size: 28px;
-      font-weight: 800;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
+    .grid-2{
+      display:grid;
+      grid-template-columns:380px 1fr;
+      gap:22px;
+      align-items:start;
     }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      margin-top: 14px;
-      font-weight: 700;
-      color: #f3f7ff;
-      font-size: 14px;
+    .card{
+      padding:26px;
+      border-radius:24px;
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.10);
+      transition:0.3s ease;
+      box-shadow:var(--shadow);
+      text-align:left;
+      height:100%;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .card h2{
+      margin-bottom:12px;
+      font-size:1.22rem;
+      font-family:'Orbitron',sans-serif;
+      text-transform:uppercase;
+      text-align:left;
+    }
+
+    .subtext{
+      color:var(--muted);
+      margin-bottom:18px;
+      line-height:1.8;
+      text-align:left;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .stat-box{
+      padding:16px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .stat-label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+      font-weight:700;
+    }
+
+    .stat-value{
+      font-size:26px;
+      font-weight:800;
+      color:#fff;
+      font-family:'Orbitron',sans-serif;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      margin-top:14px;
+      font-weight:700;
+      color:var(--text);
+      text-align:left;
     }
 
     input,
     select,
-    textarea {
-      width: 100%;
-      padding: 14px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05);
-      color: #fff;
-      font-size: 15px;
-      outline: none;
-      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-      font-family: 'Inter', sans-serif;
+    textarea{
+      width:100%;
+      padding:15px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      font-size:15px;
+      outline:none;
+      transition:border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      font-family:'Inter',sans-serif;
     }
 
-    select option {
-      color: #000;
+    textarea{
+      min-height:100px;
+      resize:vertical;
     }
 
     input::placeholder,
-    textarea::placeholder {
-      color: rgba(255,255,255,0.40);
+    textarea::placeholder{
+      color:rgba(255,255,255,0.42);
     }
 
     input:focus,
     select:focus,
-    textarea:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(0, 234, 255, 0.14);
-      background: rgba(255,255,255,0.07);
+    textarea:focus{
+      border-color:#00d9ff;
+      box-shadow:0 0 0 3px rgba(0,217,255,0.14);
+      transform:translateY(-1px);
     }
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
+    select option{
+      color:#000;
     }
 
-    .row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .row-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
     }
 
-    .actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 18px;
-      flex-wrap: wrap;
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:20px;
+      flex-wrap:wrap;
     }
 
-    .btn {
-      flex: 1;
-      border: none;
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
-      color: #fff;
-      font-family: 'Inter', sans-serif;
+    .actions .btn{
+      flex:1;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-      opacity: 0.98;
+    .helper{
+      margin-top:8px;
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.7;
+      text-align:left;
     }
 
-    .btn:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
+    .status{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      font-weight:700;
+      display:none;
+      border:1px solid rgba(255,255,255,0.08);
+      line-height:1.6;
     }
 
-    .btn-primary {
-      background: var(--gradient-warm);
-      box-shadow: 0 0 20px rgba(255, 0, 127, 0.22);
+    .status.red{
+      display:block;
+      background:rgba(255, 70, 95, 0.12);
+      color:#ffb8c0;
+      box-shadow:0 0 20px rgba(255, 70, 95, 0.08);
     }
 
-    .btn-secondary {
-      background: var(--gradient-cool);
-      box-shadow: 0 0 20px rgba(0, 234, 255, 0.18);
+    .status.green{
+      display:block;
+      background:rgba(0, 255, 153, 0.10);
+      color:#bff8db;
+      box-shadow:0 0 20px rgba(0, 255, 153, 0.08);
     }
 
-    .helper {
-      margin-top: 8px;
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
+    .status.yellow{
+      display:block;
+      background:rgba(255, 213, 0, 0.10);
+      color:#ffe89b;
+      box-shadow:0 0 20px rgba(255, 213, 0, 0.06);
     }
 
-    .status {
-      margin-top: 18px;
-      padding: 14px;
-      border-radius: 14px;
-      font-weight: 700;
-      display: none;
-      border: 1px solid rgba(255,255,255,0.08);
-      line-height: 1.45;
-      font-size: 14px;
+    .toolbar{
+      display:grid;
+      grid-template-columns:1.4fr 1fr 1fr 1fr;
+      gap:12px;
+      margin-bottom:20px;
     }
 
-    .status.success {
-      display: block;
-      background: rgba(40, 167, 69, 0.15);
-      color: #b9f7c8;
-      box-shadow: 0 0 20px rgba(40, 167, 69, 0.08);
+    .leaderboard-groups{
+      display:grid;
+      gap:18px;
     }
 
-    .status.error {
-      display: block;
-      background: rgba(220, 53, 69, 0.15);
-      color: #ffb8c0;
-      box-shadow: 0 0 20px rgba(220, 53, 69, 0.08);
+    .track-block{
+      padding:18px;
+      border-radius:20px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    .status.warn {
-      display: block;
-      background: rgba(255, 193, 7, 0.12);
-      color: #ffe9a8;
-      box-shadow: 0 0 20px rgba(255, 193, 7, 0.08);
+    .track-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:14px;
+      flex-wrap:wrap;
     }
 
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1.3fr 1fr 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 20px;
+    .track-title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
     }
 
-    .leaderboard-groups {
-      display: grid;
-      gap: 22px;
+    .track-kicker{
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      font-weight:700;
     }
 
-    .track-block {
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      overflow: hidden;
-      box-shadow: 0 0 24px rgba(0,0,0,0.16);
+    .track-title h3{
+      font-family:'Orbitron',sans-serif;
+      font-size:1.2rem;
+      text-transform:uppercase;
     }
 
-    .track-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 18px 20px;
-      background: linear-gradient(90deg, rgba(255, 0, 127, 0.14), rgba(0, 234, 255, 0.08));
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
+    .meta-pill{
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      color:#ffffff;
+      white-space:nowrap;
     }
 
-    .track-kicker {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1.6px;
-      color: var(--cyan);
-      margin-bottom: 4px;
-      font-weight: 700;
-      font-family: 'Orbitron', sans-serif;
+    .podium{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-bottom:16px;
     }
 
-    .track-header h3 {
-      font-size: 24px;
-      font-weight: 800;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
+    .podium-card{
+      padding:16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.05);
     }
 
-    .track-meta {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .podium-card.gold{
+      box-shadow:0 0 22px rgba(255,215,0,0.12);
+      background:rgba(255,215,0,0.08);
     }
 
-    .meta-pill {
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.10);
-      color: #fff;
-      font-weight: 700;
-      font-size: 13px;
+    .podium-card.silver{
+      box-shadow:0 0 22px rgba(192,192,192,0.10);
+      background:rgba(192,192,192,0.08);
     }
 
-    .podium {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      padding: 16px 18px 4px;
+    .podium-card.bronze{
+      box-shadow:0 0 22px rgba(205,127,50,0.10);
+      background:rgba(205,127,50,0.08);
     }
 
-    .podium-card {
-      border-radius: 18px;
-      padding: 16px;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(255,255,255,0.05);
-      min-height: 130px;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(10px);
+    .podium-rank{
+      display:inline-block;
+      margin-bottom:10px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.08);
+      font-size:12px;
+      font-weight:800;
     }
 
-    .podium-card::after {
-      content: "";
-      position: absolute;
-      inset: auto -30px -30px auto;
-      width: 90px;
-      height: 90px;
-      background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 65%);
-      pointer-events: none;
+    .podium-name{
+      font-weight:800;
+      font-size:18px;
+      margin-bottom:8px;
     }
 
-    .podium-card.gold {
-      background: linear-gradient(180deg, rgba(255, 215, 0, 0.18), rgba(255,255,255,0.04));
-      box-shadow: 0 0 22px rgba(255, 215, 0, 0.12);
+    .podium-time{
+      font-family:'Orbitron',sans-serif;
+      font-weight:800;
+      margin-bottom:10px;
+      font-size:17px;
     }
 
-    .podium-card.silver {
-      background: linear-gradient(180deg, rgba(192, 192, 192, 0.16), rgba(255,255,255,0.04));
-      box-shadow: 0 0 22px rgba(192, 192, 192, 0.10);
+    .podium-meta{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      word-break:break-word;
     }
 
-    .podium-card.bronze {
-      background: linear-gradient(180deg, rgba(205, 127, 50, 0.16), rgba(255,255,255,0.04));
-      box-shadow: 0 0 22px rgba(205, 127, 50, 0.10);
+    .table-wrap{
+      overflow-x:auto;
     }
 
-    .podium-rank {
-      display: inline-block;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.10);
-    }
-
-    .podium-name {
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .podium-time {
-      font-size: 18px;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 10px;
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    .podium-meta {
-      color: rgba(255,255,255,0.74);
-      font-size: 13px;
-      line-height: 1.45;
-      word-break: break-word;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      padding: 10px 0 0;
-    }
-
-    table {
-      width: 100%;
-      min-width: 1080px;
-      border-collapse: collapse;
+    table{
+      width:100%;
+      min-width:980px;
+      border-collapse:collapse;
     }
 
     th,
-    td {
-      padding: 14px 16px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      vertical-align: top;
+    td{
+      padding:14px 12px;
+      text-align:left;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      vertical-align:top;
     }
 
-    th {
-      font-size: 12px;
-      color: var(--cyan);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      background: rgba(255,255,255,0.04);
-      font-weight: 800;
+    th{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+      font-weight:800;
     }
 
-    td {
-      color: #fff;
-      font-size: 14px;
+    td{
+      color:#fff;
+      font-size:14px;
     }
 
-    tr:hover td {
-      background: rgba(255,255,255,0.03);
+    tr:hover td{
+      background:rgba(255,255,255,0.025);
     }
 
-    .rank {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      font-weight: 900;
-      font-size: 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-family: 'Orbitron', sans-serif;
+    .rank{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:36px;
+      height:36px;
+      border-radius:50%;
+      font-weight:900;
+      font-family:'Orbitron',sans-serif;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
     }
 
-    .rank-1 {
-      color: #000;
-      background: var(--gold);
+    .rank-1{
+      background:#ffd700;
+      color:#000;
     }
 
-    .rank-2 {
-      color: #000;
-      background: var(--silver);
+    .rank-2{
+      background:#c0c0c0;
+      color:#000;
     }
 
-    .rank-3 {
-      color: #000;
-      background: var(--bronze);
+    .rank-3{
+      background:#cd7f32;
+      color:#000;
     }
 
-    .time-pill {
-      display: inline-block;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(0, 234, 255, 0.12);
-      border: 1px solid rgba(0, 234, 255, 0.2);
-      color: #bffcff;
-      font-weight: 800;
-      white-space: nowrap;
-      font-family: 'Orbitron', sans-serif;
+    .time-pill{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(0,217,255,0.12);
+      border:1px solid rgba(0,217,255,0.16);
+      color:#d3fbff;
+      font-weight:800;
+      font-family:'Orbitron',sans-serif;
+      white-space:nowrap;
     }
 
-    .proof-link {
-      display: inline-block;
-      text-decoration: none;
-      color: #fff;
-      font-weight: 700;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, rgba(255,0,127,0.18), rgba(0,234,255,0.18));
-      border: 1px solid rgba(255,255,255,0.12);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    .platform-pill{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      color:#fff;
+      font-weight:700;
+      white-space:nowrap;
     }
 
-    .proof-link:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 18px rgba(0,234,255,0.15);
+    .proof-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:800;
+      color:#fff;
+      background:var(--rainbow);
+      background-size:300% auto;
+      animation:rainbowMove 6s linear infinite;
     }
 
-    .muted {
-      color: rgba(255,255,255,0.56);
-      font-size: 13px;
+    .comment-cell{
+      max-width:240px;
+      word-break:break-word;
+      line-height:1.6;
+      color:var(--text);
     }
 
-    .comment-cell {
-      max-width: 260px;
-      color: rgba(255,255,255,0.86);
-      line-height: 1.45;
-      word-break: break-word;
+    .muted{
+      color:var(--muted);
     }
 
-    .platform-pill {
-      display: inline-block;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: rgba(255, 0, 127, 0.14);
-      border: 1px solid rgba(255,255,255,0.10);
-      color: #ffd0ea;
-      font-weight: 700;
-      white-space: nowrap;
+    .empty{
+      color:var(--muted);
+      padding:22px;
+      text-align:center;
+      border:1px dashed rgba(255,255,255,0.15);
+      border-radius:18px;
+      background:rgba(255,255,255,0.03);
     }
 
-    .empty-block {
-      padding: 22px;
-      color: rgba(255,255,255,0.65);
-      text-align: center;
+    footer{
+      padding:30px 0 50px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.08);
     }
 
-    .footer-note {
-      margin-top: 18px;
-      color: rgba(255,255,255,0.55);
-      font-size: 13px;
-      text-align: center;
-      letter-spacing: 0.4px;
+    @keyframes rainbowMove{
+      0%{background-position:0% 50%;}
+      100%{background-position:300% 50%;}
     }
 
-    @media (max-width: 1200px) {
-      .content {
-        grid-template-columns: 1fr;
+    @media (max-width: 1000px){
+      .grid-2{
+        grid-template-columns:1fr;
       }
 
-      .podium {
-        grid-template-columns: 1fr;
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+
+      .podium{
+        grid-template-columns:1fr;
       }
     }
 
-    @media (max-width: 780px) {
-      .toolbar,
+    @media (max-width: 900px){
+      .nav{
+        flex-direction:column;
+        justify-content:center;
+        gap:14px;
+      }
+
+      .nav-actions{
+        width:auto;
+        justify-content:center;
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+      }
+
+      .actions{
+        flex-direction:column;
+      }
+
+      .actions .btn{
+        width:100%;
+      }
+
       .row-2,
-      .stats {
-        grid-template-columns: 1fr;
+      .stats{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 680px){
+      .nav{
+        padding:18px 0;
       }
 
-      .actions {
-        flex-direction: column;
+      .logo{
+        font-size:1.08rem;
+        letter-spacing:0.12em;
       }
 
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
+      .nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
       }
 
-      .brand h1 {
-        font-size: 24px;
+      .nav-actions .btn{
+        width:100%;
+        min-height:44px;
+        padding:10px 14px;
+        border-radius:12px;
+        font-size:0.9rem;
       }
 
-      table {
-        min-width: 960px;
+      .nav-actions .btn-primary,
+      .nav-actions .btn-secondary{
+        box-shadow:none;
       }
 
-      .card {
-        padding: 20px;
+      .nav-actions .btn-secondary{
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.10);
       }
 
-      .panel {
-        border-radius: 22px;
+      .hero{
+        padding:65px 0 26px;
+      }
+
+      h1{
+        font-size:clamp(1.9rem,9vw,3.2rem);
+        line-height:1.02;
+      }
+
+      .hero p{
+        font-size:0.97rem;
+        line-height:1.8;
+      }
+
+      .section{
+        padding:24px 0 70px;
+      }
+
+      .card{
+        padding:22px;
+      }
+
+      .actions .btn{
+        width:100%;
       }
     }
   </style>
 </head>
 <body>
-<div class="page">
-<div class="panel">
-<div class="topbar">
-<div class="brand">
-<small>Street Racing Control</small>
-<h1>Leaderboard</h1>
-</div>
-
-<div class="top-actions">
-<a class="nav-link" href="index.html">Startseite</a>
-<a class="nav-link" href="fahrer.html">Zur Fahrerseite</a>
-</div>
-</div>
-
-<div class="content">
-<aside class="card">
-<h2>Zeit einreichen</h2>
-<p class="subtext">
-Neue Zeiten werden gespeichert. Die Anzeige zeigt pro Strecke automatisch nur die beste Zeit je Fahrer.
-</p>
-
-<div class="stats">
-<div class="stat-box">
-<div class="stat-label">Einträge</div>
-<div class="stat-value" id="statLeaderboard">0</div>
-</div>
-<div class="stat-box">
-<div class="stat-label">Fahrer</div>
-<div class="stat-value" id="statDrivers">0</div>
-</div>
-<div class="stat-box">
-<div class="stat-label">Strecken</div>
-<div class="stat-value" id="statTracks">0</div>
-</div>
-<div class="stat-box">
-<div class="stat-label">Autos</div>
-<div class="stat-value" id="statCars">0</div>
-</div>
-</div>
-
-<label for="driverSelect">Fahrer</label>
-<select id="driverSelect">
-<option value="">Bitte Fahrer wählen</option>
-</select>
-
-<div class="row-2">
-<div>
-<label for="trackSelect">Strecke</label>
-<select id="trackSelect">
-<option value="">Bitte Strecke wählen</option>
-</select>
-</div>
-
-<div>
-<label for="carSelect">Fahrzeug</label>
-<select id="carSelect">
-<option value="">Bitte Fahrzeug wählen</option>
-</select>
-</div>
-</div>
-
-<label for="timeInput">Zeit</label>
-<input id="timeInput" type="text" placeholder="z. B. 4:21.222" />
-<div class="helper">Erlaubte Formate: 4:21.222, 4:21:222 oder 4:21</div>
-
-<div class="row-2">
-<div>
-<label for="discordIdInput">Discord-ID</label>
-<input id="discordIdInput" type="text" placeholder="wird automatisch eingefügt" />
-</div>
-
-<div>
-<label for="proofInput">Beweis</label>
-<input id="proofInput" type="text" placeholder="https://..." />
-</div>
-</div>
-
-<label for="commentInput">Kommentar</label>
-<textarea id="commentInput" placeholder="Optionaler Kommentar"></textarea>
-
-<div class="actions">
-<button class="btn btn-primary" id="submitBtn" type="button">Zeit absenden</button>
-<button class="btn btn-secondary" id="reloadBtnBottom" type="button">Neu laden</button>
-</div>
-
-<div id="submitStatus" class="status"></div>
-</aside>
-
-<main class="card" id="leaderboardSection">
-<h2>Alle Strecken</h2>
-<p class="subtext">
-Alle Strecken und Autos kommen aus einer internen Tabelle. Pro Strecke wird nur die beste Zeit je Fahrer gerankt.
-</p>
-
-<div class="toolbar">
-<input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Fahrzeug, Discord oder Kommentar" />
-<select id="filterTrack">
-<option value="">Alle Strecken</option>
-</select>
-<select id="filterCar">
-<option value="">Alle Fahrzeuge</option>
-</select>
-<select id="filterPlatform">
-<option value="">Alle Plattformen</option>
-<option value="PC">PC</option>
-<option value="PlayStation">PlayStation</option>
-<option value="Xbox">Xbox</option>
-</select>
-</div>
-
-<div id="groupedLeaderboard" class="leaderboard-groups">
-<div class="empty-block">Lade Daten ...</div>
-</div>
-
-<div id="loadStatus" class="status"></div>
-
-<div class="footer-note">
-NightStalkerZ Leaderboard
-</div>
-</main>
-</div>
-</div>
-</div>
-
-<script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVk7eC1kmqFhhZipoXpo4lmwiNT4oLYACVBQkJLolJjXMAsVGCzsdr85vY-y_-kPkf/exec";
-
-const state = {
-  drivers: [],
-  tracks: [],
-  cars: [],
-  leaderboard: [],
-  driverPlatformMap: {},
-  driverDiscordMap: {}
-};
-
-const el = {
-  statLeaderboard: document.getElementById("statLeaderboard"),
-  statDrivers: document.getElementById("statDrivers"),
-  statTracks: document.getElementById("statTracks"),
-  statCars: document.getElementById("statCars"),
-
-  driverSelect: document.getElementById("driverSelect"),
-  trackSelect: document.getElementById("trackSelect"),
-  carSelect: document.getElementById("carSelect"),
-  timeInput: document.getElementById("timeInput"),
-  discordIdInput: document.getElementById("discordIdInput"),
-  proofInput: document.getElementById("proofInput"),
-  commentInput: document.getElementById("commentInput"),
-  submitBtn: document.getElementById("submitBtn"),
-  submitStatus: document.getElementById("submitStatus"),
-
-  reloadBtnBottom: document.getElementById("reloadBtnBottom"),
-  leaderboardSection: document.getElementById("leaderboardSection"),
-  groupedLeaderboard: document.getElementById("groupedLeaderboard"),
-  loadStatus: document.getElementById("loadStatus"),
-
-  searchInput: document.getElementById("searchInput"),
-  filterTrack: document.getElementById("filterTrack"),
-  filterCar: document.getElementById("filterCar"),
-  filterPlatform: document.getElementById("filterPlatform")
-};
-
-function setStatus(node, text, type = "") {
-  node.textContent = text || "";
-  node.className = "status" + (type ? " " + type : "");
-}
-
-function escapeHtml(value) {
-  return String(value == null ? "" : value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function normalizeTimeInput(value) {
-  return String(value || "").trim().replace(",", ".");
-}
-
-function normalizeUrl(value) {
-  const str = String(value || "").trim();
-  if (!str) return "";
-  if (/^https?:\/\//i.test(str)) return str;
-  return "https://" + str;
-}
-
-function isValidTime(value) {
-  const str = normalizeTimeInput(value);
-  return /^(\d+):(\d{1,2})([.:](\d{1,3}))?$/.test(str);
-}
-
-function formatTime(value) {
-  return normalizeTimeInput(value);
-}
-
-function parseTimeToMs(value) {
-  const str = formatTime(value);
-
-  let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
-  if (match) {
-    const minutes = parseInt(match[1], 10);
-    const seconds = parseInt(match[2], 10);
-    const millis = parseInt(match[3].padEnd(3, "0"), 10);
-    return minutes * 60000 + seconds * 1000 + millis;
-  }
-
-  match = str.match(/^(\d+):(\d{1,2}):(\d{1,3})$/);
-  if (match) {
-    const minutes = parseInt(match[1], 10);
-    const seconds = parseInt(match[2], 10);
-    const millis = parseInt(match[3].padEnd(3, "0"), 10);
-    return minutes * 60000 + seconds * 1000 + millis;
-  }
-
-  match = str.match(/^(\d+):(\d{1,2})$/);
-  if (match) {
-    const minutes = parseInt(match[1], 10);
-    const seconds = parseInt(match[2], 10);
-    return minutes * 60000 + seconds * 1000;
-  }
-
-  return Number.MAX_SAFE_INTEGER;
-}
-
-function getRowValue(row, keys) {
-  for (const key of keys) {
-    const value = row && row[key];
-    if (value !== undefined && value !== null && String(value).trim() !== "") {
-      return String(value).trim();
-    }
-  }
-  return "";
-}
-
-function getPlatformByDriverName(driverName) {
-  const key = String(driverName || "").trim().toLowerCase();
-  return state.driverPlatformMap[key] || "";
-}
-
-function mapLeaderboardRow(row) {
-  const fahrer = getRowValue(row, ["fahrer", "driverName", "driver"]);
-  return {
-    fahrer: fahrer,
-    strecke: getRowValue(row, ["strecke", "track"]),
-    fahrzeug: getRowValue(row, ["fahrzeug", "car", "auto"]),
-    besteZeit: getRowValue(row, ["besteZeit", "time"]),
-    discordId: getRowValue(row, ["discordId", "discord", "discordID"]),
-    proof: getRowValue(row, ["proof", "beweis"]),
-    comment: getRowValue(row, ["comment", "kommentar"]),
-    timestamp: getRowValue(row, ["timestamp", "createdAt", "date"]),
-    plattform: getPlatformByDriverName(fahrer)
-  };
-}
-
-async function apiGet(type) {
-  const res = await fetch(`${SCRIPT_URL}?type=${encodeURIComponent(type)}`);
-  const raw = await res.text();
-
-  let json;
-  try {
-    json = JSON.parse(raw);
-  } catch (error) {
-    throw new Error("Ungültige Serverantwort: " + raw);
-  }
-
-  if (!json.success) {
-    throw new Error(json.message || "Serverfehler");
-  }
-
-  return Array.isArray(json.data) ? json.data : [];
-}
-
-function fillSelect(select, items, placeholder, keyName) {
-  select.innerHTML = "";
-
-  const first = document.createElement("option");
-  first.value = "";
-  first.textContent = placeholder;
-  select.appendChild(first);
-
-  const seen = new Set();
-
-  items.forEach(item => {
-    const val = String(item[keyName] || "").trim();
-    if (!val || seen.has(val.toLowerCase())) return;
-
-    seen.add(val.toLowerCase());
-
-    const option = document.createElement("option");
-    option.value = val;
-    option.textContent = val;
-    select.appendChild(option);
-  });
-}
-
-function buildDriverPlatformMap() {
-  const map = {};
-
-  state.drivers.forEach(driver => {
-    const fahrer = String(driver.fahrer || "").trim().toLowerCase();
-    const plattform = String(driver.plattform || "").trim();
-
-    if (fahrer) {
-      map[fahrer] = plattform;
-    }
-  });
-
-  state.driverPlatformMap = map;
-}
-
-function buildDriverDiscordMap() {
-  const map = {};
-
-  state.drivers.forEach(driver => {
-    const fahrer = String(driver.fahrer || "").trim().toLowerCase();
-    const discordId = String(driver.discordId || driver.discord || driver.discordID || "").trim();
-
-    if (fahrer) {
-      map[fahrer] = discordId;
-    }
-  });
-
-  state.driverDiscordMap = map;
-}
-
-function autofillDriverDiscord() {
-  const selectedDriver = String(el.driverSelect.value || "").trim().toLowerCase();
-
-  if (!selectedDriver) {
-    el.discordIdInput.value = "";
-    return;
-  }
-
-  const discordId = state.driverDiscordMap[selectedDriver] || "";
-  el.discordIdInput.value = discordId;
-}
-
-function updateStats() {
-  el.statLeaderboard.textContent = String(state.leaderboard.length);
-  el.statDrivers.textContent = String(state.drivers.length);
-  el.statTracks.textContent = String(state.tracks.length);
-  el.statCars.textContent = String(state.cars.length);
-}
-
-function keepBestTimePerDriver(rows) {
-  const bestMap = {};
-
-  rows.forEach(row => {
-    const driverKey = String(row.fahrer || "").trim().toLowerCase();
-    if (!driverKey) return;
-
-    const currentMs = parseTimeToMs(row.besteZeit);
-
-    if (!bestMap[driverKey]) {
-      bestMap[driverKey] = row;
-      return;
-    }
-
-    const bestMs = parseTimeToMs(bestMap[driverKey].besteZeit);
-
-    if (currentMs < bestMs) {
-      bestMap[driverKey] = row;
-      return;
-    }
-
-    if (currentMs === bestMs) {
-      const currentTimestamp = String(row.timestamp || "");
-      const bestTimestamp = String(bestMap[driverKey].timestamp || "");
-      if (currentTimestamp && bestTimestamp && currentTimestamp > bestTimestamp) {
-        bestMap[driverKey] = row;
-      }
-    }
-  });
-
-  return Object.values(bestMap);
-}
-
-function buildPodium(rows) {
-  const top3 = rows.slice(0, 3);
-  if (!top3.length) return "";
-
-  const classes = ["gold", "silver", "bronze"];
-  let html = `<div class="podium">`;
-
-  top3.forEach((row, index) => {
-    const place = index + 1;
-    const car = escapeHtml(row.fahrzeug || "-");
-    const discord = escapeHtml(row.discordId || "-");
-    const time = escapeHtml(row.besteZeit || "-");
-    const name = escapeHtml(row.fahrer || "-");
-    const platform = escapeHtml(row.plattform || "-");
-
-    html += `
-      <div class="podium-card ${classes[index] || ""}">
-        <div class="podium-rank">Platz ${place}</div>
-        <div class="podium-name">${name}</div>
-        <div class="podium-time">${time}</div>
-        <div class="podium-meta">Fahrzeug: ${car}</div>
-        <div class="podium-meta">Discord: ${discord}</div>
-        <div class="podium-meta">Plattform: ${platform}</div>
+  <header>
+    <div class="container nav">
+      <div class="logo-wrap">
+        <div class="logo">NightStalkerZ</div>
       </div>
-    `;
-  });
 
-  html += `</div>`;
-  return html;
-}
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="index.html">Startseite</a>
+        <a class="btn btn-primary" href="fahrer.html">Zur Fahrerseite</a>
+      </div>
+    </div>
+  </header>
 
-function renderGroupedLeaderboards() {
-  const search = el.searchInput.value.trim().toLowerCase();
-  const selectedTrack = el.filterTrack.value.trim().toLowerCase();
-  const selectedCar = el.filterCar.value.trim().toLowerCase();
-  const selectedPlatform = el.filterPlatform.value.trim().toLowerCase();
+  <main class="container">
+    <section class="hero">
+      <h1>
+        Racing<br>
+        <span class="rainbow-text">Leaderboard</span>
+      </h1>
 
-  const groupedRows = {};
+      <p>
+        Reiche neue Zeiten ein, vergleiche Fahrer, Fahrzeuge und Plattformen und zeige pro Strecke
+        automatisch nur die schnellste Zeit jedes Fahrers im NightStalkerZ Stil.
+      </p>
+    </section>
 
-  state.tracks.forEach(track => {
-    const trackName = String(track.strecke || "").trim();
-    if (trackName) groupedRows[trackName] = [];
-  });
+    <section class="section">
+      <div class="grid-2">
+        <aside class="card">
+          <h2>Zeit einreichen</h2>
+          <p class="subtext">
+            Neue Zeiten werden gespeichert. Im Ranking wird pro Strecke automatisch nur die beste Zeit je Fahrer angezeigt.
+          </p>
 
-  state.leaderboard.forEach(rawRow => {
-    const row = mapLeaderboardRow(rawRow);
-    const trackName = String(row.strecke || "Unbekannt").trim();
-    if (!groupedRows[trackName]) groupedRows[trackName] = [];
-    groupedRows[trackName].push(row);
-  });
+          <div class="stats">
+            <div class="stat-box">
+              <div class="stat-label">Einträge</div>
+              <div class="stat-value" id="statLeaderboard">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Fahrer</div>
+              <div class="stat-value" id="statDrivers">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Strecken</div>
+              <div class="stat-value" id="statTracks">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Autos</div>
+              <div class="stat-value" id="statCars">0</div>
+            </div>
+          </div>
 
-  let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
+          <label for="driverSelect">Fahrer</label>
+          <select id="driverSelect">
+            <option value="">Bitte Fahrer wählen</option>
+          </select>
 
-  if (selectedTrack) {
-    trackNames = trackNames.filter(name => name.toLowerCase() === selectedTrack);
-  }
+          <div class="row-2">
+            <div>
+              <label for="trackSelect">Strecke</label>
+              <select id="trackSelect">
+                <option value="">Bitte Strecke wählen</option>
+              </select>
+            </div>
 
-  if (!trackNames.length) {
-    el.groupedLeaderboard.innerHTML = `<div class="empty-block">Keine Strecken gefunden.</div>`;
-    return;
-  }
+            <div>
+              <label for="carSelect">Fahrzeug</label>
+              <select id="carSelect">
+                <option value="">Bitte Fahrzeug wählen</option>
+              </select>
+            </div>
+          </div>
 
-  let html = "";
+          <label for="timeInput">Zeit</label>
+          <input id="timeInput" type="text" placeholder="z. B. 4:21.222" />
+          <div class="helper">Erlaubte Formate: 4:21.222, 4:21:222 oder 4:21</div>
 
-  trackNames.forEach(trackName => {
-    let rows = [...groupedRows[trackName]];
+          <div class="row-2">
+            <div>
+              <label for="discordIdInput">Discord ID</label>
+              <input id="discordIdInput" type="text" placeholder="wird automatisch eingefügt" />
+            </div>
 
-    if (selectedCar) {
-      rows = rows.filter(row =>
-        String(row.fahrzeug || "").trim().toLowerCase() === selectedCar
-      );
+            <div>
+              <label for="proofInput">Beweis</label>
+              <input id="proofInput" type="text" placeholder="https://..." />
+            </div>
+          </div>
+
+          <label for="commentInput">Kommentar</label>
+          <textarea id="commentInput" placeholder="Optionaler Kommentar"></textarea>
+
+          <div class="actions">
+            <button class="btn btn-primary" id="submitBtn" type="button">Zeit absenden</button>
+            <button class="btn btn-secondary" id="reloadBtnBottom" type="button">Neu laden</button>
+          </div>
+
+          <div id="submitStatus" class="status"></div>
+        </aside>
+
+        <main class="card">
+          <h2>Alle Strecken</h2>
+          <p class="subtext">
+            Suche nach Fahrern, Fahrzeugen, Discord ID oder Kommentaren und filtere die Rankings direkt.
+          </p>
+
+          <div class="toolbar">
+            <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Fahrzeug, Discord oder Kommentar" />
+            <select id="filterTrack">
+              <option value="">Alle Strecken</option>
+            </select>
+            <select id="filterCar">
+              <option value="">Alle Fahrzeuge</option>
+            </select>
+            <select id="filterPlatform">
+              <option value="">Alle Plattformen</option>
+              <option value="PC">PC</option>
+              <option value="PlayStation">PlayStation</option>
+              <option value="Xbox">Xbox</option>
+            </select>
+          </div>
+
+          <div id="groupedLeaderboard" class="leaderboard-groups">
+            <div class="empty">Lade Daten...</div>
+          </div>
+
+          <div id="loadStatus" class="status"></div>
+        </main>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2025 NightStalkerZ — Need for Speed Community for night racers.
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwVk7eC1kmqFhhZipoXpo4lmwiNT4oLYACVBQkJLolJjXMAsVGCzsdr85vY-y_-kPkf/exec";
+
+    const state = {
+      drivers: [],
+      tracks: [],
+      cars: [],
+      leaderboard: [],
+      driverPlatformMap: {},
+      driverDiscordMap: {}
+    };
+
+    const el = {
+      statLeaderboard: document.getElementById("statLeaderboard"),
+      statDrivers: document.getElementById("statDrivers"),
+      statTracks: document.getElementById("statTracks"),
+      statCars: document.getElementById("statCars"),
+
+      driverSelect: document.getElementById("driverSelect"),
+      trackSelect: document.getElementById("trackSelect"),
+      carSelect: document.getElementById("carSelect"),
+      timeInput: document.getElementById("timeInput"),
+      discordIdInput: document.getElementById("discordIdInput"),
+      proofInput: document.getElementById("proofInput"),
+      commentInput: document.getElementById("commentInput"),
+      submitBtn: document.getElementById("submitBtn"),
+      submitStatus: document.getElementById("submitStatus"),
+
+      reloadBtnBottom: document.getElementById("reloadBtnBottom"),
+      groupedLeaderboard: document.getElementById("groupedLeaderboard"),
+      loadStatus: document.getElementById("loadStatus"),
+
+      searchInput: document.getElementById("searchInput"),
+      filterTrack: document.getElementById("filterTrack"),
+      filterCar: document.getElementById("filterCar"),
+      filterPlatform: document.getElementById("filterPlatform")
+    };
+
+    function setStatus(node, type, message) {
+      node.className = "status " + type;
+      node.textContent = message;
     }
 
-    if (selectedPlatform) {
-      rows = rows.filter(row =>
-        String(row.plattform || "").trim().toLowerCase() === selectedPlatform
-      );
+    function clearStatus(node) {
+      node.className = "status";
+      node.textContent = "";
     }
 
-    if (search) {
-      rows = rows.filter(row => {
-        const text = [
-          row.fahrer,
-          row.strecke,
-          row.fahrzeug,
-          row.besteZeit,
-          row.discordId,
-          row.comment,
-          row.plattform
-        ].join(" ").toLowerCase();
+    function escapeHtml(text) {
+      return String(text == null ? "" : text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
-        return text.includes(search);
+    function normalizeTimeInput(value) {
+      return String(value || "").trim().replace(",", ".");
+    }
+
+    function normalizeUrl(value) {
+      const str = String(value || "").trim();
+      if (!str) return "";
+      if (/^https?:\/\//i.test(str)) return str;
+      return "https://" + str;
+    }
+
+    function isValidTime(value) {
+      const str = normalizeTimeInput(value);
+      return /^(\d+):(\d{1,2})([.:](\d{1,3}))?$/.test(str);
+    }
+
+    function formatTime(value) {
+      return normalizeTimeInput(value);
+    }
+
+    function parseTimeToMs(value) {
+      const str = formatTime(value);
+
+      let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
+      if (match) {
+        const minutes = parseInt(match[1], 10);
+        const seconds = parseInt(match[2], 10);
+        const millis = parseInt(match[3].padEnd(3, "0"), 10);
+        return minutes * 60000 + seconds * 1000 + millis;
+      }
+
+      match = str.match(/^(\d+):(\d{1,2}):(\d{1,3})$/);
+      if (match) {
+        const minutes = parseInt(match[1], 10);
+        const seconds = parseInt(match[2], 10);
+        const millis = parseInt(match[3].padEnd(3, "0"), 10);
+        return minutes * 60000 + seconds * 1000 + millis;
+      }
+
+      match = str.match(/^(\d+):(\d{1,2})$/);
+      if (match) {
+        const minutes = parseInt(match[1], 10);
+        const seconds = parseInt(match[2], 10);
+        return minutes * 60000 + seconds * 1000;
+      }
+
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    function getRowValue(row, keys) {
+      for (const key of keys) {
+        const value = row && row[key];
+        if (value !== undefined && value !== null && String(value).trim() !== "") {
+          return String(value).trim();
+        }
+      }
+      return "";
+    }
+
+    function buildDriverPlatformMap() {
+      const map = {};
+
+      state.drivers.forEach(driver => {
+        const fahrer = String(driver.fahrer || "").trim().toLowerCase();
+        const plattform = String(driver.plattform || driver.platform || "").trim();
+
+        if (fahrer) {
+          map[fahrer] = plattform;
+        }
+      });
+
+      state.driverPlatformMap = map;
+    }
+
+    function buildDriverDiscordMap() {
+      const map = {};
+
+      state.drivers.forEach(driver => {
+        const fahrer = String(driver.fahrer || "").trim().toLowerCase();
+        const discordId = String(driver.discordId || driver.discord || driver.discordID || "").trim();
+
+        if (fahrer) {
+          map[fahrer] = discordId;
+        }
+      });
+
+      state.driverDiscordMap = map;
+    }
+
+    function getPlatformByDriverName(driverName) {
+      const key = String(driverName || "").trim().toLowerCase();
+      return state.driverPlatformMap[key] || "";
+    }
+
+    function autofillDriverDiscord() {
+      const selectedDriver = String(el.driverSelect.value || "").trim().toLowerCase();
+
+      if (!selectedDriver) {
+        el.discordIdInput.value = "";
+        return;
+      }
+
+      el.discordIdInput.value = state.driverDiscordMap[selectedDriver] || "";
+    }
+
+    function mapLeaderboardRow(row) {
+      const fahrer = getRowValue(row, ["fahrer", "driverName", "driver"]);
+
+      return {
+        fahrer: fahrer,
+        strecke: getRowValue(row, ["strecke", "track"]),
+        fahrzeug: getRowValue(row, ["fahrzeug", "car", "auto"]),
+        besteZeit: getRowValue(row, ["besteZeit", "time"]),
+        discordId: getRowValue(row, ["discordId", "discord", "discordID"]),
+        proof: getRowValue(row, ["proof", "beweis"]),
+        comment: getRowValue(row, ["comment", "kommentar"]),
+        timestamp: getRowValue(row, ["timestamp", "createdAt", "date"]),
+        plattform: getPlatformByDriverName(fahrer)
+      };
+    }
+
+    async function apiGet(type) {
+      const response = await fetch(API_URL + "?type=" + encodeURIComponent(type));
+      const text = await response.text();
+      const result = JSON.parse(text);
+
+      if (!result.success) {
+        throw new Error(result.message || "Serverfehler");
+      }
+
+      return Array.isArray(result.data) ? result.data : [];
+    }
+
+    function fillSelect(select, items, placeholder, keyName) {
+      select.innerHTML = "";
+
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = placeholder;
+      select.appendChild(first);
+
+      const seen = new Set();
+
+      items.forEach(item => {
+        const val = String(item[keyName] || "").trim();
+        if (!val || seen.has(val.toLowerCase())) return;
+
+        seen.add(val.toLowerCase());
+
+        const option = document.createElement("option");
+        option.value = val;
+        option.textContent = val;
+        select.appendChild(option);
       });
     }
 
-    rows = keepBestTimePerDriver(rows);
-    rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
+    function updateStats() {
+      el.statLeaderboard.textContent = String(state.leaderboard.length);
+      el.statDrivers.textContent = String(state.drivers.length);
+      el.statTracks.textContent = String(state.tracks.length);
+      el.statCars.textContent = String(state.cars.length);
+    }
 
-    html += `
-      <section class="track-block">
-        <div class="track-header">
-          <div>
-            <div class="track-kicker">Strecke</div>
-            <h3>${escapeHtml(trackName)}</h3>
-          </div>
-          <div class="track-meta">
-            <span class="meta-pill">${rows.length} Fahrer im Ranking</span>
-          </div>
-        </div>
-    `;
+    function keepBestTimePerDriver(rows) {
+      const bestMap = {};
 
-    if (!rows.length) {
-      html += `
-        <div class="empty-block">
-          Für diese Strecke gibt es aktuell keine passenden Einträge.
-        </div>
-      `;
-    } else {
-      html += buildPodium(rows);
+      rows.forEach(row => {
+        const driverKey = String(row.fahrer || "").trim().toLowerCase();
+        if (!driverKey) return;
 
-      html += `
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Rang</th>
-                <th>Fahrer</th>
-                <th>Plattform</th>
-                <th>Fahrzeug</th>
-                <th>Beste Zeit</th>
-                <th>Discord</th>
-                <th>Beweis</th>
-                <th>Kommentar</th>
-              </tr>
-            </thead>
-            <tbody>
-      `;
+        const currentMs = parseTimeToMs(row.besteZeit);
 
-      rows.forEach((row, index) => {
-        const rank = index + 1;
-        let rankClass = "";
-        if (rank === 1) rankClass = "rank-1";
-        if (rank === 2) rankClass = "rank-2";
-        if (rank === 3) rankClass = "rank-3";
+        if (!bestMap[driverKey]) {
+          bestMap[driverKey] = row;
+          return;
+        }
 
-        const proof = normalizeUrl(row.proof);
-        const proofHtml = proof
-          ? `<a class="proof-link" href="${escapeHtml(proof)}" target="_blank" rel="noopener noreferrer">Öffnen</a>`
-          : `<span class="muted">-</span>`;
+        const bestMs = parseTimeToMs(bestMap[driverKey].besteZeit);
 
-        const discord = row.discordId
-          ? escapeHtml(row.discordId)
-          : `<span class="muted">-</span>`;
+        if (currentMs < bestMs) {
+          bestMap[driverKey] = row;
+          return;
+        }
 
-        const comment = row.comment
-          ? escapeHtml(row.comment)
-          : `<span class="muted">-</span>`;
+        if (currentMs === bestMs) {
+          const currentTimestamp = String(row.timestamp || "");
+          const bestTimestamp = String(bestMap[driverKey].timestamp || "");
+          if (currentTimestamp && bestTimestamp && currentTimestamp > bestTimestamp) {
+            bestMap[driverKey] = row;
+          }
+        }
+      });
+
+      return Object.values(bestMap);
+    }
+
+    function buildPodium(rows) {
+      const top3 = rows.slice(0, 3);
+      if (!top3.length) return "";
+
+      const classes = ["gold", "silver", "bronze"];
+      let html = `<div class="podium">`;
+
+      top3.forEach((row, index) => {
+        const place = index + 1;
 
         html += `
-          <tr>
-            <td><span class="rank ${rankClass}">${rank}</span></td>
-            <td>${escapeHtml(row.fahrer || "-")}</td>
-            <td><span class="platform-pill">${escapeHtml(row.plattform || "-")}</span></td>
-            <td>${escapeHtml(row.fahrzeug || "-")}</td>
-            <td><span class="time-pill">${escapeHtml(row.besteZeit || "-")}</span></td>
-            <td>${discord}</td>
-            <td>${proofHtml}</td>
-            <td class="comment-cell">${comment}</td>
-          </tr>
+          <div class="podium-card ${classes[index] || ""}">
+            <div class="podium-rank">Platz ${place}</div>
+            <div class="podium-name">${escapeHtml(row.fahrer || "-")}</div>
+            <div class="podium-time">${escapeHtml(row.besteZeit || "-")}</div>
+            <div class="podium-meta">Fahrzeug: ${escapeHtml(row.fahrzeug || "-")}</div>
+            <div class="podium-meta">Discord: ${escapeHtml(row.discordId || "-")}</div>
+            <div class="podium-meta">Plattform: ${escapeHtml(row.plattform || "-")}</div>
+          </div>
         `;
       });
 
-      html += `
-            </tbody>
-          </table>
-        </div>
-      `;
+      html += `</div>`;
+      return html;
     }
 
-    html += `</section>`;
-  });
+    function renderGroupedLeaderboards() {
+      const search = el.searchInput.value.trim().toLowerCase();
+      const selectedTrack = el.filterTrack.value.trim().toLowerCase();
+      const selectedCar = el.filterCar.value.trim().toLowerCase();
+      const selectedPlatform = el.filterPlatform.value.trim().toLowerCase();
 
-  el.groupedLeaderboard.innerHTML = html;
-}
+      const groupedRows = {};
 
-async function loadAllData() {
-  if (el.reloadBtnBottom) el.reloadBtnBottom.disabled = true;
-  setStatus(el.loadStatus, "Lade Daten ...", "warn");
+      state.tracks.forEach(track => {
+        const trackName = String(track.strecke || "").trim();
+        if (trackName) groupedRows[trackName] = [];
+      });
 
-  try {
-    const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
-      apiGet("drivers"),
-      apiGet("tracks"),
-      apiGet("cars"),
-      apiGet("leaderboard")
-    ]);
+      state.leaderboard.forEach(row => {
+        const trackName = String(row.strecke || "Unbekannt").trim();
+        if (!groupedRows[trackName]) groupedRows[trackName] = [];
+        groupedRows[trackName].push(row);
+      });
 
-    state.drivers = Array.isArray(drivers) ? drivers : [];
-    state.tracks = Array.isArray(tracks) ? tracks : [];
-    state.cars = Array.isArray(cars) ? cars : [];
-    buildDriverPlatformMap();
-    buildDriverDiscordMap();
-    state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
+      let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
 
-    fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
-    fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
-    fillSelect(el.carSelect, state.cars, "Bitte Fahrzeug wählen", "auto");
-    fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
-    fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
+      if (selectedTrack) {
+        trackNames = trackNames.filter(name => name.toLowerCase() === selectedTrack);
+      }
 
-    autofillDriverDiscord();
-    updateStats();
-    renderGroupedLeaderboards();
+      if (!trackNames.length) {
+        el.groupedLeaderboard.innerHTML = `<div class="empty">Keine Strecken gefunden.</div>`;
+        return;
+      }
 
-    setStatus(el.loadStatus, "Daten erfolgreich geladen.", "success");
-  } catch (error) {
-    console.error(error);
-    el.groupedLeaderboard.innerHTML = `<div class="empty-block">Fehler beim Laden der Daten.</div>`;
-    setStatus(el.loadStatus, "Fehler: " + error.message, "error");
-  } finally {
-    if (el.reloadBtnBottom) el.reloadBtnBottom.disabled = false;
-  }
-}
+      let html = "";
 
-async function submitTime() {
-  const payload = {
-    discordId: el.discordIdInput.value.trim(),
-    driverName: el.driverSelect.value.trim(),
-    track: el.trackSelect.value.trim(),
-    car: el.carSelect.value.trim(),
-    time: formatTime(el.timeInput.value),
-    proof: el.proofInput.value.trim(),
-    comment: el.commentInput.value.trim()
-  };
+      trackNames.forEach(trackName => {
+        let rows = [...groupedRows[trackName]];
 
-  if (!payload.driverName) {
-    setStatus(el.submitStatus, "Bitte einen Fahrer auswählen.", "error");
-    return;
-  }
+        if (selectedCar) {
+          rows = rows.filter(row => String(row.fahrzeug || "").trim().toLowerCase() === selectedCar);
+        }
 
-  if (!payload.track) {
-    setStatus(el.submitStatus, "Bitte eine Strecke auswählen.", "error");
-    return;
-  }
+        if (selectedPlatform) {
+          rows = rows.filter(row => String(row.plattform || "").trim().toLowerCase() === selectedPlatform);
+        }
 
-  if (!payload.car) {
-    setStatus(el.submitStatus, "Bitte ein Fahrzeug auswählen.", "error");
-    return;
-  }
+        if (search) {
+          rows = rows.filter(row => {
+            const text = [
+              row.fahrer,
+              row.strecke,
+              row.fahrzeug,
+              row.besteZeit,
+              row.discordId,
+              row.comment,
+              row.plattform
+            ].join(" ").toLowerCase();
 
-  if (!isValidTime(payload.time)) {
-    setStatus(el.submitStatus, "Bitte eine gültige Zeit eingeben, z. B. 4:21.222.", "error");
-    return;
-  }
+            return text.includes(search);
+          });
+        }
 
-  el.submitBtn.disabled = true;
-  setStatus(el.submitStatus, "Eintrag wird gesendet ...", "warn");
+        rows = keepBestTimePerDriver(rows);
+        rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
 
-  try {
-    const formData = new FormData();
-    formData.append("discordId", payload.discordId);
-    formData.append("driverName", payload.driverName);
-    formData.append("fahrer", payload.driverName);
-    formData.append("track", payload.track);
-    formData.append("strecke", payload.track);
-    formData.append("car", payload.car);
-    formData.append("fahrzeug", payload.car);
-    formData.append("time", payload.time);
-    formData.append("besteZeit", payload.time);
-    formData.append("proof", payload.proof);
-    formData.append("comment", payload.comment);
+        html += `
+          <section class="track-block">
+            <div class="track-header">
+              <div class="track-title">
+                <div class="track-kicker">Strecke</div>
+                <h3>${escapeHtml(trackName)}</h3>
+              </div>
+              <div class="meta-pill">${rows.length} Fahrer im Ranking</div>
+            </div>
+        `;
 
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      body: formData
-    });
+        if (!rows.length) {
+          html += `<div class="empty">Für diese Strecke gibt es aktuell keine passenden Einträge.</div>`;
+        } else {
+          html += buildPodium(rows);
+          html += `
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rang</th>
+                    <th>Fahrer</th>
+                    <th>Plattform</th>
+                    <th>Fahrzeug</th>
+                    <th>Beste Zeit</th>
+                    <th>Discord</th>
+                    <th>Beweis</th>
+                    <th>Kommentar</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
 
-    const raw = await res.text();
+          rows.forEach((row, index) => {
+            const rank = index + 1;
+            let rankClass = "";
+            if (rank === 1) rankClass = "rank-1";
+            if (rank === 2) rankClass = "rank-2";
+            if (rank === 3) rankClass = "rank-3";
 
-    let json;
-    try {
-      json = JSON.parse(raw);
-    } catch (error) {
-      throw new Error("Server liefert kein gültiges JSON: " + raw);
+            const proof = normalizeUrl(row.proof);
+            const proofHtml = proof
+              ? `<a class="proof-link" href="${escapeHtml(proof)}" target="_blank" rel="noopener noreferrer">Öffnen</a>`
+              : `<span class="muted">-</span>`;
+
+            const discord = row.discordId
+              ? escapeHtml(row.discordId)
+              : `<span class="muted">-</span>`;
+
+            const comment = row.comment
+              ? escapeHtml(row.comment)
+              : `<span class="muted">-</span>`;
+
+            html += `
+              <tr>
+                <td><span class="rank ${rankClass}">${rank}</span></td>
+                <td>${escapeHtml(row.fahrer || "-")}</td>
+                <td><span class="platform-pill">${escapeHtml(row.plattform || "-")}</span></td>
+                <td>${escapeHtml(row.fahrzeug || "-")}</td>
+                <td><span class="time-pill">${escapeHtml(row.besteZeit || "-")}</span></td>
+                <td>${discord}</td>
+                <td>${proofHtml}</td>
+                <td class="comment-cell">${comment}</td>
+              </tr>
+            `;
+          });
+
+          html += `
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+
+        html += `</section>`;
+      });
+
+      el.groupedLeaderboard.innerHTML = html;
     }
 
-    if (!json.success) {
-      throw new Error(json.message || "Speichern fehlgeschlagen");
+    async function loadAllData() {
+      el.reloadBtnBottom.disabled = true;
+      setStatus(el.loadStatus, "yellow", "Lade Daten ...");
+
+      try {
+        const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
+          apiGet("drivers"),
+          apiGet("tracks"),
+          apiGet("cars"),
+          apiGet("leaderboard")
+        ]);
+
+        state.drivers = Array.isArray(drivers) ? drivers : [];
+        state.tracks = Array.isArray(tracks) ? tracks : [];
+        state.cars = Array.isArray(cars) ? cars : [];
+        buildDriverPlatformMap();
+        buildDriverDiscordMap();
+        state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
+
+        fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
+        fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
+        fillSelect(el.carSelect, state.cars, "Bitte Fahrzeug wählen", "auto");
+        fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
+        fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
+
+        autofillDriverDiscord();
+        updateStats();
+        renderGroupedLeaderboards();
+
+        setStatus(el.loadStatus, "green", "Daten erfolgreich geladen.");
+      } catch (error) {
+        console.error(error);
+        el.groupedLeaderboard.innerHTML = `<div class="empty">Fehler beim Laden der Daten.</div>`;
+        setStatus(el.loadStatus, "red", "Fehler: " + error.message);
+      } finally {
+        el.reloadBtnBottom.disabled = false;
+      }
     }
 
-    setStatus(el.submitStatus, "Zeit erfolgreich eingereicht.", "success");
+    async function submitTime() {
+      const payload = {
+        discordId: el.discordIdInput.value.trim(),
+        driverName: el.driverSelect.value.trim(),
+        track: el.trackSelect.value.trim(),
+        car: el.carSelect.value.trim(),
+        time: formatTime(el.timeInput.value),
+        proof: el.proofInput.value.trim(),
+        comment: el.commentInput.value.trim()
+      };
 
-    el.timeInput.value = "";
-    el.proofInput.value = "";
-    el.commentInput.value = "";
-    el.carSelect.selectedIndex = 0;
+      if (!payload.driverName) {
+        setStatus(el.submitStatus, "red", "Bitte einen Fahrer auswählen.");
+        return;
+      }
 
-    autofillDriverDiscord();
-    await loadAllData();
-  } catch (error) {
-    console.error(error);
-    setStatus(el.submitStatus, "Fehler: " + error.message, "error");
-  } finally {
-    el.submitBtn.disabled = false;
-  }
-}
+      if (!payload.track) {
+        setStatus(el.submitStatus, "red", "Bitte eine Strecke auswählen.");
+        return;
+      }
 
-if (el.reloadBtnBottom) el.reloadBtnBottom.addEventListener("click", loadAllData);
+      if (!payload.car) {
+        setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug auswählen.");
+        return;
+      }
 
-el.driverSelect.addEventListener("change", autofillDriverDiscord);
-el.submitBtn.addEventListener("click", submitTime);
-el.searchInput.addEventListener("input", renderGroupedLeaderboards);
-el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
-el.filterCar.addEventListener("change", renderGroupedLeaderboards);
-el.filterPlatform.addEventListener("change", renderGroupedLeaderboards);
+      if (!isValidTime(payload.time)) {
+        setStatus(el.submitStatus, "red", "Bitte eine gültige Zeit eingeben, z. B. 4:21.222.");
+        return;
+      }
 
-loadAllData();
-</script>
+      el.submitBtn.disabled = true;
+      setStatus(el.submitStatus, "yellow", "Eintrag wird gesendet ...");
+
+      try {
+        const formData = new FormData();
+        formData.append("discordId", payload.discordId);
+        formData.append("driverName", payload.driverName);
+        formData.append("fahrer", payload.driverName);
+        formData.append("track", payload.track);
+        formData.append("strecke", payload.track);
+        formData.append("car", payload.car);
+        formData.append("fahrzeug", payload.car);
+        formData.append("time", payload.time);
+        formData.append("besteZeit", payload.time);
+        formData.append("proof", payload.proof);
+        formData.append("comment", payload.comment);
+
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (!result.success) {
+          throw new Error(result.message || "Speichern fehlgeschlagen");
+        }
+
+        setStatus(el.submitStatus, "green", "Zeit erfolgreich eingereicht.");
+
+        el.timeInput.value = "";
+        el.proofInput.value = "";
+        el.commentInput.value = "";
+        el.carSelect.selectedIndex = 0;
+
+        autofillDriverDiscord();
+        await loadAllData();
+      } catch (error) {
+        console.error(error);
+        setStatus(el.submitStatus, "red", "Fehler: " + error.message);
+      } finally {
+        el.submitBtn.disabled = false;
+      }
+    }
+
+    el.reloadBtnBottom.addEventListener("click", loadAllData);
+    el.driverSelect.addEventListener("change", autofillDriverDiscord);
+    el.submitBtn.addEventListener("click", submitTime);
+    el.searchInput.addEventListener("input", renderGroupedLeaderboards);
+    el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
+    el.filterCar.addEventListener("change", renderGroupedLeaderboards);
+    el.filterPlatform.addEventListener("change", renderGroupedLeaderboards);
+
+    loadAllData();
+  </script>
 </body>
 </html>
