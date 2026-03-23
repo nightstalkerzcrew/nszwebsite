@@ -386,28 +386,34 @@
     .leaderboard-groups{
       display:grid;
       gap:18px;
+      justify-items:center;
     }
 
     .track-block{
+      width:100%;
+      max-width:100%;
       padding:18px;
       border-radius:20px;
       background:rgba(255,255,255,0.04);
       border:1px solid rgba(255,255,255,0.08);
+      text-align:center;
     }
 
     .track-header{
       display:flex;
-      justify-content:space-between;
+      justify-content:center;
       align-items:center;
       gap:14px;
       margin-bottom:14px;
       flex-wrap:wrap;
+      text-align:center;
     }
 
     .track-title{
       display:flex;
       flex-direction:column;
       gap:6px;
+      align-items:center;
     }
 
     .track-kicker{
@@ -447,6 +453,7 @@
       border-radius:16px;
       border:1px solid rgba(255,255,255,0.10);
       background:rgba(255,255,255,0.05);
+      text-align:center;
     }
 
     .podium-card.gold{
@@ -495,6 +502,9 @@
     }
 
     .table-wrap{
+      display:flex;
+      justify-content:center;
+      width:100%;
       overflow-x:auto;
     }
 
@@ -502,12 +512,13 @@
       width:100%;
       min-width:980px;
       border-collapse:collapse;
+      margin:0 auto;
     }
 
     th,
     td{
       padding:14px 12px;
-      text-align:left;
+      text-align:center;
       border-bottom:1px solid rgba(255,255,255,0.08);
       vertical-align:top;
     }
@@ -603,6 +614,7 @@
       word-break:break-word;
       line-height:1.6;
       color:var(--text);
+      text-align:center;
     }
 
     .muted{
@@ -667,35 +679,39 @@
         width:100%;
       }
 
-      .row-2,
-      .stats{
+      .row-2{
         grid-template-columns:1fr;
       }
     }
 
     @media (max-width: 680px){
+      .container{
+        width:min(94%, 94%);
+      }
+
       .nav{
-        padding:18px 0;
+        padding:12px 0;
+        gap:10px;
       }
 
       .logo{
-        font-size:1.08rem;
-        letter-spacing:0.12em;
+        font-size:0.92rem;
+        letter-spacing:0.08em;
       }
 
       .nav-actions{
         width:100%;
         display:grid;
         grid-template-columns:1fr 1fr;
-        gap:10px;
+        gap:8px;
       }
 
       .nav-actions .btn{
         width:100%;
-        min-height:44px;
-        padding:10px 14px;
-        border-radius:12px;
-        font-size:0.9rem;
+        min-height:38px;
+        padding:8px 10px;
+        border-radius:10px;
+        font-size:0.76rem;
       }
 
       .nav-actions .btn-primary,
@@ -703,35 +719,203 @@
         box-shadow:none;
       }
 
-      .nav-actions .btn-secondary{
-        background:rgba(255,255,255,0.05);
-        border:1px solid rgba(255,255,255,0.10);
-      }
-
       .hero{
-        padding:65px 0 26px;
+        padding:36px 0 18px;
       }
 
       h1{
-        font-size:clamp(1.9rem,9vw,3.2rem);
+        font-size:clamp(1.55rem,8vw,2.4rem);
         line-height:1.02;
+        margin-bottom:12px;
       }
 
       .hero p{
-        font-size:0.97rem;
-        line-height:1.8;
+        font-size:0.86rem;
+        line-height:1.65;
+        max-width:320px;
       }
 
       .section{
-        padding:24px 0 70px;
+        padding:16px 0 42px;
+      }
+
+      .grid-2{
+        grid-template-columns:1fr;
+        gap:14px;
       }
 
       .card{
-        padding:22px;
+        padding:16px;
+        border-radius:18px;
+      }
+
+      .card h2{
+        font-size:1rem;
+        margin-bottom:10px;
+      }
+
+      .subtext{
+        font-size:0.9rem;
+        line-height:1.6;
+        margin-bottom:14px;
+      }
+
+      .stats{
+        grid-template-columns:1fr 1fr;
+        gap:8px;
+        margin-bottom:14px;
+      }
+
+      .stat-box{
+        padding:12px 14px;
+        border-radius:14px;
+      }
+
+      .stat-label{
+        font-size:11px;
+        margin-bottom:5px;
+      }
+
+      .stat-value{
+        font-size:1.2rem;
+        line-height:1;
+      }
+
+      label{
+        margin-top:12px;
+        margin-bottom:6px;
+        font-size:0.95rem;
+      }
+
+      input,
+      select,
+      textarea{
+        padding:12px 13px;
+        border-radius:12px;
+        font-size:14px;
+      }
+
+      textarea{
+        min-height:82px;
+      }
+
+      .helper{
+        font-size:12px;
+        line-height:1.5;
+        margin-top:6px;
+      }
+
+      .row-2{
+        grid-template-columns:1fr;
+        gap:0;
+      }
+
+      .actions{
+        flex-direction:column;
+        gap:10px;
+        margin-top:16px;
       }
 
       .actions .btn{
         width:100%;
+        min-height:42px;
+        padding:10px 12px;
+        border-radius:12px;
+        font-size:0.85rem;
+      }
+
+      .toolbar{
+        grid-template-columns:1fr;
+        gap:10px;
+        margin-bottom:14px;
+      }
+
+      .track-block{
+        padding:12px;
+        border-radius:16px;
+      }
+
+      .track-header{
+        gap:8px;
+        margin-bottom:10px;
+      }
+
+      .track-title h3{
+        font-size:0.95rem;
+      }
+
+      .track-kicker{
+        font-size:10px;
+      }
+
+      .meta-pill{
+        padding:7px 10px;
+        font-size:11px;
+      }
+
+      .podium{
+        grid-template-columns:1fr;
+        gap:8px;
+        margin-bottom:10px;
+      }
+
+      .podium-card{
+        padding:10px 12px;
+        border-radius:14px;
+      }
+
+      .podium-rank{
+        margin-bottom:6px;
+        padding:5px 8px;
+        font-size:10px;
+      }
+
+      .podium-name{
+        font-size:14px;
+        margin-bottom:4px;
+      }
+
+      .podium-time{
+        font-size:13px;
+        margin-bottom:6px;
+      }
+
+      .podium-meta{
+        font-size:11px;
+        line-height:1.45;
+      }
+
+      table{
+        min-width:760px;
+      }
+
+      th,
+      td{
+        padding:10px 8px;
+        font-size:12px;
+      }
+
+      .rank{
+        min-width:28px;
+        height:28px;
+        font-size:12px;
+      }
+
+      .time-pill,
+      .platform-pill,
+      .proof-link{
+        font-size:11px;
+        padding:6px 10px;
+      }
+
+      .comment-cell{
+        max-width:160px;
+        font-size:12px;
+      }
+
+      footer{
+        padding:22px 0 34px;
+        font-size:0.82rem;
       }
     }
   </style>
@@ -1047,7 +1231,10 @@
     }
 
     async function apiGet(type) {
-      const response = await fetch(API_URL + "?type=" + encodeURIComponent(type));
+      const response = await fetch(API_URL + "?type=" + encodeURIComponent(type) + "&_ts=" + Date.now(), {
+        cache: "no-store"
+      });
+
       const text = await response.text();
       const result = JSON.parse(text);
 
@@ -1291,6 +1478,7 @@
 
     async function loadAllData() {
       el.reloadBtnBottom.disabled = true;
+      el.groupedLeaderboard.innerHTML = `<div class="empty">Lade Daten...</div>`;
 
       try {
         const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
@@ -1401,8 +1589,8 @@
       }
     }
 
-    el.reloadBtnBottom.addEventListener("click", async function () {
-      await loadAllData();
+    el.reloadBtnBottom.addEventListener("click", function () {
+      loadAllData();
     });
 
     el.driverSelect.addEventListener("change", autofillDriverDiscord);
