@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboards | NightStalkerZ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#040509;
+      --bg2:#0a0d14;
+      --text:#f3f6ff;
+      --muted:#9fa8c3;
+      --card:rgba(255,255,255,0.05);
+      --border:rgba(255,255,255,0.10);
+      --rainbow:linear-gradient(90deg,#ff004c,#ff7a00,#ffd500,#00ff99,#00d9ff,#6f5cff,#ff00c8,#ff004c);
+      --shadow:0 12px 40px rgba(0,0,0,0.42);
+      --rainbow-shadow:0 0 30px rgba(255,0,200,0.14),0 0 60px rgba(0,217,255,0.12),0 0 90px rgba(0,255,153,0.07);
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,0,100,0.14), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(0,217,255,0.14), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(122,92,255,0.10), transparent 30%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .container{
+      width:min(1180px,92%);
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter:blur(14px);
+      background:rgba(4,5,9,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      padding:16px 0;
+    }
+
+    .logo{
+      font-family:'Orbitron',sans-serif;
+      font-weight:900;
+      font-size:clamp(1rem,2vw,1.45rem);
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 6s linear infinite;
+      line-height:1;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      text-decoration:none;
+      padding:11px 18px;
+      border-radius:14px;
+      font-weight:800;
+      transition:0.28s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:44px;
+      border:none;
+      cursor:pointer;
+      font-size:0.9rem;
+      font-family:'Inter',sans-serif;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+    }
+
+    .btn-primary{
+      color:#fff;
+      background:var(--rainbow);
+      background-size:300% auto;
+      animation:rainbowMove 6s linear infinite;
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .btn-secondary{
+      color:var(--text);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    .hero{
+      padding:56px 0 22px;
+      text-align:center;
+    }
+
+    h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(2rem,6vw,4.2rem);
+      line-height:0.95;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+
+    .rainbow-text{
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 5s linear infinite;
+    }
+
+    .hero p{
+      color:var(--muted);
+      line-height:1.8;
+      max-width:760px;
+      margin:0 auto;
+      font-size:0.96rem;
+    }
+
+    .section{
+      padding:16px 0 56px;
+    }
+
+    .section-title{
+      margin-bottom:18px;
+      text-align:left;
+    }
+
+    .section-title h2{
+      font-family:'Orbitron',sans-serif;
+      font-size:1.1rem;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    .section-title p{
+      color:var(--muted);
+      line-height:1.7;
+      font-size:0.92rem;
+      max-width:760px;
+    }
+
+    .games-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0, 1fr));
+      gap:18px;
+    }
+
+    .game-card{
+      display:flex;
+      flex-direction:column;
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      transition:0.28s ease;
+      min-height:100%;
+    }
+
+    .game-card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .game-cover{
+      aspect-ratio:16 / 9;
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:20px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+        rgba(255,255,255,0.03);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      color:var(--muted);
+      font-size:0.92rem;
+      line-height:1.6;
+    }
+
+    .game-cover img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .game-body{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      flex:1;
+    }
+
+    .game-kicker{
+      color:var(--muted);
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .game-title{
+      font-family:'Orbitron',sans-serif;
+      font-size:1rem;
+      line-height:1.3;
+      text-transform:uppercase;
+    }
+
+    .game-text{
+      color:var(--muted);
+      font-size:0.9rem;
+      line-height:1.7;
+      flex:1;
+    }
+
+    .game-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:4px;
+    }
+
+    .game-actions .btn{
+      flex:1;
+      min-width:140px;
+    }
+
+    footer{
+      padding:22px 0 34px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.08);
+      font-size:0.82rem;
+    }
+
+    @keyframes rainbowMove{
+      0%{background-position:0% 50%;}
+      100%{background-position:300% 50%;}
+    }
+
+    @media (max-width: 980px){
+      .games-grid{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px){
+      .container{
+        width:min(95%,95%);
+      }
+
+      header{
+        position:relative;
+      }
+
+      .nav{
+        flex-direction:column;
+        gap:8px;
+        padding:10px 0;
+      }
+
+      .logo{
+        font-size:0.78rem;
+        letter-spacing:0.07em;
+      }
+
+      .nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:6px;
+      }
+
+      .nav-actions .btn{
+        width:100%;
+        min-height:34px;
+        padding:7px 8px;
+        border-radius:9px;
+        font-size:0.68rem;
+        box-shadow:none;
+      }
+
+      .hero{
+        padding:20px 0 12px;
+      }
+
+      h1{
+        font-size:clamp(1.25rem,7vw,2rem);
+        line-height:1.02;
+        margin-bottom:10px;
+      }
+
+      .hero p{
+        font-size:0.76rem;
+        line-height:1.55;
+        max-width:300px;
+      }
+
+      .section{
+        padding:10px 0 28px;
+      }
+
+      .section-title{
+        margin-bottom:12px;
+      }
+
+      .section-title h2{
+        font-size:0.92rem;
+        margin-bottom:6px;
+      }
+
+      .section-title p{
+        font-size:0.78rem;
+        line-height:1.5;
+      }
+
+      .games-grid{
+        grid-template-columns:1fr;
+        gap:12px;
+      }
+
+      .game-card{
+        border-radius:16px;
+      }
+
+      .game-cover{
+        padding:14px;
+        font-size:0.78rem;
+      }
+
+      .game-body{
+        padding:12px;
+        gap:8px;
+      }
+
+      .game-kicker{
+        font-size:9px;
+      }
+
+      .game-title{
+        font-size:0.86rem;
+      }
+
+      .game-text{
+        font-size:0.76rem;
+        line-height:1.5;
+      }
+
+      .game-actions{
+        flex-direction:column;
+        gap:6px;
+      }
+
+      .game-actions .btn{
+        width:100%;
+        min-height:34px;
+        padding:8px 10px;
+        font-size:0.72rem;
+        border-radius:9px;
+      }
+
+      footer{
+        padding:18px 0 24px;
+        font-size:0.72rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo">NightStalkerZ</div>
+
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="index.html">Startseite</a>
+        <a class="btn btn-primary" href="fahrer.html">Fahrer</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>
+        NFS<br>
+        <span class="rainbow-text">Leaderboards</span>
+      </h1>
+
+      <p>
+        Wähle dein Need for Speed Spiel und öffne das passende Leaderboard. 
+        Covers kannst du später direkt in die Platzhalter einsetzen.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <h2>Spiele auswählen</h2>
+        <p>
+          Jede Karte kann mit einem Spiel-Cover, einer kurzen Beschreibung und einem direkten Link
+          zur jeweiligen Leaderboard-Seite gefüllt werden.
+        </p>
+      </div>
+
+      <div class="games-grid">
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Heat
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Heat</div>
+            <div class="game-text">
+              Füge hier das Cover von NFS Heat ein und verlinke die Karte auf dein Heat Leaderboard.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-heat.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Unbound
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Unbound</div>
+            <div class="game-text">
+              Platz für Cover, Link und optional kurze Info zum Unbound Leaderboard.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-unbound.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed 2015
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed 2015</div>
+            <div class="game-text">
+              Karte für das Leaderboard von Need for Speed 2015 mit Cover-Platzhalter.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-nfs2015.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Payback
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Payback</div>
+            <div class="game-text">
+              Karte für das Payback Leaderboard mit Platz für Spielgrafik und Link.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-payback.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Rivals
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Rivals</div>
+            <div class="game-text">
+              Eigene Leaderboard-Karte für Rivals im gleichen NightStalkerZ Stil.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-rivals.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Hot Pursuit
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Hot Pursuit</div>
+            <div class="game-text">
+              Platzhalter-Karte für Hot Pursuit inklusive Cover und Link zum Ranking.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-hot-pursuit.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Most Wanted
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Most Wanted</div>
+            <div class="game-text">
+              Leaderboard-Auswahl für Most Wanted mit später austauschbarem Cover-Bild.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-most-wanted.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Underground
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Underground</div>
+            <div class="game-text">
+              Auch ältere Titel können hier als eigene Leaderboard-Karte eingebunden werden.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-underground.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="game-card">
+          <div class="game-cover">
+            Cover Platzhalter<br>Need for Speed Underground 2
+          </div>
+          <div class="game-body">
+            <div class="game-kicker">Leaderboard</div>
+            <div class="game-title">Need for Speed Underground 2</div>
+            <div class="game-text">
+              Karte für Underground 2 im gleichen Stil wie deine restlichen Seiten.
+            </div>
+            <div class="game-actions">
+              <a class="btn btn-primary" href="leaderboard-underground2.html">Leaderboard öffnen</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2025 NightStalkerZ — Need for Speed Community for night racers.
+    </div>
+  </footer>
+</body>
+</html>
