@@ -90,38 +90,6 @@
       filter:drop-shadow(0 0 10px rgba(255,255,255,0.04));
     }
 
-    .logo::before,
-    .logo::after{
-      content:"Alpha Most Wanted";
-      position:absolute;
-      inset:0;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity 0.28s ease, transform 0.28s ease;
-    }
-
-    .logo::before{
-      color:#00d9ff;
-    }
-
-    .logo::after{
-      color:#ff004c;
-    }
-
-    .logo-wrap:hover .logo{
-      filter:drop-shadow(0 0 16px rgba(255,255,255,0.08));
-    }
-
-    .logo-wrap:hover .logo::before{
-      opacity:0.14;
-      transform:translate(1px,0);
-    }
-
-    .logo-wrap:hover .logo::after{
-      opacity:0.14;
-      transform:translate(-1px,0);
-    }
-
     .nav-actions{
       display:flex;
       align-items:center;
@@ -224,11 +192,6 @@
       height:100%;
     }
 
-    .card:hover{
-      transform:translateY(-8px);
-      box-shadow:var(--rainbow-shadow);
-    }
-
     .card h2{
       margin-bottom:12px;
       font-size:1.22rem;
@@ -307,14 +270,12 @@
       display:block;
       background:rgba(255, 70, 95, 0.12);
       color:#ffb8c0;
-      box-shadow:0 0 20px rgba(255, 70, 95, 0.08);
     }
 
     .status.green{
       display:block;
       background:rgba(0, 255, 153, 0.10);
       color:#bff8db;
-      box-shadow:0 0 20px rgba(0, 255, 153, 0.08);
     }
 
     .info-bar{
@@ -343,12 +304,6 @@
       justify-content:space-between;
       gap:14px;
       align-items:center;
-      transition:0.28s ease;
-    }
-
-    .driver-item:hover{
-      transform:translateY(-4px);
-      box-shadow:var(--rainbow-shadow);
     }
 
     .driver-main{
@@ -408,95 +363,6 @@
       .grid-2{
         grid-template-columns:1fr;
       }
-
-      .nav{
-        flex-direction:column;
-        justify-content:center;
-        gap:14px;
-      }
-
-      .nav-actions{
-        width:auto;
-        justify-content:center;
-        display:flex;
-        flex-wrap:wrap;
-        gap:10px;
-      }
-
-      .actions{
-        flex-direction:column;
-      }
-
-      .actions .btn{
-        width:100%;
-      }
-
-      .driver-item{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-    }
-
-    @media (max-width: 680px){
-      .nav{
-        padding:18px 0;
-      }
-
-      .logo{
-        font-size:1.08rem;
-        letter-spacing:0.12em;
-      }
-
-      .nav-actions{
-        width:100%;
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:10px;
-      }
-
-      .nav-actions .btn{
-        width:100%;
-        min-height:44px;
-        padding:10px 14px;
-        border-radius:12px;
-        font-size:0.9rem;
-      }
-
-      .nav-actions .btn-primary,
-      .nav-actions .btn-secondary{
-        box-shadow:none;
-      }
-
-      .nav-actions .btn-secondary{
-        background:rgba(255,255,255,0.05);
-        border:1px solid rgba(255,255,255,0.10);
-      }
-
-      .hero{
-        padding:65px 0 26px;
-      }
-
-      h1{
-        font-size:clamp(1.9rem,9vw,3.2rem);
-        line-height:1.02;
-      }
-
-      .hero p{
-        font-size:0.97rem;
-        line-height:1.8;
-      }
-
-      .section{
-        padding:24px 0 70px;
-      }
-
-      .card{
-        padding:22px;
-      }
-
-      .actions .btn{
-        width:100%;
-      }
     }
   </style>
 </head>
@@ -541,6 +407,11 @@
           <label for="discordId">Discord Name oder ID</label>
           <input type="text" id="discordId" placeholder="Zum Beispiel: Ulf#1234 oder 123456789012345678" />
 
+          <label for="carSelect">Fahrzeug</label>
+          <select id="carSelect">
+            <option value="">Fahrzeug wählen</option>
+          </select>
+
           <div class="actions">
             <button class="btn btn-primary" onclick="fahrerSpeichern()">Fahrer speichern</button>
             <button class="btn btn-secondary" onclick="datenNeuLaden()">Liste neu laden</button>
@@ -583,7 +454,7 @@
     }
 
     function escapeHtml(text) {
-      return String(text)
+      return String(text ?? "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -591,71 +462,46 @@
         .replace(/'/g, "&#039;");
     }
 
+    async function apiGet(type) {
+      const response = await fetch(`${API_URL}?type=${encodeURIComponent(type)}`);
+      const text = await response.text();
+      console.log(type, text);
+
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch {
+        throw new Error("Ungültige Server-Antwort");
+      }
+
+      if (!result.success) {
+        throw new Error(result.error || "API-Fehler");
+      }
+
+      return result.data;
+    }
+
     async function autosLaden() {
       const carSelect = document.getElementById("carSelect");
       carSelect.innerHTML = '<option value="">Fahrzeug wählen</option>';
 
       try {
-        const response = await fetch(API_URL + "?type=cars");
-        const text = await response.text();
-        const result = JSON.parse(text);
+        const cars = await apiGet("cars");
 
-        if (!result.success || !result.data || result.data.length === 0) {
+        if (!Array.isArray(cars) || cars.length === 0) {
+          carSelect.innerHTML = '<option value="">Keine Fahrzeuge gefunden</option>';
           return;
         }
 
-        result.data.forEach(car => {
+        cars.forEach(car => {
           const option = document.createElement("option");
-          option.value = car.carId || "";
-          option.textContent = car.anzeigeName || car.modell || car.carId || "Unbekanntes Fahrzeug";
+          option.value = car.auto || "";
+          option.textContent = car.auto || "Unbekanntes Fahrzeug";
           carSelect.appendChild(option);
         });
       } catch (error) {
-        setStatus("red", "Fahrzeugliste konnte nicht geladen werden.");
-      }
-    }
-
-    async function fahrerSpeichern() {
-      const fahrername = document.getElementById("fahrername").value.trim();
-      const discordId = document.getElementById("discordId").value.trim();
-      const carId = document.getElementById("carSelect").value;
-
-      if (!fahrername) {
-        setStatus("red", "Bitte einen Fahrernamen eingeben.");
-        return;
-      }
-
-      if (!carId) {
-        setStatus("red", "Bitte ein Fahrzeug auswählen.");
-        return;
-      }
-
-      try {
-        const formData = new URLSearchParams();
-        formData.append("action", "addDriver");
-        formData.append("driverName", fahrername);
-        formData.append("discordId", discordId);
-        formData.append("carId", carId);
-
-        const response = await fetch(API_URL, {
-          method: "POST",
-          body: formData
-        });
-
-        const text = await response.text();
-        const result = JSON.parse(text);
-
-        if (result.success) {
-          setStatus("green", result.message || "Fahrer erfolgreich gespeichert.");
-          document.getElementById("fahrername").value = "";
-          document.getElementById("discordId").value = "";
-          document.getElementById("carSelect").value = "";
-          datenNeuLaden();
-        } else {
-          setStatus("red", result.message || "Fahrer konnte nicht gespeichert werden.");
-        }
-      } catch (error) {
-        setStatus("red", "Verbindung zum Server fehlgeschlagen.");
+        carSelect.innerHTML = '<option value="">Fahrzeuge konnten nicht geladen werden</option>';
+        setStatus("red", "Fahrzeugliste konnte nicht geladen werden: " + error.message);
       }
     }
 
@@ -664,34 +510,36 @@
       driverList.innerHTML = '<div class="empty">Lade Fahrer...</div>';
 
       try {
-        const response = await fetch(API_URL + "?type=drivers");
-        const text = await response.text();
-        const result = JSON.parse(text);
+        const drivers = await apiGet("drivers");
 
-        if (!result.success || !result.data || result.data.length === 0) {
+        if (!Array.isArray(drivers) || drivers.length === 0) {
           driverList.innerHTML = '<div class="empty">Keine Fahrer vorhanden.</div>';
           return;
         }
 
         driverList.innerHTML = "";
 
-        result.data.forEach(driver => {
+        drivers.forEach(driver => {
           const item = document.createElement("div");
           item.className = "driver-item";
 
           item.innerHTML = `
             <div class="driver-main">
-              <div class="driver-name">${escapeHtml(driver.name || driver.fahrer || "-")}</div>
-              <div class="driver-meta">Discord: ${escapeHtml(driver.discordName || driver.discordId || "-")}</div>
+              <div class="driver-name">${escapeHtml(driver.fahrer || "-")}</div>
+              <div class="driver-meta">Discord: ${escapeHtml(driver.discordId || "-")}</div>
             </div>
-            <div class="driver-car">${escapeHtml(driver.carName || driver.anzeigeName || driver.carId || "-")}</div>
+            <div class="driver-car">${escapeHtml(driver.auto || "Kein Fahrzeug")}</div>
           `;
 
           driverList.appendChild(item);
         });
       } catch (error) {
-        driverList.innerHTML = '<div class="empty">Fahrer konnten nicht geladen werden.</div>';
+        driverList.innerHTML = `<div class="empty">Fahrer konnten nicht geladen werden: ${escapeHtml(error.message)}</div>`;
       }
+    }
+
+    async function fahrerSpeichern() {
+      setStatus("red", "Speichern per POST ist im aktuellen Backend noch nicht aktiv.");
     }
 
     async function datenNeuLaden() {
