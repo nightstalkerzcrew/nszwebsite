@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fahrer Registrierung | Alpha Most Wanted</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#040509;
+      --bg2:#0a0d14;
+      --text:#f3f6ff;
+      --muted:#9fa8c3;
+      --card:rgba(255,255,255,0.05);
+      --border:rgba(255,255,255,0.10);
+      --rainbow:linear-gradient(90deg,#ff7a00,#ffb300,#ffd500,#fff06a,#ff8a00,#ff5e00);
+      --shadow:0 10px 40px rgba(0,0,0,0.45);
+      --rainbow-shadow:0 0 30px rgba(255,140,0,0.18),0 0 60px rgba(255,208,0,0.12),0 0 90px rgba(255,94,0,0.08);
+    }
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family:'Inter',sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,120,0,0.16), transparent 26%),
+        radial-gradient(circle at 85% 18%, rgba(255,210,0,0.12), transparent 28%),
+        radial-gradient(circle at 50% 80%, rgba(255,80,0,0.10), transparent 30%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .container{
+      width:min(1180px,92%);
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:40;
+      backdrop-filter:blur(14px);
+      background:rgba(4,5,9,0.55);
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      padding:20px 0;
+    }
+
+    .logo-wrap{
+      position:relative;
+      display:inline-block;
+    }
+
+    .logo{
+      position:relative;
+      font-family:'Orbitron',sans-serif;
+      font-weight:900;
+      font-size:clamp(1.15rem,2.1vw,1.65rem);
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 6s linear infinite;
+      text-align:center;
+      line-height:1;
+      transition:transform 0.3s ease, filter 0.3s ease;
+      filter:drop-shadow(0 0 10px rgba(255,255,255,0.04));
+    }
+
+    .logo::before,
+    .logo::after{
+      content:"Alpha Most Wanted";
+      position:absolute;
+      inset:0;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .logo::before{
+      color:#ffd500;
+    }
+
+    .logo::after{
+      color:#ff6a00;
+    }
+
+    .logo-wrap:hover .logo{
+      filter:drop-shadow(0 0 16px rgba(255,255,255,0.08));
+    }
+
+    .logo-wrap:hover .logo::before{
+      opacity:0.14;
+      transform:translate(1px,0);
+    }
+
+    .logo-wrap:hover .logo::after{
+      opacity:0.14;
+      transform:translate(-1px,0);
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      text-decoration:none;
+      padding:15px 24px;
+      border-radius:16px;
+      font-weight:800;
+      transition:0.28s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      min-height:54px;
+      border:none;
+      cursor:pointer;
+      font-size:0.96rem;
+      font-family:'Inter',sans-serif;
+    }
+
+    .btn-primary{
+      color:#fff;
+      background:var(--rainbow);
+      background-size:300% auto;
+      animation:rainbowMove 6s linear infinite;
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .btn-secondary{
+      color:var(--text);
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn:hover{
+      transform:translateY(-4px);
+    }
+
+    .hero{
+      padding:80px 0 30px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+
+    h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(2.4rem,7vw,4.8rem);
+      line-height:0.96;
+      text-transform:uppercase;
+      margin-bottom:20px;
+      text-align:center;
+    }
+
+    .rainbow-text{
+      background:var(--rainbow);
+      background-size:300% auto;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      animation:rainbowMove 5s linear infinite;
+    }
+
+    .hero p{
+      color:var(--muted);
+      line-height:1.9;
+      margin:0 auto 10px;
+      max-width:780px;
+      font-size:1.02rem;
+      text-align:center;
+    }
+
+    .section{
+      padding:28px 0 80px;
+      text-align:center;
+    }
+
+    .grid-2{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+      align-items:start;
+    }
+
+    .card{
+      padding:26px;
+      border-radius:24px;
+      background:rgba(255,255,255,0.045);
+      border:1px solid rgba(255,255,255,0.10);
+      transition:0.3s ease;
+      box-shadow:var(--shadow);
+      text-align:left;
+      height:100%;
+    }
+
+    .card:hover{
+      transform:translateY(-8px);
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .card h2{
+      margin-bottom:12px;
+      font-size:1.22rem;
+      font-family:'Orbitron',sans-serif;
+      text-transform:uppercase;
+      text-align:left;
+    }
+
+    .subtext{
+      color:var(--muted);
+      margin-bottom:18px;
+      line-height:1.8;
+      text-align:left;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      margin-top:14px;
+      font-weight:700;
+      color:var(--text);
+      text-align:left;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:15px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.06);
+      color:#fff;
+      font-size:15px;
+      outline:none;
+      transition:border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      font-family:'Inter',sans-serif;
+    }
+
+    input::placeholder{
+      color:rgba(255,255,255,0.42);
+    }
+
+    input:focus,
+    select:focus{
+      border-color:#ffb300;
+      box-shadow:0 0 0 3px rgba(255,179,0,0.14);
+      transform:translateY(-1px);
+    }
+
+    select option{
+      color:#000;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:20px;
+      flex-wrap:wrap;
+    }
+
+    .actions .btn{
+      flex:1;
+    }
+
+    .status{
+      margin-top:18px;
+      padding:14px 16px;
+      border-radius:16px;
+      font-weight:700;
+      display:none;
+      border:1px solid rgba(255,255,255,0.08);
+      line-height:1.6;
+    }
+
+    .status.red{
+      display:block;
+      background:rgba(255, 70, 95, 0.12);
+      color:#ffb8c0;
+      box-shadow:0 0 20px rgba(255, 70, 95, 0.08);
+    }
+
+    .status.green{
+      display:block;
+      background:rgba(0, 255, 153, 0.10);
+      color:#bff8db;
+      box-shadow:0 0 20px rgba(0, 255, 153, 0.08);
+    }
+
+    .info-bar{
+      margin-top:16px;
+      font-size:14px;
+      color:var(--muted);
+      line-height:1.7;
+      text-align:left;
+    }
+
+    .driver-list{
+      display:grid;
+      gap:14px;
+      margin-top:10px;
+      max-height:520px;
+      overflow-y:auto;
+      padding-right:4px;
+    }
+
+    .driver-item{
+      padding:16px 18px;
+      border-radius:18px;
+      background:rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.08);
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:center;
+      transition:0.28s ease;
+    }
+
+    .driver-item:hover{
+      transform:translateY(-4px);
+      box-shadow:var(--rainbow-shadow);
+    }
+
+    .driver-main{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .driver-name{
+      font-weight:800;
+      color:#fff;
+      letter-spacing:0.5px;
+      font-size:1rem;
+    }
+
+    .driver-meta{
+      color:var(--muted);
+      font-size:14px;
+      word-break:break-word;
+      line-height:1.6;
+    }
+
+    .driver-car{
+      padding:10px 14px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      color:#ffffff;
+      white-space:nowrap;
+      text-align:center;
+    }
+
+    .empty{
+      color:var(--muted);
+      padding:22px;
+      text-align:center;
+      border:1px dashed rgba(255,255,255,0.15);
+      border-radius:18px;
+      background:rgba(255,255,255,0.03);
+    }
+
+    footer{
+      padding:30px 0 50px;
+      text-align:center;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.08);
+    }
+
+    @keyframes rainbowMove{
+      0%{background-position:0% 50%;}
+      100%{background-position:300% 50%;}
+    }
+
+    @media (max-width: 900px){
+      .grid-2{
+        grid-template-columns:1fr;
+      }
+
+      .nav{
+        flex-direction:column;
+        justify-content:center;
+        gap:14px;
+      }
+
+      .nav-actions{
+        width:auto;
+        justify-content:center;
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+      }
+
+      .actions{
+        flex-direction:column;
+      }
+
+      .actions .btn{
+        width:100%;
+      }
+
+      .driver-item{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+
+    @media (max-width: 680px){
+      .nav{
+        padding:18px 0;
+      }
+
+      .logo{
+        font-size:1.08rem;
+        letter-spacing:0.12em;
+      }
+
+      .nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+      }
+
+      .nav-actions .btn{
+        width:100%;
+        min-height:44px;
+        padding:10px 14px;
+        border-radius:12px;
+        font-size:0.9rem;
+      }
+
+      .nav-actions .btn-primary,
+      .nav-actions .btn-secondary{
+        box-shadow:none;
+      }
+
+      .nav-actions .btn-secondary{
+        background:rgba(255,255,255,0.05);
+        border:1px solid rgba(255,255,255,0.10);
+      }
+
+      .hero{
+        padding:65px 0 26px;
+      }
+
+      h1{
+        font-size:clamp(1.9rem,9vw,3.2rem);
+        line-height:1.02;
+      }
+
+      .hero p{
+        font-size:0.97rem;
+        line-height:1.8;
+      }
+
+      .section{
+        padding:24px 0 70px;
+      }
+
+      .card{
+        padding:22px;
+      }
+
+      .actions .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="logo-wrap">
+        <div class="logo">Alpha Most Wanted</div>
+      </div>
+
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="index.html">Startseite</a>
+        <a class="btn btn-primary" href="leaderboarddashboard.html">Zum Leaderboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>
+        Fahrer<br>
+        <span class="rainbow-text">Registrierung</span>
+      </h1>
+
+      <p>
+        Erstelle neue Fahrerprofile für Alpha Most Wanted und speichere Fahrername, Discord und Fahrzeug
+        für spätere Leaderboards, Challenges und Event-Auswertungen.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Neuen Fahrer anlegen</h2>
+          <p class="subtext">
+            Der Fahrername wird auf vorhandene Einträge geprüft. Das gewählte Fahrzeug wird direkt dem Fahrerprofil zugeordnet.
+          </p>
+
+          <label for="fahrername">Fahrername</label>
+          <input type="text" id="fahrername" placeholder="Zum Beispiel: RazorGhost" />
+
+          <label for="discordId">Discord Name oder ID</label>
+          <input type="text" id="discordId" placeholder="Zum Beispiel: Ulf#1234 oder 123456789012345678" />
+
+          <label for="carSelect">Fahrzeug</label>
+          <select id="carSelect">
+            <option value="">Fahrzeug wählen</option>
+          </select>
+
+          <div class="actions">
+            <button class="btn btn-primary" onclick="fahrerSpeichern()">Fahrer speichern</button>
+            <button class="btn btn-secondary" onclick="datenNeuLaden()">Liste neu laden</button>
+          </div>
+
+          <div id="status" class="status"></div>
+
+          <div class="info-bar">
+            Jeder Fahrer wird mit einem Fahrzeug gespeichert. Die Fahrzeugliste wird aus dem Autos-Blatt geladen.
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Vorhandene Fahrer</h2>
+          <p class="subtext">
+            Alle registrierten Fahrer werden aus der internen Tabelle geladen und können direkt im Most-Wanted-Leaderboard verwendet werden.
+          </p>
+
+          <div id="driverList" class="driver-list">
+            <div class="empty">Lade Fahrer...</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      2025 Alpha Most Wanted
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = "HIER_NEUE_SCRIPT_URL_EINTRAGEN";
+
+    function setStatus(type, message) {
+      const status = document.getElementById("status");
+      status.className = "status " + type;
+      status.textContent = message;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    async function autosLaden() {
+      const carSelect = document.getElementById("carSelect");
+      carSelect.innerHTML = '<option value="">Fahrzeug wählen</option>';
+
+      try {
+        const response = await fetch(API_URL + "?type=cars");
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (!result.success || !result.data || result.data.length === 0) {
+          return;
+        }
+
+        result.data.forEach(car => {
+          const option = document.createElement("option");
+          option.value = car.carId || "";
+          option.textContent = car.anzeigeName || car.modell || car.carId || "Unbekanntes Fahrzeug";
+          carSelect.appendChild(option);
+        });
+      } catch (error) {
+        setStatus("red", "Fahrzeugliste konnte nicht geladen werden.");
+      }
+    }
+
+    async function fahrerSpeichern() {
+      const fahrername = document.getElementById("fahrername").value.trim();
+      const discordId = document.getElementById("discordId").value.trim();
+      const carId = document.getElementById("carSelect").value;
+
+      if (!fahrername) {
+        setStatus("red", "Bitte einen Fahrernamen eingeben.");
+        return;
+      }
+
+      if (!carId) {
+        setStatus("red", "Bitte ein Fahrzeug auswählen.");
+        return;
+      }
+
+      try {
+        const formData = new URLSearchParams();
+        formData.append("action", "addDriver");
+        formData.append("driverName", fahrername);
+        formData.append("discordId", discordId);
+        formData.append("carId", carId);
+
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (result.success) {
+          setStatus("green", result.message || "Fahrer erfolgreich gespeichert.");
+          document.getElementById("fahrername").value = "";
+          document.getElementById("discordId").value = "";
+          document.getElementById("carSelect").value = "";
+          datenNeuLaden();
+        } else {
+          setStatus("red", result.message || "Fahrer konnte nicht gespeichert werden.");
+        }
+      } catch (error) {
+        setStatus("red", "Verbindung zum Server fehlgeschlagen.");
+      }
+    }
+
+    async function fahrerLaden() {
+      const driverList = document.getElementById("driverList");
+      driverList.innerHTML = '<div class="empty">Lade Fahrer...</div>';
+
+      try {
+        const response = await fetch(API_URL + "?type=drivers");
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (!result.success || !result.data || result.data.length === 0) {
+          driverList.innerHTML = '<div class="empty">Keine Fahrer vorhanden.</div>';
+          return;
+        }
+
+        driverList.innerHTML = "";
+
+        result.data.forEach(driver => {
+          const item = document.createElement("div");
+          item.className = "driver-item";
+
+          item.innerHTML = `
+            <div class="driver-main">
+              <div class="driver-name">${escapeHtml(driver.name || driver.fahrer || "-")}</div>
+              <div class="driver-meta">Discord: ${escapeHtml(driver.discordName || driver.discordId || "-")}</div>
+            </div>
+            <div class="driver-car">${escapeHtml(driver.carName || driver.anzeigeName || driver.carId || "-")}</div>
+          `;
+
+          driverList.appendChild(item);
+        });
+      } catch (error) {
+        driverList.innerHTML = '<div class="empty">Fahrer konnten nicht geladen werden.</div>';
+      }
+    }
+
+    async function datenNeuLaden() {
+      await autosLaden();
+      await fahrerLaden();
+    }
+
+    datenNeuLaden();
+  </script>
+</body>
+</html>
