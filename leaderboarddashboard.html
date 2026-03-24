@@ -201,20 +201,12 @@
     }
 
     .game-cover{
+      position:relative;
       aspect-ratio:16 / 9;
       width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:20px;
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
-        rgba(255,255,255,0.03);
+      background:rgba(255,255,255,0.03);
       border-bottom:1px solid rgba(255,255,255,0.08);
-      color:var(--muted);
-      font-size:0.92rem;
-      line-height:1.6;
+      overflow:hidden;
     }
 
     .game-cover img{
@@ -222,6 +214,19 @@
       height:100%;
       object-fit:cover;
       display:block;
+    }
+
+    .game-cover.empty::after{
+      content:"Cover einfügen";
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--muted);
+      font-size:0.9rem;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
     }
 
     .game-body{
@@ -364,11 +369,6 @@
         border-radius:16px;
       }
 
-      .game-cover{
-        padding:14px;
-        font-size:0.78rem;
-      }
-
       .game-body{
         padding:12px;
         gap:8px;
@@ -400,6 +400,10 @@
         border-radius:9px;
       }
 
+      .game-cover.empty::after{
+        font-size:0.76rem;
+      }
+
       footer{
         padding:18px 0 24px;
         font-size:0.72rem;
@@ -427,8 +431,7 @@
       </h1>
 
       <p>
-        Wähle dein Need for Speed Spiel und öffne das passende Leaderboard. 
-        Covers kannst du später direkt in die Platzhalter einsetzen.
+        Wähle dein Need for Speed Spiel und öffne das passende Leaderboard.
       </p>
     </section>
 
@@ -436,21 +439,20 @@
       <div class="section-title">
         <h2>Spiele auswählen</h2>
         <p>
-          Jede Karte kann mit einem Spiel-Cover, einer kurzen Beschreibung und einem direkten Link
-          zur jeweiligen Leaderboard-Seite gefüllt werden.
+          Füge in jede Karte einfach das passende Cover ein und verlinke auf die richtige Leaderboard-Seite.
         </p>
       </div>
 
       <div class="games-grid">
         <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Heat
+          <div class="game-cover empty">
+            <img src="images/nfs-heat-cover.jpg" alt="Need for Speed Heat Cover">
           </div>
           <div class="game-body">
             <div class="game-kicker">Leaderboard</div>
             <div class="game-title">Need for Speed Heat</div>
             <div class="game-text">
-              Füge hier das Cover von NFS Heat ein und verlinke die Karte auf dein Heat Leaderboard.
+              Direkter Einstieg zum Leaderboard für Need for Speed Heat.
             </div>
             <div class="game-actions">
               <a class="btn btn-primary" href="leaderboard-heat.html">Leaderboard öffnen</a>
@@ -459,14 +461,14 @@
         </article>
 
         <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Unbound
+          <div class="game-cover empty">
+            <img src="images/nfs-unbound-cover.jpg" alt="Need for Speed Unbound Cover">
           </div>
           <div class="game-body">
             <div class="game-kicker">Leaderboard</div>
             <div class="game-title">Need for Speed Unbound</div>
             <div class="game-text">
-              Platz für Cover, Link und optional kurze Info zum Unbound Leaderboard.
+              Direkter Einstieg zum Leaderboard für Need for Speed Unbound.
             </div>
             <div class="game-actions">
               <a class="btn btn-primary" href="leaderboard-unbound.html">Leaderboard öffnen</a>
@@ -475,14 +477,14 @@
         </article>
 
         <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed 2015
+          <div class="game-cover empty">
+            <img src="images/nfs-2015-cover.jpg" alt="Need for Speed 2015 Cover">
           </div>
           <div class="game-body">
             <div class="game-kicker">Leaderboard</div>
             <div class="game-title">Need for Speed 2015</div>
             <div class="game-text">
-              Karte für das Leaderboard von Need for Speed 2015 mit Cover-Platzhalter.
+              Direkter Einstieg zum Leaderboard für Need for Speed 2015.
             </div>
             <div class="game-actions">
               <a class="btn btn-primary" href="leaderboard-nfs2015.html">Leaderboard öffnen</a>
@@ -491,62 +493,14 @@
         </article>
 
         <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Payback
-          </div>
-          <div class="game-body">
-            <div class="game-kicker">Leaderboard</div>
-            <div class="game-title">Need for Speed Payback</div>
-            <div class="game-text">
-              Karte für das Payback Leaderboard mit Platz für Spielgrafik und Link.
-            </div>
-            <div class="game-actions">
-              <a class="btn btn-primary" href="leaderboard-payback.html">Leaderboard öffnen</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Rivals
-          </div>
-          <div class="game-body">
-            <div class="game-kicker">Leaderboard</div>
-            <div class="game-title">Need for Speed Rivals</div>
-            <div class="game-text">
-              Eigene Leaderboard-Karte für Rivals im gleichen NightStalkerZ Stil.
-            </div>
-            <div class="game-actions">
-              <a class="btn btn-primary" href="leaderboard-rivals.html">Leaderboard öffnen</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Hot Pursuit
-          </div>
-          <div class="game-body">
-            <div class="game-kicker">Leaderboard</div>
-            <div class="game-title">Need for Speed Hot Pursuit</div>
-            <div class="game-text">
-              Platzhalter-Karte für Hot Pursuit inklusive Cover und Link zum Ranking.
-            </div>
-            <div class="game-actions">
-              <a class="btn btn-primary" href="leaderboard-hot-pursuit.html">Leaderboard öffnen</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Most Wanted
+          <div class="game-cover empty">
+            <img src="images/nfs-most-wanted-cover.jpg" alt="Need for Speed Most Wanted Cover">
           </div>
           <div class="game-body">
             <div class="game-kicker">Leaderboard</div>
             <div class="game-title">Need for Speed Most Wanted</div>
             <div class="game-text">
-              Leaderboard-Auswahl für Most Wanted mit später austauschbarem Cover-Bild.
+              Direkter Einstieg zum Leaderboard für Need for Speed Most Wanted.
             </div>
             <div class="game-actions">
               <a class="btn btn-primary" href="leaderboard-most-wanted.html">Leaderboard öffnen</a>
@@ -555,14 +509,14 @@
         </article>
 
         <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Underground
+          <div class="game-cover empty">
+            <img src="images/nfs-underground-cover.jpg" alt="Need for Speed Underground Cover">
           </div>
           <div class="game-body">
             <div class="game-kicker">Leaderboard</div>
             <div class="game-title">Need for Speed Underground</div>
             <div class="game-text">
-              Auch ältere Titel können hier als eigene Leaderboard-Karte eingebunden werden.
+              Direkter Einstieg zum Leaderboard für Need for Speed Underground.
             </div>
             <div class="game-actions">
               <a class="btn btn-primary" href="leaderboard-underground.html">Leaderboard öffnen</a>
@@ -571,14 +525,14 @@
         </article>
 
         <article class="game-card">
-          <div class="game-cover">
-            Cover Platzhalter<br>Need for Speed Underground 2
+          <div class="game-cover empty">
+            <img src="images/nfs-underground2-cover.jpg" alt="Need for Speed Underground 2 Cover">
           </div>
           <div class="game-body">
             <div class="game-kicker">Leaderboard</div>
             <div class="game-title">Need for Speed Underground 2</div>
             <div class="game-text">
-              Karte für Underground 2 im gleichen Stil wie deine restlichen Seiten.
+              Direkter Einstieg zum Leaderboard für Need for Speed Underground 2.
             </div>
             <div class="game-actions">
               <a class="btn btn-primary" href="leaderboard-underground2.html">Leaderboard öffnen</a>
