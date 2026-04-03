@@ -874,575 +874,582 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzoAc9M3ijadmHMpgA8uZQWNl19-FMk2x_QfgBpe4mzhiN_Yzcbk7D90aZchuTf0Q4Z/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbzoAc9M3ijadmHMpgA8uZQWNl19-FMk2x_QfgBpe4mzhiN_Yzcbk7D90aZchuTf0Q4Z/exec";
 
-    const state = {
-      drivers: [],
-      tracks: [],
-      cars: [],
-      leaderboard: [],
-      driverDiscordMap: {}
+  const state = {
+    drivers: [],
+    tracks: [],
+    cars: [],
+    leaderboard: [],
+    driverDiscordMap: {}
+  };
+
+  const el = {
+    statLeaderboard: document.getElementById("statLeaderboard"),
+    statDrivers: document.getElementById("statDrivers"),
+    statTracks: document.getElementById("statTracks"),
+    statCars: document.getElementById("statCars"),
+
+    driverSelect: document.getElementById("driverSelect"),
+    trackSelect: document.getElementById("trackSelect"),
+    carSelect: document.getElementById("carSelect"),
+    timeInput: document.getElementById("timeInput"),
+    discordIdInput: document.getElementById("discordIdInput"),
+    proofInput: document.getElementById("proofInput"),
+    commentInput: document.getElementById("commentInput"),
+    submitBtn: document.getElementById("submitBtn"),
+    submitStatus: document.getElementById("submitStatus"),
+
+    reloadBtnBottom: document.getElementById("reloadBtnBottom"),
+    groupedLeaderboard: document.getElementById("groupedLeaderboard"),
+
+    searchInput: document.getElementById("searchInput"),
+    filterTrack: document.getElementById("filterTrack"),
+    filterCar: document.getElementById("filterCar")
+  };
+
+  function setStatus(node, type, message) {
+    node.className = "status " + type;
+    node.textContent = message;
+  }
+
+  function escapeHtml(text) {
+    return String(text == null ? "" : text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function normalizeText(value) {
+    return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+  }
+
+  function normalizeTimeInput(value) {
+    return String(value || "").trim().replace(",", ".");
+  }
+
+  function normalizeUrl(value) {
+    const str = String(value || "").trim();
+    if (!str) return "";
+    if (/^https?:\/\//i.test(str)) return str;
+    return "https://" + str;
+  }
+
+  function isValidTime(value) {
+    const str = normalizeTimeInput(value);
+    return /^(\d+):(\d{1,2})([.:](\d{1,3}))?$/.test(str);
+  }
+
+  function formatTime(value) {
+    return normalizeTimeInput(value).replace(/^(\d+):(\d{1,2}):(\d{1,3})$/, "$1:$2.$3");
+  }
+
+  function parseTimeToMs(value) {
+    const str = formatTime(value);
+
+    let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
+    if (match) {
+      const minutes = parseInt(match[1], 10);
+      const seconds = parseInt(match[2], 10);
+      const millis = parseInt(match[3].padEnd(3, "0"), 10);
+      return minutes * 60000 + seconds * 1000 + millis;
+    }
+
+    match = str.match(/^(\d+):(\d{1,2})$/);
+    if (match) {
+      const minutes = parseInt(match[1], 10);
+      const seconds = parseInt(match[2], 10);
+      return minutes * 60000 + seconds * 1000;
+    }
+
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  function getRowValue(row, keys) {
+    for (const key of keys) {
+      const value = row && row[key];
+      if (value !== undefined && value !== null && String(value).trim() !== "") {
+        return String(value).trim();
+      }
+    }
+    return "";
+  }
+
+  function fillSelect(select, items, placeholder, keyName) {
+    select.innerHTML = "";
+
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = placeholder;
+    select.appendChild(first);
+
+    const seen = new Set();
+
+    items.forEach(item => {
+      const val = String(item[keyName] || item.name || item.anzeigeName || item.modell || item.auto || "").trim();
+      const normalized = normalizeText(val);
+
+      if (!val || seen.has(normalized)) return;
+      seen.add(normalized);
+
+      const option = document.createElement("option");
+      option.value = val;
+      option.textContent = val;
+      select.appendChild(option);
+    });
+  }
+
+  function buildDriverDiscordMap() {
+    const map = {};
+
+    state.drivers.forEach(driver => {
+      const fahrer = String(driver.fahrer || driver.name || "").trim();
+      const discordId = String(driver.discordId || driver.discord || driver.discordID || driver.discordName || "").trim();
+
+      if (fahrer) {
+        map[normalizeText(fahrer)] = {
+          fahrer,
+          discordId
+        };
+      }
+    });
+
+    state.driverDiscordMap = map;
+  }
+
+  function autofillDriverDiscord() {
+    const selectedDriver = normalizeText(el.driverSelect.value);
+
+    if (!selectedDriver) {
+      el.discordIdInput.value = "";
+      return;
+    }
+
+    const found = state.driverDiscordMap[selectedDriver];
+    el.discordIdInput.value = found ? found.discordId : "";
+  }
+
+  function mapLeaderboardRow(row) {
+    return {
+      rang: getRowValue(row, ["rang", "rank"]),
+      fahrer: getRowValue(row, ["fahrer", "driverName", "driver", "name"]),
+      strecke: getRowValue(row, ["strecke", "track"]),
+      fahrzeug: getRowValue(row, ["fahrzeug", "car", "auto", "carName", "anzeigeName"]),
+      besteZeit: getRowValue(row, ["besteZeit", "time"]),
+      discordId: getRowValue(row, ["discordId", "discord", "discordID", "discordName"]),
+      proof: getRowValue(row, ["proof", "beweis"]),
+      comment: getRowValue(row, ["comment", "kommentar"]),
+      timestamp: getRowValue(row, ["timestamp", "createdAt", "date"])
     };
+  }
 
-    const el = {
-      statLeaderboard: document.getElementById("statLeaderboard"),
-      statDrivers: document.getElementById("statDrivers"),
-      statTracks: document.getElementById("statTracks"),
-      statCars: document.getElementById("statCars"),
+  async function apiGet(type) {
+    const response = await fetch(API_URL + "?type=" + encodeURIComponent(type) + "&_ts=" + Date.now(), {
+      cache: "no-store"
+    });
 
-      driverSelect: document.getElementById("driverSelect"),
-      trackSelect: document.getElementById("trackSelect"),
-      carSelect: document.getElementById("carSelect"),
-      timeInput: document.getElementById("timeInput"),
-      discordIdInput: document.getElementById("discordIdInput"),
-      proofInput: document.getElementById("proofInput"),
-      commentInput: document.getElementById("commentInput"),
-      submitBtn: document.getElementById("submitBtn"),
-      submitStatus: document.getElementById("submitStatus"),
+    const text = await response.text();
+    const result = JSON.parse(text);
 
-      reloadBtnBottom: document.getElementById("reloadBtnBottom"),
-      groupedLeaderboard: document.getElementById("groupedLeaderboard"),
-
-      searchInput: document.getElementById("searchInput"),
-      filterTrack: document.getElementById("filterTrack"),
-      filterCar: document.getElementById("filterCar")
-    };
-
-    function setStatus(node, type, message) {
-      node.className = "status " + type;
-      node.textContent = message;
+    if (!result.success) {
+      throw new Error(result.message || "Serverfehler");
     }
 
-    function escapeHtml(text) {
-      return String(text == null ? "" : text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+    return Array.isArray(result.data) ? result.data : [];
+  }
 
-    function normalizeText(value) {
-      return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
-    }
+  function updateStats() {
+    const uniqueDrivers = new Set(
+      state.drivers
+        .map(driver => String(driver.fahrer || driver.name || "").trim())
+        .filter(Boolean)
+        .map(normalizeText)
+    );
 
-    function normalizeTimeInput(value) {
-      return String(value || "").trim().replace(",", ".");
-    }
+    const uniqueTracks = new Set(
+      state.tracks
+        .map(track => String(track.strecke || track.name || "").trim())
+        .filter(Boolean)
+        .map(normalizeText)
+    );
 
-    function normalizeUrl(value) {
-      const str = String(value || "").trim();
-      if (!str) return "";
-      if (/^https?:\/\//i.test(str)) return str;
-      return "https://" + str;
-    }
+    const uniqueCars = new Set(
+      state.cars
+        .map(car => String(car.auto || car.name || car.anzeigeName || car.modell || "").trim())
+        .filter(Boolean)
+        .map(normalizeText)
+    );
 
-    function isValidTime(value) {
-      const str = normalizeTimeInput(value);
-      return /^(\d+):(\d{1,2})([.:](\d{1,3}))?$/.test(str);
-    }
+    el.statLeaderboard.textContent = String(state.leaderboard.length);
+    el.statDrivers.textContent = String(uniqueDrivers.size);
+    el.statTracks.textContent = String(uniqueTracks.size);
+    el.statCars.textContent = String(uniqueCars.size);
+  }
 
-    function formatTime(value) {
-      return normalizeTimeInput(value).replace(/^(\d+):(\d{1,2}):(\d{1,3})$/, "$1:$2.$3");
-    }
+  function keepBestTimePerDriver(rows) {
+    const bestMap = {};
 
-    function parseTimeToMs(value) {
-      const str = formatTime(value);
+    rows.forEach(row => {
+      const driverKey = normalizeText(row.fahrer);
+      if (!driverKey) return;
 
-      let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
-      if (match) {
-        const minutes = parseInt(match[1], 10);
-        const seconds = parseInt(match[2], 10);
-        const millis = parseInt(match[3].padEnd(3, "0"), 10);
-        return minutes * 60000 + seconds * 1000 + millis;
-      }
+      const currentMs = parseTimeToMs(row.besteZeit);
 
-      match = str.match(/^(\d+):(\d{1,2})$/);
-      if (match) {
-        const minutes = parseInt(match[1], 10);
-        const seconds = parseInt(match[2], 10);
-        return minutes * 60000 + seconds * 1000;
-      }
-
-      return Number.MAX_SAFE_INTEGER;
-    }
-
-    function getRowValue(row, keys) {
-      for (const key of keys) {
-        const value = row && row[key];
-        if (value !== undefined && value !== null && String(value).trim() !== "") {
-          return String(value).trim();
-        }
-      }
-      return "";
-    }
-
-    function fillSelect(select, items, placeholder, keyName) {
-      select.innerHTML = "";
-
-      const first = document.createElement("option");
-      first.value = "";
-      first.textContent = placeholder;
-      select.appendChild(first);
-
-      const seen = new Set();
-
-      items.forEach(item => {
-        const val = String(item[keyName] || item.name || item.anzeigeName || item.modell || "").trim();
-        if (!val || seen.has(val.toLowerCase())) return;
-
-        seen.add(val.toLowerCase());
-
-        const option = document.createElement("option");
-        option.value = val;
-        option.textContent = val;
-        select.appendChild(option);
-      });
-    }
-
-    function buildDriverDiscordMap() {
-      const map = {};
-
-      state.drivers.forEach(driver => {
-        const fahrer = String(driver.fahrer || driver.name || "").trim();
-        const discordId = String(driver.discordId || driver.discord || driver.discordID || driver.discordName || "").trim();
-
-        if (fahrer) {
-          map[normalizeText(fahrer)] = {
-            fahrer,
-            discordId
-          };
-        }
-      });
-
-      state.driverDiscordMap = map;
-    }
-
-    function autofillDriverDiscord() {
-      const selectedDriver = normalizeText(el.driverSelect.value);
-
-      if (!selectedDriver) {
-        el.discordIdInput.value = "";
+      if (!bestMap[driverKey]) {
+        bestMap[driverKey] = row;
         return;
       }
 
-      const found = state.driverDiscordMap[selectedDriver];
-      el.discordIdInput.value = found ? found.discordId : "";
+      const bestMs = parseTimeToMs(bestMap[driverKey].besteZeit);
+
+      if (currentMs < bestMs) {
+        bestMap[driverKey] = row;
+        return;
+      }
+
+      if (currentMs === bestMs) {
+        const currentTimestamp = String(row.timestamp || "").trim();
+        const bestTimestamp = String(bestMap[driverKey].timestamp || "").trim();
+
+        if (currentTimestamp && bestTimestamp && currentTimestamp > bestTimestamp) {
+          bestMap[driverKey] = row;
+        }
+      }
+    });
+
+    return Object.values(bestMap);
+  }
+
+  function getAvailableCarsFromMasterList() {
+    const set = new Set();
+
+    state.cars.forEach(car => {
+      const name = String(car.auto || car.name || car.anzeigeName || car.modell || "").trim();
+      if (name) {
+        set.add(name);
+      }
+    });
+
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "de"));
+  }
+
+  function refreshFilterCars() {
+    const currentCar = el.filterCar.value;
+    const carNames = getAvailableCarsFromMasterList();
+
+    el.filterCar.innerHTML = "";
+
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = "Alle Fahrzeuge";
+    el.filterCar.appendChild(first);
+
+    carNames.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      el.filterCar.appendChild(option);
+    });
+
+    const stillExists = carNames.some(name => normalizeText(name) === normalizeText(currentCar));
+    el.filterCar.value = stillExists ? currentCar : "";
+  }
+
+  function refreshSubmitCars() {
+    const currentCar = el.carSelect.value;
+    const carNames = getAvailableCarsFromMasterList();
+
+    el.carSelect.innerHTML = "";
+
+    const first = document.createElement("option");
+    first.value = "";
+    first.textContent = "Bitte Fahrzeug wählen";
+    el.carSelect.appendChild(first);
+
+    carNames.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      el.carSelect.appendChild(option);
+    });
+
+    const stillExists = carNames.some(name => normalizeText(name) === normalizeText(currentCar));
+    el.carSelect.value = stillExists ? currentCar : "";
+  }
+
+  function renderGroupedLeaderboards() {
+    const search = normalizeText(el.searchInput.value);
+    const selectedTrack = normalizeText(el.filterTrack.value);
+    const selectedCar = normalizeText(el.filterCar.value);
+
+    const groupedRows = {};
+
+    state.tracks.forEach(track => {
+      const trackName = String(track.strecke || track.name || "").trim();
+      if (trackName) {
+        groupedRows[trackName] = [];
+      }
+    });
+
+    state.leaderboard.forEach(row => {
+      const trackName = String(row.strecke || "Unbekannt").trim();
+      if (!groupedRows[trackName]) {
+        groupedRows[trackName] = [];
+      }
+      groupedRows[trackName].push(row);
+    });
+
+    let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
+
+    if (selectedTrack) {
+      trackNames = trackNames.filter(name => normalizeText(name) === selectedTrack);
     }
 
-    function mapLeaderboardRow(row) {
-      return {
-        rang: getRowValue(row, ["rang", "rank"]),
-        fahrer: getRowValue(row, ["fahrer", "driverName", "driver", "name"]),
-        strecke: getRowValue(row, ["strecke", "track"]),
-        fahrzeug: getRowValue(row, ["fahrzeug", "car", "auto", "carName", "anzeigeName"]),
-        besteZeit: getRowValue(row, ["besteZeit", "time"]),
-        discordId: getRowValue(row, ["discordId", "discord", "discordID", "discordName"]),
-        proof: getRowValue(row, ["proof", "beweis"]),
-        comment: getRowValue(row, ["comment", "kommentar"]),
-        timestamp: getRowValue(row, ["timestamp", "createdAt", "date"])
-      };
+    if (!trackNames.length) {
+      el.groupedLeaderboard.innerHTML = `<div class="empty">Keine Strecken gefunden.</div>`;
+      return;
     }
 
-    async function apiGet(type) {
-      const response = await fetch(API_URL + "?type=" + encodeURIComponent(type) + "&_ts=" + Date.now(), {
-        cache: "no-store"
+    let html = "";
+
+    trackNames.forEach(trackName => {
+      let rows = [...groupedRows[trackName]];
+
+      if (selectedCar) {
+        rows = rows.filter(row => normalizeText(row.fahrzeug) === selectedCar);
+      }
+
+      if (search) {
+        rows = rows.filter(row => {
+          const text = [
+            row.fahrer,
+            row.strecke,
+            row.fahrzeug,
+            row.besteZeit,
+            row.discordId,
+            row.comment
+          ].join(" ");
+
+          return normalizeText(text).includes(search);
+        });
+      }
+
+      rows = keepBestTimePerDriver(rows);
+      rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
+
+      html += `
+        <section class="track-block">
+          <div class="track-header">
+            <div class="track-title">
+              <div class="track-kicker">Strecke</div>
+              <h3>${escapeHtml(trackName)}</h3>
+            </div>
+            <div class="meta-pill">${rows.length} Fahrer im Ranking</div>
+          </div>
+      `;
+
+      if (!rows.length) {
+        html += `<div class="empty">Für diese Strecke gibt es aktuell keine passenden Einträge.</div>`;
+      } else {
+        html += `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rang</th>
+                  <th>Fahrer</th>
+                  <th>Fahrzeug</th>
+                  <th>Beste Zeit</th>
+                  <th>Discord</th>
+                  <th>Beweis</th>
+                  <th>Kommentar</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        rows.forEach((row, index) => {
+          const rank = index + 1;
+          let rankClass = "";
+
+          if (rank === 1) rankClass = "rank-1";
+          if (rank === 2) rankClass = "rank-2";
+          if (rank === 3) rankClass = "rank-3";
+
+          const proof = normalizeUrl(row.proof);
+          const proofHtml = proof
+            ? `<a class="proof-link" href="${escapeHtml(proof)}" target="_blank" rel="noopener noreferrer">Öffnen</a>`
+            : `<span class="muted">-</span>`;
+
+          const discord = row.discordId
+            ? escapeHtml(row.discordId)
+            : `<span class="muted">-</span>`;
+
+          const comment = row.comment
+            ? escapeHtml(row.comment)
+            : `<span class="muted">-</span>`;
+
+          html += `
+            <tr>
+              <td><span class="rank ${rankClass}">${rank}</span></td>
+              <td>${escapeHtml(row.fahrer || "-")}</td>
+              <td>${escapeHtml(row.fahrzeug || "-")}</td>
+              <td><span class="time-pill">${escapeHtml(row.besteZeit || "-")}</span></td>
+              <td>${discord}</td>
+              <td>${proofHtml}</td>
+              <td class="comment-cell">${comment}</td>
+            </tr>
+          `;
+        });
+
+        html += `
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      html += `</section>`;
+    });
+
+    el.groupedLeaderboard.innerHTML = html;
+  }
+
+  async function loadAllData() {
+    el.reloadBtnBottom.disabled = true;
+    el.groupedLeaderboard.innerHTML = `<div class="empty">Lade Daten...</div>`;
+
+    try {
+      const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
+        apiGet("drivers"),
+        apiGet("tracks"),
+        apiGet("cars"),
+        apiGet("leaderboard")
+      ]);
+
+      state.drivers = Array.isArray(drivers) ? drivers : [];
+      state.tracks = Array.isArray(tracks) ? tracks : [];
+      state.cars = Array.isArray(cars) ? cars : [];
+      state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
+
+      buildDriverDiscordMap();
+
+      fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
+      fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
+      fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
+
+      autofillDriverDiscord();
+      updateStats();
+      refreshSubmitCars();
+      refreshFilterCars();
+      renderGroupedLeaderboards();
+    } catch (error) {
+      console.error(error);
+      el.groupedLeaderboard.innerHTML = `<div class="empty">Fehler beim Laden der Daten.</div>`;
+    } finally {
+      el.reloadBtnBottom.disabled = false;
+    }
+  }
+
+  async function submitTime() {
+    const payload = {
+      discordId: el.discordIdInput.value.trim(),
+      driverName: el.driverSelect.value.trim(),
+      track: el.trackSelect.value.trim(),
+      car: el.carSelect.value.trim(),
+      time: formatTime(el.timeInput.value),
+      proof: el.proofInput.value.trim(),
+      comment: el.commentInput.value.trim()
+    };
+
+    if (!payload.driverName) {
+      setStatus(el.submitStatus, "red", "Bitte einen Fahrer auswählen.");
+      return;
+    }
+
+    if (!payload.track) {
+      setStatus(el.submitStatus, "red", "Bitte eine Strecke auswählen.");
+      return;
+    }
+
+    if (!payload.car) {
+      setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug auswählen.");
+      return;
+    }
+
+    if (!payload.discordId) {
+      setStatus(el.submitStatus, "red", "Keine Discord ID für diesen Fahrer gefunden.");
+      return;
+    }
+
+    if (!isValidTime(payload.time)) {
+      setStatus(el.submitStatus, "red", "Bitte eine gültige Zeit eingeben, z. B. 4:21.222.");
+      return;
+    }
+
+    el.submitBtn.disabled = true;
+    setStatus(el.submitStatus, "green", "Eintrag wird gesendet ...");
+
+    try {
+      const formData = new FormData();
+      formData.append("action", "submitTime");
+      formData.append("discordId", payload.discordId);
+      formData.append("driverName", payload.driverName);
+      formData.append("fahrer", payload.driverName);
+      formData.append("track", payload.track);
+      formData.append("strecke", payload.track);
+      formData.append("car", payload.car);
+      formData.append("fahrzeug", payload.car);
+      formData.append("time", payload.time);
+      formData.append("proof", payload.proof);
+      formData.append("comment", payload.comment);
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        body: formData
       });
 
       const text = await response.text();
       const result = JSON.parse(text);
 
       if (!result.success) {
-        throw new Error(result.message || "Serverfehler");
+        throw new Error(result.message || "Speichern fehlgeschlagen");
       }
 
-      return Array.isArray(result.data) ? result.data : [];
+      setStatus(el.submitStatus, "green", "Zeit erfolgreich eingereicht.");
+
+      el.timeInput.value = "";
+      el.proofInput.value = "";
+      el.commentInput.value = "";
+      el.carSelect.value = "";
+      el.trackSelect.value = "";
+
+      autofillDriverDiscord();
+      refreshSubmitCars();
+      await loadAllData();
+    } catch (error) {
+      console.error(error);
+      setStatus(el.submitStatus, "red", "Fehler: " + error.message);
+    } finally {
+      el.submitBtn.disabled = false;
     }
+  }
 
-    function updateStats() {
-      el.statLeaderboard.textContent = String(state.leaderboard.length);
-      el.statDrivers.textContent = String(state.drivers.length);
-      el.statTracks.textContent = String(state.tracks.length);
-      el.statCars.textContent = String(state.cars.length);
-    }
-
-    function keepBestTimePerDriver(rows) {
-      const bestMap = {};
-
-      rows.forEach(row => {
-        const driverKey = normalizeText(row.fahrer);
-        if (!driverKey) return;
-
-        const currentMs = parseTimeToMs(row.besteZeit);
-
-        if (!bestMap[driverKey]) {
-          bestMap[driverKey] = row;
-          return;
-        }
-
-        const bestMs = parseTimeToMs(bestMap[driverKey].besteZeit);
-
-        if (currentMs < bestMs) {
-          bestMap[driverKey] = row;
-          return;
-        }
-
-        if (currentMs === bestMs) {
-          const currentTimestamp = String(row.timestamp || "").trim();
-          const bestTimestamp = String(bestMap[driverKey].timestamp || "").trim();
-
-          if (currentTimestamp && bestTimestamp && currentTimestamp > bestTimestamp) {
-            bestMap[driverKey] = row;
-          }
-        }
-      });
-
-      return Object.values(bestMap);
-    }
-
-    function getAvailableCarsFromMasterList() {
-      const set = new Set();
-
-      state.cars.forEach(car => {
-        const name = String(car.auto || car.name || car.anzeigeName || car.modell || "").trim();
-        if (name) set.add(name);
-      });
-
-      return Array.from(set).sort((a, b) => a.localeCompare(b, "de"));
-    }
-
-    function getCarsForTrack(trackName) {
-      const selectedTrack = normalizeText(trackName);
-      const set = new Set();
-
-      state.leaderboard.forEach(row => {
-        if (!selectedTrack || normalizeText(row.strecke) === selectedTrack) {
-          const carName = String(row.fahrzeug || "").trim();
-          if (carName) {
-            set.add(carName);
-          }
-        }
-      });
-
-      return Array.from(set).sort((a, b) => a.localeCompare(b, "de"));
-    }
-
-    function refreshFilterCars() {
-      const currentCar = el.filterCar.value;
-      const carNames = getCarsForTrack(el.filterTrack.value);
-
-      el.filterCar.innerHTML = `<option value="">Alle Fahrzeuge</option>`;
-
-      carNames.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        el.filterCar.appendChild(option);
-      });
-
-      const stillExists = carNames.some(name => normalizeText(name) === normalizeText(currentCar));
-      el.filterCar.value = stillExists ? currentCar : "";
-    }
-
-    function refreshSubmitCars() {
-      const currentCar = el.carSelect.value;
-      const carNames = getAvailableCarsFromMasterList();
-
-      el.carSelect.innerHTML = `<option value="">Bitte Fahrzeug wählen</option>`;
-
-      carNames.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        el.carSelect.appendChild(option);
-      });
-
-      const stillExists = carNames.some(name => normalizeText(name) === normalizeText(currentCar));
-      el.carSelect.value = stillExists ? currentCar : "";
-    }
-
-    function renderGroupedLeaderboards() {
-      const search = normalizeText(el.searchInput.value);
-      const selectedTrack = normalizeText(el.filterTrack.value);
-      const selectedCar = normalizeText(el.filterCar.value);
-
-      const groupedRows = {};
-
-      state.tracks.forEach(track => {
-        const trackName = String(track.strecke || track.name || "").trim();
-        if (trackName) groupedRows[trackName] = [];
-      });
-
-      state.leaderboard.forEach(row => {
-        const trackName = String(row.strecke || "Unbekannt").trim();
-        if (!groupedRows[trackName]) groupedRows[trackName] = [];
-        groupedRows[trackName].push(row);
-      });
-
-      let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
-
-      if (selectedTrack) {
-        trackNames = trackNames.filter(name => normalizeText(name) === selectedTrack);
-      }
-
-      if (!trackNames.length) {
-        el.groupedLeaderboard.innerHTML = `<div class="empty">Keine Strecken gefunden.</div>`;
-        return;
-      }
-
-      let html = "";
-      let visibleTrackCount = 0;
-
-      trackNames.forEach(trackName => {
-        let rows = [...groupedRows[trackName]];
-
-        if (selectedCar) {
-          rows = rows.filter(row => normalizeText(row.fahrzeug) === selectedCar);
-        }
-
-        if (search) {
-          rows = rows.filter(row => {
-            const text = [
-              row.fahrer,
-              row.strecke,
-              row.fahrzeug,
-              row.besteZeit,
-              row.discordId,
-              row.comment
-            ].join(" ");
-
-            return normalizeText(text).includes(search);
-          });
-        }
-
-        rows = keepBestTimePerDriver(rows);
-        rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
-
-        if (!rows.length && !selectedTrack) {
-          return;
-        }
-
-        visibleTrackCount++;
-
-        html += `
-          <section class="track-block">
-            <div class="track-header">
-              <div class="track-title">
-                <div class="track-kicker">Strecke</div>
-                <h3>${escapeHtml(trackName)}</h3>
-              </div>
-              <div class="meta-pill">${rows.length} Fahrer im Ranking</div>
-            </div>
-        `;
-
-        if (!rows.length) {
-          html += `<div class="empty">Für diese Strecke gibt es aktuell keine passenden Einträge.</div>`;
-        } else {
-          html += `
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Rang</th>
-                    <th>Fahrer</th>
-                    <th>Fahrzeug</th>
-                    <th>Beste Zeit</th>
-                    <th>Discord</th>
-                    <th>Beweis</th>
-                    <th>Kommentar</th>
-                  </tr>
-                </thead>
-                <tbody>
-          `;
-
-          rows.forEach((row, index) => {
-            const rank = index + 1;
-            let rankClass = "";
-            if (rank === 1) rankClass = "rank-1";
-            if (rank === 2) rankClass = "rank-2";
-            if (rank === 3) rankClass = "rank-3";
-
-            const proof = normalizeUrl(row.proof);
-            const proofHtml = proof
-              ? `<a class="proof-link" href="${escapeHtml(proof)}" target="_blank" rel="noopener noreferrer">Öffnen</a>`
-              : `<span class="muted">-</span>`;
-
-            const discord = row.discordId
-              ? escapeHtml(row.discordId)
-              : `<span class="muted">-</span>`;
-
-            const comment = row.comment
-              ? escapeHtml(row.comment)
-              : `<span class="muted">-</span>`;
-
-            html += `
-              <tr>
-                <td><span class="rank ${rankClass}">${rank}</span></td>
-                <td>${escapeHtml(row.fahrer || "-")}</td>
-                <td>${escapeHtml(row.fahrzeug || "-")}</td>
-                <td><span class="time-pill">${escapeHtml(row.besteZeit || "-")}</span></td>
-                <td>${discord}</td>
-                <td>${proofHtml}</td>
-                <td class="comment-cell">${comment}</td>
-              </tr>
-            `;
-          });
-
-          html += `
-                </tbody>
-              </table>
-            </div>
-          `;
-        }
-
-        html += `</section>`;
-      });
-
-      if (!visibleTrackCount) {
-        el.groupedLeaderboard.innerHTML = `<div class="empty">Keine passenden Einträge gefunden.</div>`;
-        return;
-      }
-
-      el.groupedLeaderboard.innerHTML = html;
-    }
-
-    async function loadAllData() {
-      el.reloadBtnBottom.disabled = true;
-      el.groupedLeaderboard.innerHTML = `<div class="empty">Lade Daten...</div>`;
-
-      try {
-        const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
-          apiGet("drivers"),
-          apiGet("tracks"),
-          apiGet("cars"),
-          apiGet("leaderboard")
-        ]);
-
-        state.drivers = Array.isArray(drivers) ? drivers : [];
-        state.tracks = Array.isArray(tracks) ? tracks : [];
-        state.cars = Array.isArray(cars) ? cars : [];
-        state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
-
-        buildDriverDiscordMap();
-
-        fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
-        fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
-        fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
-
-        autofillDriverDiscord();
-        updateStats();
-        refreshSubmitCars();
-        refreshFilterCars();
-        renderGroupedLeaderboards();
-      } catch (error) {
-        console.error(error);
-        el.groupedLeaderboard.innerHTML = `<div class="empty">Fehler beim Laden der Daten.</div>`;
-      } finally {
-        el.reloadBtnBottom.disabled = false;
-      }
-    }
-
-    async function submitTime() {
-      const payload = {
-        discordId: el.discordIdInput.value.trim(),
-        driverName: el.driverSelect.value.trim(),
-        track: el.trackSelect.value.trim(),
-        car: el.carSelect.value.trim(),
-        time: formatTime(el.timeInput.value),
-        proof: el.proofInput.value.trim(),
-        comment: el.commentInput.value.trim()
-      };
-
-      if (!payload.driverName) {
-        setStatus(el.submitStatus, "red", "Bitte einen Fahrer auswählen.");
-        return;
-      }
-
-      if (!payload.track) {
-        setStatus(el.submitStatus, "red", "Bitte eine Strecke auswählen.");
-        return;
-      }
-
-      if (!payload.car) {
-        setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug auswählen.");
-        return;
-      }
-
-      if (!payload.discordId) {
-        setStatus(el.submitStatus, "red", "Keine Discord ID für diesen Fahrer gefunden.");
-        return;
-      }
-
-      if (!isValidTime(payload.time)) {
-        setStatus(el.submitStatus, "red", "Bitte eine gültige Zeit eingeben, z. B. 4:21.222.");
-        return;
-      }
-
-      el.submitBtn.disabled = true;
-      setStatus(el.submitStatus, "green", "Eintrag wird gesendet ...");
-
-      try {
-        const formData = new FormData();
-        formData.append("action", "submitTime");
-        formData.append("discordId", payload.discordId);
-        formData.append("driverName", payload.driverName);
-        formData.append("fahrer", payload.driverName);
-        formData.append("track", payload.track);
-        formData.append("strecke", payload.track);
-        formData.append("car", payload.car);
-        formData.append("fahrzeug", payload.car);
-        formData.append("time", payload.time);
-        formData.append("proof", payload.proof);
-        formData.append("comment", payload.comment);
-
-        const response = await fetch(API_URL, {
-          method: "POST",
-          body: formData
-        });
-
-        const text = await response.text();
-        const result = JSON.parse(text);
-
-        if (!result.success) {
-          throw new Error(result.message || "Speichern fehlgeschlagen");
-        }
-
-        setStatus(el.submitStatus, "green", "Zeit erfolgreich eingereicht.");
-
-        el.timeInput.value = "";
-        el.proofInput.value = "";
-        el.commentInput.value = "";
-        el.carSelect.value = "";
-        el.trackSelect.value = "";
-
-        autofillDriverDiscord();
-        refreshSubmitCars();
-        await loadAllData();
-      } catch (error) {
-        console.error(error);
-        setStatus(el.submitStatus, "red", "Fehler: " + error.message);
-      } finally {
-        el.submitBtn.disabled = false;
-      }
-    }
-
-    el.reloadBtnBottom.addEventListener("click", function () {
-      loadAllData();
-    });
-
-    el.driverSelect.addEventListener("change", autofillDriverDiscord);
-    el.trackSelect.addEventListener("change", refreshSubmitCars);
-    el.submitBtn.addEventListener("click", submitTime);
-    el.searchInput.addEventListener("input", renderGroupedLeaderboards);
-
-    el.filterTrack.addEventListener("change", function () {
-      refreshFilterCars();
-      renderGroupedLeaderboards();
-    });
-
-    el.filterCar.addEventListener("change", renderGroupedLeaderboards);
-
+  el.reloadBtnBottom.addEventListener("click", function () {
     loadAllData();
-  </script>
-</body>
-</html>
+  });
+
+  el.driverSelect.addEventListener("change", autofillDriverDiscord);
+  el.submitBtn.addEventListener("click", submitTime);
+  el.searchInput.addEventListener("input", renderGroupedLeaderboards);
+
+  el.filterTrack.addEventListener("change", function () {
+    renderGroupedLeaderboards();
+  });
+
+  el.filterCar.addEventListener("change", renderGroupedLeaderboards);
+
+  loadAllData();
+</script>
