@@ -253,6 +253,7 @@
     }
 
     input,
+    select,
     textarea{
       width:100%;
       padding:11px 12px;
@@ -277,10 +278,15 @@
     }
 
     input:focus,
+    select:focus,
     textarea:focus{
       border-color:#00d9ff;
       box-shadow:0 0 0 3px rgba(0,217,255,0.14);
       transform:translateY(-1px);
+    }
+
+    select option{
+      color:#000;
     }
 
     .row-2{
@@ -631,6 +637,7 @@
       }
 
       input,
+      select,
       textarea{
         padding:9px 10px;
         border-radius:9px;
@@ -788,18 +795,24 @@
             </div>
           </div>
 
-          <label for="driverInput">Fahrer</label>
-          <input id="driverInput" type="text" placeholder="Fahrername eingeben" />
+          <label for="driverSelect">Fahrer</label>
+          <select id="driverSelect">
+            <option value="">Bitte Fahrer wählen</option>
+          </select>
 
           <div class="row-2">
             <div>
-              <label for="trackInput">Strecke</label>
-              <input id="trackInput" type="text" placeholder="Strecke eingeben" />
+              <label for="trackSelect">Strecke</label>
+              <select id="trackSelect">
+                <option value="">Bitte Strecke wählen</option>
+              </select>
             </div>
 
             <div>
-              <label for="carInput">Fahrzeug</label>
-              <input id="carInput" type="text" placeholder="Fahrzeug eingeben" />
+              <label for="carSelect">Fahrzeug</label>
+              <select id="carSelect">
+                <option value="">Bitte Fahrzeug wählen</option>
+              </select>
             </div>
           </div>
 
@@ -810,7 +823,7 @@
           <div class="row-2">
             <div>
               <label for="discordIdInput">Discord ID</label>
-              <input id="discordIdInput" type="text" placeholder="wird bei exaktem Fahrernamen automatisch eingefügt" />
+              <input id="discordIdInput" type="text" placeholder="wird automatisch aus Fahrer übernommen" readonly />
             </div>
 
             <div>
@@ -838,8 +851,12 @@
 
           <div class="toolbar">
             <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Fahrzeug, Discord oder Kommentar" />
-            <input id="filterTrack" type="text" placeholder="Nach Strecke filtern" />
-            <input id="filterCar" type="text" placeholder="Nach Fahrzeug filtern" />
+            <select id="filterTrack">
+              <option value="">Alle Strecken</option>
+            </select>
+            <select id="filterCar">
+              <option value="">Alle Fahrzeuge</option>
+            </select>
           </div>
 
           <div id="groupedLeaderboard" class="leaderboard-groups">
@@ -857,7 +874,7 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbw3Yj7gOdFvNpvISkkEUjHsNeT9hlsLiR9rztLy90v7IbmvtLp0n_1SqswinBp-f60J/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbw3HVO7UUgSegxBP30yJ02kkTQYzAYXmFqf3ijQvLYAqIAX3yZKimiBvONuY13KWYo2/exec";
 
     const state = {
       drivers: [],
@@ -873,9 +890,9 @@
       statTracks: document.getElementById("statTracks"),
       statCars: document.getElementById("statCars"),
 
-      driverInput: document.getElementById("driverInput"),
-      trackInput: document.getElementById("trackInput"),
-      carInput: document.getElementById("carInput"),
+      driverSelect: document.getElementById("driverSelect"),
+      trackSelect: document.getElementById("trackSelect"),
+      carSelect: document.getElementById("carSelect"),
       timeInput: document.getElementById("timeInput"),
       discordIdInput: document.getElementById("discordIdInput"),
       proofInput: document.getElementById("proofInput"),
@@ -960,6 +977,29 @@
       return "";
     }
 
+    function fillSelect(select, items, placeholder, keyName) {
+      select.innerHTML = "";
+
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = placeholder;
+      select.appendChild(first);
+
+      const seen = new Set();
+
+      items.forEach(item => {
+        const val = String(item[keyName] || item.name || item.anzeigeName || item.modell || "").trim();
+        if (!val || seen.has(val.toLowerCase())) return;
+
+        seen.add(val.toLowerCase());
+
+        const option = document.createElement("option");
+        option.value = val;
+        option.textContent = val;
+        select.appendChild(option);
+      });
+    }
+
     function buildDriverDiscordMap() {
       const map = {};
 
@@ -979,13 +1019,14 @@
     }
 
     function autofillDriverDiscord() {
-      const driverName = normalizeText(el.driverInput.value);
-      if (!driverName) {
+      const selectedDriver = normalizeText(el.driverSelect.value);
+
+      if (!selectedDriver) {
         el.discordIdInput.value = "";
         return;
       }
 
-      const found = state.driverDiscordMap[driverName];
+      const found = state.driverDiscordMap[selectedDriver];
       el.discordIdInput.value = found ? found.discordId : "";
     }
 
@@ -1046,7 +1087,7 @@
       let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
 
       if (selectedTrack) {
-        trackNames = trackNames.filter(name => normalizeText(name).includes(selectedTrack));
+        trackNames = trackNames.filter(name => normalizeText(name) === selectedTrack);
       }
 
       if (!trackNames.length) {
@@ -1060,7 +1101,7 @@
         let rows = [...groupedRows[trackName]];
 
         if (selectedCar) {
-          rows = rows.filter(row => normalizeText(row.fahrzeug).includes(selectedCar));
+          rows = rows.filter(row => normalizeText(row.fahrzeug) === selectedCar);
         }
 
         if (search) {
@@ -1175,6 +1216,13 @@
         state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
 
         buildDriverDiscordMap();
+
+        fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
+        fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
+        fillSelect(el.carSelect, state.cars, "Bitte Fahrzeug wählen", "auto");
+        fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
+        fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
+
         autofillDriverDiscord();
         updateStats();
         renderGroupedLeaderboards();
@@ -1189,31 +1237,31 @@
     async function submitTime() {
       const payload = {
         discordId: el.discordIdInput.value.trim(),
-        driverName: el.driverInput.value.trim(),
-        track: el.trackInput.value.trim(),
-        car: el.carInput.value.trim(),
+        driverName: el.driverSelect.value.trim(),
+        track: el.trackSelect.value.trim(),
+        car: el.carSelect.value.trim(),
         time: formatTime(el.timeInput.value),
         proof: el.proofInput.value.trim(),
         comment: el.commentInput.value.trim()
       };
 
       if (!payload.driverName) {
-        setStatus(el.submitStatus, "red", "Bitte einen Fahrernamen eingeben.");
+        setStatus(el.submitStatus, "red", "Bitte einen Fahrer auswählen.");
         return;
       }
 
       if (!payload.track) {
-        setStatus(el.submitStatus, "red", "Bitte eine Strecke eingeben.");
+        setStatus(el.submitStatus, "red", "Bitte eine Strecke auswählen.");
         return;
       }
 
       if (!payload.car) {
-        setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug eingeben.");
+        setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug auswählen.");
         return;
       }
 
       if (!payload.discordId) {
-        setStatus(el.submitStatus, "red", "Bitte eine Discord ID eingeben oder den exakten Fahrernamen verwenden.");
+        setStatus(el.submitStatus, "red", "Keine Discord ID für diesen Fahrer gefunden.");
         return;
       }
 
@@ -1256,7 +1304,10 @@
         el.timeInput.value = "";
         el.proofInput.value = "";
         el.commentInput.value = "";
+        el.carSelect.selectedIndex = 0;
+        el.trackSelect.selectedIndex = 0;
 
+        autofillDriverDiscord();
         await loadAllData();
       } catch (error) {
         console.error(error);
@@ -1270,11 +1321,11 @@
       loadAllData();
     });
 
-    el.driverInput.addEventListener("input", autofillDriverDiscord);
+    el.driverSelect.addEventListener("change", autofillDriverDiscord);
     el.submitBtn.addEventListener("click", submitTime);
     el.searchInput.addEventListener("input", renderGroupedLeaderboards);
-    el.filterTrack.addEventListener("input", renderGroupedLeaderboards);
-    el.filterCar.addEventListener("input", renderGroupedLeaderboards);
+    el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
+    el.filterCar.addEventListener("change", renderGroupedLeaderboards);
 
     loadAllData();
   </script>
