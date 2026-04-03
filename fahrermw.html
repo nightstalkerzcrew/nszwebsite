@@ -15,11 +15,10 @@
       --bg2:#0a0d14;
       --text:#f3f6ff;
       --muted:#9fa8c3;
-      --card:rgba(255,255,255,0.05);
       --border:rgba(255,255,255,0.10);
       --rainbow:linear-gradient(90deg,#ff004c,#ff7a00,#ffd500,#00ff99,#00d9ff,#6f5cff,#ff00c8,#ff004c);
-      --shadow:0 10px 40px rgba(0,0,0,0.45);
-      --rainbow-shadow:0 0 30px rgba(255,0,200,0.16),0 0 60px rgba(0,217,255,0.14),0 0 90px rgba(0,255,153,0.08);
+      --shadow:0 10px 32px rgba(0,0,0,0.42);
+      --rainbow-shadow:0 0 20px rgba(255,0,200,0.13),0 0 40px rgba(0,217,255,0.10),0 0 60px rgba(0,255,153,0.06);
     }
 
     *{
@@ -45,7 +44,7 @@
     }
 
     .container{
-      width:min(1180px,92%);
+      width:min(1080px,92%);
       margin:0 auto;
     }
 
@@ -62,21 +61,15 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:18px;
-      padding:20px 0;
-    }
-
-    .logo-wrap{
-      position:relative;
-      display:inline-block;
+      gap:12px;
+      padding:12px 0;
     }
 
     .logo{
-      position:relative;
       font-family:'Orbitron',sans-serif;
       font-weight:900;
-      font-size:clamp(1.15rem,2.1vw,1.65rem);
-      letter-spacing:0.16em;
+      font-size:clamp(0.95rem,1.8vw,1.35rem);
+      letter-spacing:0.12em;
       text-transform:uppercase;
       background:var(--rainbow);
       background-size:300% auto;
@@ -84,34 +77,32 @@
       background-clip:text;
       color:transparent;
       animation:rainbowMove 6s linear infinite;
-      text-align:center;
       line-height:1;
-      transition:transform 0.3s ease, filter 0.3s ease;
       filter:drop-shadow(0 0 10px rgba(255,255,255,0.04));
     }
 
     .nav-actions{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:8px;
       flex-wrap:wrap;
       justify-content:flex-end;
     }
 
     .btn{
       text-decoration:none;
-      padding:15px 24px;
-      border-radius:16px;
+      padding:10px 16px;
+      border-radius:12px;
       font-weight:800;
-      transition:0.28s ease;
+      transition:0.25s ease;
       display:inline-flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      min-height:54px;
+      min-height:42px;
       border:none;
       cursor:pointer;
-      font-size:0.96rem;
+      font-size:0.84rem;
       font-family:'Inter',sans-serif;
     }
 
@@ -130,11 +121,17 @@
     }
 
     .btn:hover{
-      transform:translateY(-4px);
+      transform:translateY(-2px);
+    }
+
+    .btn:disabled{
+      opacity:0.7;
+      cursor:not-allowed;
+      transform:none;
     }
 
     .hero{
-      padding:80px 0 30px;
+      padding:34px 0 12px;
       text-align:center;
       display:flex;
       flex-direction:column;
@@ -144,10 +141,10 @@
 
     h1{
       font-family:'Orbitron',sans-serif;
-      font-size:clamp(2.4rem,7vw,4.8rem);
-      line-height:0.96;
+      font-size:clamp(1.7rem,4.6vw,3.2rem);
+      line-height:0.95;
       text-transform:uppercase;
-      margin-bottom:20px;
+      margin-bottom:12px;
       text-align:center;
     }
 
@@ -162,39 +159,37 @@
 
     .hero p{
       color:var(--muted);
-      line-height:1.9;
-      margin:0 auto 10px;
-      max-width:780px;
-      font-size:1.02rem;
+      line-height:1.65;
+      margin:0 auto;
+      max-width:660px;
+      font-size:0.9rem;
       text-align:center;
     }
 
     .section{
-      padding:28px 0 80px;
-      text-align:center;
+      padding:14px 0 42px;
     }
 
     .grid-2{
       display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:22px;
+      grid-template-columns:320px 1fr;
+      gap:16px;
       align-items:start;
     }
 
     .card{
-      padding:26px;
-      border-radius:24px;
+      padding:16px;
+      border-radius:18px;
       background:rgba(255,255,255,0.045);
       border:1px solid rgba(255,255,255,0.10);
       transition:0.3s ease;
       box-shadow:var(--shadow);
       text-align:left;
-      height:100%;
     }
 
     .card h2{
-      margin-bottom:12px;
-      font-size:1.22rem;
+      margin-bottom:8px;
+      font-size:0.98rem;
       font-family:'Orbitron',sans-serif;
       text-transform:uppercase;
       text-align:left;
@@ -202,29 +197,31 @@
 
     .subtext{
       color:var(--muted);
-      margin-bottom:18px;
-      line-height:1.8;
+      margin-bottom:12px;
+      line-height:1.55;
       text-align:left;
+      font-size:0.84rem;
     }
 
     label{
       display:block;
-      margin-bottom:8px;
-      margin-top:14px;
+      margin-bottom:5px;
+      margin-top:10px;
       font-weight:700;
       color:var(--text);
       text-align:left;
+      font-size:0.84rem;
     }
 
     input,
     select{
       width:100%;
-      padding:15px 16px;
-      border-radius:16px;
+      padding:10px 11px;
+      border-radius:12px;
       border:1px solid rgba(255,255,255,0.12);
       background:rgba(255,255,255,0.06);
       color:#fff;
-      font-size:15px;
+      font-size:13px;
       outline:none;
       transition:border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
       font-family:'Inter',sans-serif;
@@ -247,8 +244,8 @@
 
     .actions{
       display:flex;
-      gap:12px;
-      margin-top:20px;
+      gap:8px;
+      margin-top:14px;
       flex-wrap:wrap;
     }
 
@@ -257,13 +254,14 @@
     }
 
     .status{
-      margin-top:18px;
-      padding:14px 16px;
-      border-radius:16px;
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
       font-weight:700;
       display:none;
       border:1px solid rgba(255,255,255,0.08);
-      line-height:1.6;
+      line-height:1.5;
+      font-size:0.82rem;
     }
 
     .status.red{
@@ -279,57 +277,66 @@
     }
 
     .info-bar{
-      margin-top:16px;
-      font-size:14px;
+      margin-top:12px;
+      font-size:12px;
       color:var(--muted);
-      line-height:1.7;
+      line-height:1.55;
       text-align:left;
+    }
+
+    .toolbar{
+      display:grid;
+      grid-template-columns:1fr 180px;
+      gap:8px;
+      margin-bottom:12px;
     }
 
     .driver-list{
       display:grid;
-      gap:14px;
-      margin-top:10px;
+      gap:10px;
+      margin-top:4px;
       max-height:520px;
       overflow-y:auto;
       padding-right:4px;
     }
 
     .driver-item{
-      padding:16px 18px;
-      border-radius:18px;
+      padding:12px 13px;
+      border-radius:14px;
       background:rgba(255,255,255,0.05);
       border:1px solid rgba(255,255,255,0.08);
       display:flex;
       justify-content:space-between;
-      gap:14px;
+      gap:10px;
       align-items:center;
     }
 
     .driver-main{
       display:flex;
       flex-direction:column;
-      gap:6px;
+      gap:4px;
+      min-width:0;
     }
 
     .driver-name{
       font-weight:800;
       color:#fff;
-      letter-spacing:0.5px;
-      font-size:1rem;
+      letter-spacing:0.2px;
+      font-size:0.9rem;
+      word-break:break-word;
     }
 
     .driver-meta{
       color:var(--muted);
-      font-size:14px;
+      font-size:12px;
       word-break:break-word;
-      line-height:1.6;
+      line-height:1.45;
     }
 
-    .driver-car{
-      padding:10px 14px;
+    .driver-platform{
+      padding:7px 10px;
       border-radius:999px;
-      font-size:13px;
+      font-size:11px;
       font-weight:800;
       background:rgba(255,255,255,0.06);
       border:1px solid rgba(255,255,255,0.10);
@@ -340,18 +347,20 @@
 
     .empty{
       color:var(--muted);
-      padding:22px;
+      padding:16px;
       text-align:center;
       border:1px dashed rgba(255,255,255,0.15);
-      border-radius:18px;
+      border-radius:14px;
       background:rgba(255,255,255,0.03);
+      font-size:0.88rem;
     }
 
     footer{
-      padding:30px 0 50px;
+      padding:18px 0 28px;
       text-align:center;
       color:var(--muted);
       border-top:1px solid rgba(255,255,255,0.08);
+      font-size:0.78rem;
     }
 
     @keyframes rainbowMove{
@@ -359,9 +368,164 @@
       100%{background-position:300% 50%;}
     }
 
-    @media (max-width: 900px){
+    @media (max-width: 940px){
       .grid-2{
         grid-template-columns:1fr;
+      }
+
+      .toolbar{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width: 700px){
+      .container{
+        width:min(96%,96%);
+      }
+
+      header{
+        position:relative;
+      }
+
+      .nav{
+        padding:8px 0;
+        gap:6px;
+      }
+
+      .logo{
+        font-size:0.72rem;
+        letter-spacing:0.05em;
+      }
+
+      .nav-actions{
+        width:100%;
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:5px;
+      }
+
+      .nav-actions .btn{
+        width:100%;
+        min-height:30px;
+        padding:6px 6px;
+        border-radius:8px;
+        font-size:0.62rem;
+        box-shadow:none;
+      }
+
+      .hero{
+        padding:16px 0 8px;
+      }
+
+      h1{
+        font-size:clamp(1.1rem,6vw,1.65rem);
+        line-height:1.02;
+        margin-bottom:8px;
+      }
+
+      .hero p{
+        font-size:0.7rem;
+        line-height:1.42;
+        max-width:280px;
+      }
+
+      .section{
+        padding:8px 0 24px;
+      }
+
+      .grid-2{
+        gap:10px;
+      }
+
+      .card{
+        padding:12px;
+        border-radius:14px;
+      }
+
+      .card h2{
+        font-size:0.84rem;
+        margin-bottom:6px;
+      }
+
+      .subtext{
+        font-size:0.74rem;
+        line-height:1.42;
+        margin-bottom:10px;
+      }
+
+      label{
+        margin-top:8px;
+        margin-bottom:4px;
+        font-size:0.76rem;
+      }
+
+      input,
+      select{
+        padding:9px 10px;
+        border-radius:9px;
+        font-size:12px;
+      }
+
+      .actions{
+        flex-direction:column;
+        gap:6px;
+        margin-top:12px;
+      }
+
+      .actions .btn{
+        width:100%;
+        min-height:34px;
+        padding:8px 9px;
+        border-radius:9px;
+        font-size:0.72rem;
+      }
+
+      .status{
+        font-size:0.76rem;
+        padding:9px 10px;
+      }
+
+      .info-bar{
+        margin-top:10px;
+        font-size:10.5px;
+      }
+
+      .toolbar{
+        grid-template-columns:1fr;
+        gap:7px;
+        margin-bottom:10px;
+      }
+
+      .driver-list{
+        gap:8px;
+        max-height:unset;
+        overflow:visible;
+      }
+
+      .driver-item{
+        padding:10px 11px;
+        border-radius:12px;
+        gap:8px;
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .driver-name{
+        font-size:0.82rem;
+      }
+
+      .driver-meta{
+        font-size:10.5px;
+      }
+
+      .driver-platform{
+        font-size:9.5px;
+        padding:5px 8px;
+      }
+
+      footer{
+        padding:16px 0 22px;
+        font-size:0.7rem;
       }
     }
   </style>
@@ -369,9 +533,7 @@
 <body>
   <header>
     <div class="container nav">
-      <div class="logo-wrap">
-        <div class="logo">Alpha Most Wanted</div>
-      </div>
+      <div class="logo">Alpha Most Wanted</div>
 
       <div class="nav-actions">
         <a class="btn btn-secondary" href="index.html">Startseite</a>
@@ -388,7 +550,7 @@
       </h1>
 
       <p>
-        Erstelle neue Fahrerprofile für Alpha Most Wanted und speichere Fahrername, Discord und Fahrzeug
+        Erstelle neue Fahrerprofile für Alpha Most Wanted und speichere Fahrername, Discord-ID und Plattform
         für spätere Leaderboards, Events und Challenges.
       </p>
     </section>
@@ -398,7 +560,7 @@
         <div class="card">
           <h2>Neuen Fahrer anlegen</h2>
           <p class="subtext">
-            Der Fahrername wird auf vorhandene Einträge geprüft. Das gewählte Fahrzeug wird direkt beim Fahrer gespeichert.
+            Der Fahrername wird vor dem Speichern geprüft. Neue Einträge werden direkt an dein aktuelles Backend gesendet.
           </p>
 
           <label for="fahrername">Fahrername</label>
@@ -407,23 +569,43 @@
           <label for="discordId">Discord Name oder ID</label>
           <input type="text" id="discordId" placeholder="Zum Beispiel: Ulf#1234 oder 123456789012345678" />
 
+          <label for="platform">Plattform</label>
+          <select id="platform">
+            <option value="">Bitte Plattform wählen</option>
+            <option value="PC">PC</option>
+            <option value="PS2">PS2</option>
+            <option value="Xbox">Xbox</option>
+            <option value="GameCube">GameCube</option>
+          </select>
+
           <div class="actions">
-            <button class="btn btn-primary" onclick="fahrerSpeichern()">Fahrer speichern</button>
-            <button class="btn btn-secondary" onclick="datenNeuLaden()">Liste neu laden</button>
+            <button class="btn btn-primary" id="saveBtn" type="button">Fahrer speichern</button>
+            <button class="btn btn-secondary" id="reloadBtn" type="button">Liste neu laden</button>
           </div>
 
           <div id="status" class="status"></div>
 
           <div class="info-bar">
-            Jeder Fahrer wird mit einem Fahrzeug gespeichert. Die Fahrzeugliste wird aus dem Autos-Blatt geladen.
+            Ein Fahrer wird mit Discord-ID und Plattform gespeichert. Die Liste rechts lädt alle vorhandenen Fahrer direkt aus dem Backend.
           </div>
         </div>
 
         <div class="card">
           <h2>Vorhandene Fahrer</h2>
           <p class="subtext">
-            Alle registrierten Fahrer werden aus der internen Tabelle geladen und können direkt im Leaderboard verwendet werden.
+            Alle registrierten Fahrer werden geladen und können später direkt im Leaderboard verwendet werden.
           </p>
+
+          <div class="toolbar">
+            <input type="text" id="searchInput" placeholder="Nach Fahrer oder Discord suchen" />
+            <select id="platformFilter">
+              <option value="">Alle Plattformen</option>
+              <option value="PC">PC</option>
+              <option value="PS2">PS2</option>
+              <option value="Xbox">Xbox</option>
+              <option value="GameCube">GameCube</option>
+            </select>
+          </div>
 
           <div id="driverList" class="driver-list">
             <div class="empty">Lade Fahrer...</div>
@@ -442,10 +624,25 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbw3Yj7gOdFvNpvISkkEUjHsNeT9hlsLiR9rztLy90v7IbmvtLp0n_1SqswinBp-f60J/exec";
 
+    const state = {
+      drivers: []
+    };
+
+    const el = {
+      fahrername: document.getElementById("fahrername"),
+      discordId: document.getElementById("discordId"),
+      platform: document.getElementById("platform"),
+      saveBtn: document.getElementById("saveBtn"),
+      reloadBtn: document.getElementById("reloadBtn"),
+      status: document.getElementById("status"),
+      driverList: document.getElementById("driverList"),
+      searchInput: document.getElementById("searchInput"),
+      platformFilter: document.getElementById("platformFilter")
+    };
+
     function setStatus(type, message) {
-      const status = document.getElementById("status");
-      status.className = "status " + type;
-      status.textContent = message;
+      el.status.className = "status " + type;
+      el.status.textContent = message;
     }
 
     function escapeHtml(text) {
@@ -457,10 +654,16 @@
         .replace(/'/g, "&#039;");
     }
 
+    function normalizeText(value) {
+      return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+    }
+
     async function apiGet(type) {
-      const response = await fetch(`${API_URL}?type=${encodeURIComponent(type)}`);
+      const response = await fetch(`${API_URL}?type=${encodeURIComponent(type)}&_ts=${Date.now()}`, {
+        cache: "no-store"
+      });
+
       const text = await response.text();
-      console.log(type, text);
 
       let result;
       try {
@@ -470,77 +673,147 @@
       }
 
       if (!result.success) {
-        throw new Error(result.error || "API-Fehler");
+        throw new Error(result.message || result.error || "API-Fehler");
       }
 
-      return result.data;
+      return Array.isArray(result.data) ? result.data : [];
     }
 
-    async function autosLaden() {
-      const carSelect = document.getElementById("carSelect");
-      carSelect.innerHTML = '<option value="">Fahrzeug wählen</option>';
+    function renderDriverList() {
+      const search = normalizeText(el.searchInput.value);
+      const platformFilter = normalizeText(el.platformFilter.value);
 
-      try {
-        const cars = await apiGet("cars");
+      let drivers = [...state.drivers];
 
-        if (!Array.isArray(cars) || cars.length === 0) {
-          carSelect.innerHTML = '<option value="">Keine Fahrzeuge gefunden</option>';
-          return;
-        }
-
-        cars.forEach(car => {
-          const option = document.createElement("option");
-          option.value = car.auto || "";
-          option.textContent = car.auto || "Unbekanntes Fahrzeug";
-          carSelect.appendChild(option);
+      if (platformFilter) {
+        drivers = drivers.filter(driver => {
+          const platform = normalizeText(driver.plattform || driver.platform || "");
+          return platform === platformFilter;
         });
-      } catch (error) {
-        carSelect.innerHTML = '<option value="">Fahrzeuge konnten nicht geladen werden</option>';
-        setStatus("red", "Fahrzeugliste konnte nicht geladen werden: " + error.message);
       }
+
+      if (search) {
+        drivers = drivers.filter(driver => {
+          const haystack = [
+            driver.fahrer,
+            driver.discordId,
+            driver.plattform,
+            driver.platform
+          ].join(" ");
+
+          return normalizeText(haystack).includes(search);
+        });
+      }
+
+      drivers.sort((a, b) => {
+        const nameA = String(a.fahrer || "").localeCompare(String(b.fahrer || ""), "de");
+        return nameA;
+      });
+
+      if (!drivers.length) {
+        el.driverList.innerHTML = `<div class="empty">Keine passenden Fahrer gefunden.</div>`;
+        return;
+      }
+
+      el.driverList.innerHTML = drivers.map(driver => {
+        const fahrer = driver.fahrer || "-";
+        const discordId = driver.discordId || "-";
+        const platform = driver.plattform || driver.platform || "-";
+
+        return `
+          <div class="driver-item">
+            <div class="driver-main">
+              <div class="driver-name">${escapeHtml(fahrer)}</div>
+              <div class="driver-meta">Discord: ${escapeHtml(discordId)}</div>
+            </div>
+            <div class="driver-platform">${escapeHtml(platform)}</div>
+          </div>
+        `;
+      }).join("");
     }
 
     async function fahrerLaden() {
-      const driverList = document.getElementById("driverList");
-      driverList.innerHTML = '<div class="empty">Lade Fahrer...</div>';
+      el.driverList.innerHTML = `<div class="empty">Lade Fahrer...</div>`;
 
       try {
         const drivers = await apiGet("drivers");
-
-        if (!Array.isArray(drivers) || drivers.length === 0) {
-          driverList.innerHTML = '<div class="empty">Keine Fahrer vorhanden.</div>';
-          return;
-        }
-
-        driverList.innerHTML = "";
-
-        drivers.forEach(driver => {
-          const item = document.createElement("div");
-          item.className = "driver-item";
-
-          item.innerHTML = `
-            <div class="driver-main">
-              <div class="driver-name">${escapeHtml(driver.fahrer || "-")}</div>
-              <div class="driver-meta">Discord: ${escapeHtml(driver.discordId || "-")}</div>
-            </div>
-            <div class="driver-car">${escapeHtml(driver.auto || "Kein Fahrzeug")}</div>
-          `;
-
-          driverList.appendChild(item);
-        });
+        state.drivers = Array.isArray(drivers) ? drivers : [];
+        renderDriverList();
       } catch (error) {
-        driverList.innerHTML = `<div class="empty">Fahrer konnten nicht geladen werden: ${escapeHtml(error.message)}</div>`;
+        el.driverList.innerHTML = `<div class="empty">Fahrer konnten nicht geladen werden: ${escapeHtml(error.message)}</div>`;
       }
     }
 
     async function fahrerSpeichern() {
-      setStatus("red", "Speichern per POST ist im aktuellen Backend noch nicht aktiv.");
+      const driverName = el.fahrername.value.trim();
+      const discordId = el.discordId.value.trim();
+      const platform = el.platform.value.trim();
+
+      if (!driverName) {
+        setStatus("red", "Bitte einen Fahrernamen eingeben.");
+        return;
+      }
+
+      if (!discordId) {
+        setStatus("red", "Bitte eine Discord-ID oder einen Discord-Namen eingeben.");
+        return;
+      }
+
+      if (!platform) {
+        setStatus("red", "Bitte eine Plattform auswählen.");
+        return;
+      }
+
+      el.saveBtn.disabled = true;
+      setStatus("green", "Fahrer wird gespeichert ...");
+
+      try {
+        const formData = new FormData();
+        formData.append("action", "addDriver");
+        formData.append("driverName", driverName);
+        formData.append("discordId", discordId);
+        formData.append("platform", platform);
+
+        const response = await fetch(API_URL, {
+          method: "POST",
+          body: formData
+        });
+
+        const text = await response.text();
+
+        let result;
+        try {
+          result = JSON.parse(text);
+        } catch {
+          throw new Error("Ungültige Server-Antwort");
+        }
+
+        if (!result.success) {
+          throw new Error(result.message || result.error || "Speichern fehlgeschlagen");
+        }
+
+        setStatus("green", "Fahrer erfolgreich gespeichert.");
+
+        el.fahrername.value = "";
+        el.discordId.value = "";
+        el.platform.selectedIndex = 0;
+
+        await fahrerLaden();
+      } catch (error) {
+        setStatus("red", "Fehler: " + error.message);
+      } finally {
+        el.saveBtn.disabled = false;
+      }
     }
 
     async function datenNeuLaden() {
-      await autosLaden();
       await fahrerLaden();
     }
+
+    el.saveBtn.addEventListener("click", fahrerSpeichern);
+    el.reloadBtn.addEventListener("click", datenNeuLaden);
+    el.searchInput.addEventListener("input", renderDriverList);
+    el.platformFilter.addEventListener("change", renderDriverList);
 
     datenNeuLaden();
   </script>
