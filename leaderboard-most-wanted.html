@@ -764,7 +764,7 @@
 
       <p>
         Reiche neue Zeiten ein, vergleiche Fahrer und Fahrzeuge und zeige pro Strecke
-        automatisch nur die schnellste Zeit jedes Fahrers an.
+        automatisch nur die schnellste passende Zeit jedes Fahrers an.
       </p>
     </section>
 
@@ -773,7 +773,7 @@
         <aside class="card">
           <h2>Zeit einreichen</h2>
           <p class="subtext">
-            Neue Zeiten werden gespeichert. Im Ranking wird pro Strecke automatisch nur die beste Zeit je Fahrer angezeigt.
+            Neue Zeiten werden gespeichert. Im Ranking wird pro Strecke automatisch nur die beste passende Zeit je Fahrer angezeigt.
           </p>
 
           <div class="stats">
@@ -1066,6 +1066,101 @@
       el.statCars.textContent = String(state.cars.length);
     }
 
+    function keepBestTimePerDriver(rows) {
+      const bestMap = {};
+
+      rows.forEach(row => {
+        const driverKey = normalizeText(row.fahrer);
+        if (!driverKey) return;
+
+        const currentMs = parseTimeToMs(row.besteZeit);
+
+        if (!bestMap[driverKey]) {
+          bestMap[driverKey] = row;
+          return;
+        }
+
+        const bestMs = parseTimeToMs(bestMap[driverKey].besteZeit);
+
+        if (currentMs < bestMs) {
+          bestMap[driverKey] = row;
+          return;
+        }
+
+        if (currentMs === bestMs) {
+          const currentTimestamp = String(row.timestamp || "").trim();
+          const bestTimestamp = String(bestMap[driverKey].timestamp || "").trim();
+
+          if (currentTimestamp && bestTimestamp && currentTimestamp > bestTimestamp) {
+            bestMap[driverKey] = row;
+          }
+        }
+      });
+
+      return Object.values(bestMap);
+    }
+
+    function getAvailableCarsFromMasterList() {
+      const set = new Set();
+
+      state.cars.forEach(car => {
+        const name = String(car.auto || car.name || car.anzeigeName || car.modell || "").trim();
+        if (name) set.add(name);
+      });
+
+      return Array.from(set).sort((a, b) => a.localeCompare(b, "de"));
+    }
+
+    function getCarsForTrack(trackName) {
+      const selectedTrack = normalizeText(trackName);
+      const set = new Set();
+
+      state.leaderboard.forEach(row => {
+        if (!selectedTrack || normalizeText(row.strecke) === selectedTrack) {
+          const carName = String(row.fahrzeug || "").trim();
+          if (carName) {
+            set.add(carName);
+          }
+        }
+      });
+
+      return Array.from(set).sort((a, b) => a.localeCompare(b, "de"));
+    }
+
+    function refreshFilterCars() {
+      const currentCar = el.filterCar.value;
+      const carNames = getCarsForTrack(el.filterTrack.value);
+
+      el.filterCar.innerHTML = `<option value="">Alle Fahrzeuge</option>`;
+
+      carNames.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        el.filterCar.appendChild(option);
+      });
+
+      const stillExists = carNames.some(name => normalizeText(name) === normalizeText(currentCar));
+      el.filterCar.value = stillExists ? currentCar : "";
+    }
+
+    function refreshSubmitCars() {
+      const currentCar = el.carSelect.value;
+      const carNames = getAvailableCarsFromMasterList();
+
+      el.carSelect.innerHTML = `<option value="">Bitte Fahrzeug wählen</option>`;
+
+      carNames.forEach(name => {
+        const option = document.createElement("option");
+        option.value = name;
+        option.textContent = name;
+        el.carSelect.appendChild(option);
+      });
+
+      const stillExists = carNames.some(name => normalizeText(name) === normalizeText(currentCar));
+      el.carSelect.value = stillExists ? currentCar : "";
+    }
+
     function renderGroupedLeaderboards() {
       const search = normalizeText(el.searchInput.value);
       const selectedTrack = normalizeText(el.filterTrack.value);
@@ -1096,6 +1191,7 @@
       }
 
       let html = "";
+      let visibleTrackCount = 0;
 
       trackNames.forEach(trackName => {
         let rows = [...groupedRows[trackName]];
@@ -1119,7 +1215,14 @@
           });
         }
 
+        rows = keepBestTimePerDriver(rows);
         rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
+
+        if (!rows.length && !selectedTrack) {
+          return;
+        }
+
+        visibleTrackCount++;
 
         html += `
           <section class="track-block">
@@ -1195,6 +1298,11 @@
         html += `</section>`;
       });
 
+      if (!visibleTrackCount) {
+        el.groupedLeaderboard.innerHTML = `<div class="empty">Keine passenden Einträge gefunden.</div>`;
+        return;
+      }
+
       el.groupedLeaderboard.innerHTML = html;
     }
 
@@ -1219,12 +1327,12 @@
 
         fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
         fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
-        fillSelect(el.carSelect, state.cars, "Bitte Fahrzeug wählen", "auto");
         fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
-        fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
 
         autofillDriverDiscord();
         updateStats();
+        refreshSubmitCars();
+        refreshFilterCars();
         renderGroupedLeaderboards();
       } catch (error) {
         console.error(error);
@@ -1304,10 +1412,11 @@
         el.timeInput.value = "";
         el.proofInput.value = "";
         el.commentInput.value = "";
-        el.carSelect.selectedIndex = 0;
-        el.trackSelect.selectedIndex = 0;
+        el.carSelect.value = "";
+        el.trackSelect.value = "";
 
         autofillDriverDiscord();
+        refreshSubmitCars();
         await loadAllData();
       } catch (error) {
         console.error(error);
@@ -1322,9 +1431,15 @@
     });
 
     el.driverSelect.addEventListener("change", autofillDriverDiscord);
+    el.trackSelect.addEventListener("change", refreshSubmitCars);
     el.submitBtn.addEventListener("click", submitTime);
     el.searchInput.addEventListener("input", renderGroupedLeaderboards);
-    el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
+
+    el.filterTrack.addEventListener("change", function () {
+      refreshFilterCars();
+      renderGroupedLeaderboards();
+    });
+
     el.filterCar.addEventListener("change", renderGroupedLeaderboards);
 
     loadAllData();
