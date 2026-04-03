@@ -253,7 +253,6 @@
     }
 
     input,
-    select,
     textarea{
       width:100%;
       padding:11px 12px;
@@ -278,15 +277,10 @@
     }
 
     input:focus,
-    select:focus,
     textarea:focus{
       border-color:#00d9ff;
       box-shadow:0 0 0 3px rgba(0,217,255,0.14);
       transform:translateY(-1px);
-    }
-
-    select option{
-      color:#000;
     }
 
     .row-2{
@@ -637,7 +631,6 @@
       }
 
       input,
-      select,
       textarea{
         padding:9px 10px;
         border-radius:9px;
@@ -795,24 +788,18 @@
             </div>
           </div>
 
-          <label for="driverSelect">Fahrer</label>
-          <select id="driverSelect">
-            <option value="">Bitte Fahrer wählen</option>
-          </select>
+          <label for="driverInput">Fahrer</label>
+          <input id="driverInput" type="text" placeholder="Fahrername eingeben" />
 
           <div class="row-2">
             <div>
-              <label for="trackSelect">Strecke</label>
-              <select id="trackSelect">
-                <option value="">Bitte Strecke wählen</option>
-              </select>
+              <label for="trackInput">Strecke</label>
+              <input id="trackInput" type="text" placeholder="Strecke eingeben" />
             </div>
 
             <div>
-              <label for="carSelect">Fahrzeug</label>
-              <select id="carSelect">
-                <option value="">Bitte Fahrzeug wählen</option>
-              </select>
+              <label for="carInput">Fahrzeug</label>
+              <input id="carInput" type="text" placeholder="Fahrzeug eingeben" />
             </div>
           </div>
 
@@ -823,7 +810,7 @@
           <div class="row-2">
             <div>
               <label for="discordIdInput">Discord ID</label>
-              <input id="discordIdInput" type="text" placeholder="wird automatisch eingefügt" />
+              <input id="discordIdInput" type="text" placeholder="wird bei exaktem Fahrernamen automatisch eingefügt" />
             </div>
 
             <div>
@@ -851,12 +838,8 @@
 
           <div class="toolbar">
             <input id="searchInput" type="text" placeholder="Suche nach Fahrer, Strecke, Fahrzeug, Discord oder Kommentar" />
-            <select id="filterTrack">
-              <option value="">Alle Strecken</option>
-            </select>
-            <select id="filterCar">
-              <option value="">Alle Fahrzeuge</option>
-            </select>
+            <input id="filterTrack" type="text" placeholder="Nach Strecke filtern" />
+            <input id="filterCar" type="text" placeholder="Nach Fahrzeug filtern" />
           </div>
 
           <div id="groupedLeaderboard" class="leaderboard-groups">
@@ -869,12 +852,12 @@
 
   <footer>
     <div class="container">
-       2025 NightStalkerZ owner DerProzessoor
+      2025 NightStalkerZ owner DerProzessoor
     </div>
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbyRH_J3HTXMwsqfchZzsxeXjuTkh3-i54ywYEFKf2NFiIitPjO1I4wWpCdqtHuprmr9/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbw3HVO7UUgSegxBP30yJ02kkTQYzAYXmFqf3ijQvLYAqIAX3yZKimiBvONuY13KWYo2/exec";
 
     const state = {
       drivers: [],
@@ -890,9 +873,9 @@
       statTracks: document.getElementById("statTracks"),
       statCars: document.getElementById("statCars"),
 
-      driverSelect: document.getElementById("driverSelect"),
-      trackSelect: document.getElementById("trackSelect"),
-      carSelect: document.getElementById("carSelect"),
+      driverInput: document.getElementById("driverInput"),
+      trackInput: document.getElementById("trackInput"),
+      carInput: document.getElementById("carInput"),
       timeInput: document.getElementById("timeInput"),
       discordIdInput: document.getElementById("discordIdInput"),
       proofInput: document.getElementById("proofInput"),
@@ -922,6 +905,10 @@
         .replace(/'/g, "&#039;");
     }
 
+    function normalizeText(value) {
+      return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+    }
+
     function normalizeTimeInput(value) {
       return String(value || "").trim().replace(",", ".");
     }
@@ -939,21 +926,13 @@
     }
 
     function formatTime(value) {
-      return normalizeTimeInput(value);
+      return normalizeTimeInput(value).replace(/^(\d+):(\d{1,2}):(\d{1,3})$/, "$1:$2.$3");
     }
 
     function parseTimeToMs(value) {
       const str = formatTime(value);
 
       let match = str.match(/^(\d+):(\d{1,2})\.(\d{1,3})$/);
-      if (match) {
-        const minutes = parseInt(match[1], 10);
-        const seconds = parseInt(match[2], 10);
-        const millis = parseInt(match[3].padEnd(3, "0"), 10);
-        return minutes * 60000 + seconds * 1000 + millis;
-      }
-
-      match = str.match(/^(\d+):(\d{1,2}):(\d{1,3})$/);
       if (match) {
         const minutes = parseInt(match[1], 10);
         const seconds = parseInt(match[2], 10);
@@ -985,11 +964,14 @@
       const map = {};
 
       state.drivers.forEach(driver => {
-        const fahrer = String(driver.fahrer || driver.name || "").trim().toLowerCase();
+        const fahrer = String(driver.fahrer || driver.name || "").trim();
         const discordId = String(driver.discordId || driver.discord || driver.discordID || driver.discordName || "").trim();
 
         if (fahrer) {
-          map[fahrer] = discordId;
+          map[normalizeText(fahrer)] = {
+            fahrer,
+            discordId
+          };
         }
       });
 
@@ -997,18 +979,19 @@
     }
 
     function autofillDriverDiscord() {
-      const selectedDriver = String(el.driverSelect.value || "").trim().toLowerCase();
-
-      if (!selectedDriver) {
+      const driverName = normalizeText(el.driverInput.value);
+      if (!driverName) {
         el.discordIdInput.value = "";
         return;
       }
 
-      el.discordIdInput.value = state.driverDiscordMap[selectedDriver] || "";
+      const found = state.driverDiscordMap[driverName];
+      el.discordIdInput.value = found ? found.discordId : "";
     }
 
     function mapLeaderboardRow(row) {
       return {
+        rang: getRowValue(row, ["rang", "rank"]),
         fahrer: getRowValue(row, ["fahrer", "driverName", "driver", "name"]),
         strecke: getRowValue(row, ["strecke", "track"]),
         fahrzeug: getRowValue(row, ["fahrzeug", "car", "auto", "carName", "anzeigeName"]),
@@ -1035,29 +1018,6 @@
       return Array.isArray(result.data) ? result.data : [];
     }
 
-    function fillSelect(select, items, placeholder, keyName) {
-      select.innerHTML = "";
-
-      const first = document.createElement("option");
-      first.value = "";
-      first.textContent = placeholder;
-      select.appendChild(first);
-
-      const seen = new Set();
-
-      items.forEach(item => {
-        const val = String(item[keyName] || item.name || item.anzeigeName || item.modell || "").trim();
-        if (!val || seen.has(val.toLowerCase())) return;
-
-        seen.add(val.toLowerCase());
-
-        const option = document.createElement("option");
-        option.value = val;
-        option.textContent = val;
-        select.appendChild(option);
-      });
-    }
-
     function updateStats() {
       el.statLeaderboard.textContent = String(state.leaderboard.length);
       el.statDrivers.textContent = String(state.drivers.length);
@@ -1065,43 +1025,10 @@
       el.statCars.textContent = String(state.cars.length);
     }
 
-    function keepBestTimePerDriver(rows) {
-      const bestMap = {};
-
-      rows.forEach(row => {
-        const driverKey = String(row.fahrer || "").trim().toLowerCase();
-        if (!driverKey) return;
-
-        const currentMs = parseTimeToMs(row.besteZeit);
-
-        if (!bestMap[driverKey]) {
-          bestMap[driverKey] = row;
-          return;
-        }
-
-        const bestMs = parseTimeToMs(bestMap[driverKey].besteZeit);
-
-        if (currentMs < bestMs) {
-          bestMap[driverKey] = row;
-          return;
-        }
-
-        if (currentMs === bestMs) {
-          const currentTimestamp = String(row.timestamp || "");
-          const bestTimestamp = String(bestMap[driverKey].timestamp || "");
-          if (currentTimestamp && bestTimestamp && currentTimestamp > bestTimestamp) {
-            bestMap[driverKey] = row;
-          }
-        }
-      });
-
-      return Object.values(bestMap);
-    }
-
     function renderGroupedLeaderboards() {
-      const search = el.searchInput.value.trim().toLowerCase();
-      const selectedTrack = el.filterTrack.value.trim().toLowerCase();
-      const selectedCar = el.filterCar.value.trim().toLowerCase();
+      const search = normalizeText(el.searchInput.value);
+      const selectedTrack = normalizeText(el.filterTrack.value);
+      const selectedCar = normalizeText(el.filterCar.value);
 
       const groupedRows = {};
 
@@ -1119,7 +1046,7 @@
       let trackNames = Object.keys(groupedRows).sort((a, b) => a.localeCompare(b, "de"));
 
       if (selectedTrack) {
-        trackNames = trackNames.filter(name => name.toLowerCase() === selectedTrack);
+        trackNames = trackNames.filter(name => normalizeText(name).includes(selectedTrack));
       }
 
       if (!trackNames.length) {
@@ -1133,7 +1060,7 @@
         let rows = [...groupedRows[trackName]];
 
         if (selectedCar) {
-          rows = rows.filter(row => String(row.fahrzeug || "").trim().toLowerCase() === selectedCar);
+          rows = rows.filter(row => normalizeText(row.fahrzeug).includes(selectedCar));
         }
 
         if (search) {
@@ -1145,13 +1072,12 @@
               row.besteZeit,
               row.discordId,
               row.comment
-            ].join(" ").toLowerCase();
+            ].join(" ");
 
-            return text.includes(search);
+            return normalizeText(text).includes(search);
           });
         }
 
-        rows = keepBestTimePerDriver(rows);
         rows.sort((a, b) => parseTimeToMs(a.besteZeit) - parseTimeToMs(b.besteZeit));
 
         html += `
@@ -1246,15 +1172,9 @@
         state.drivers = Array.isArray(drivers) ? drivers : [];
         state.tracks = Array.isArray(tracks) ? tracks : [];
         state.cars = Array.isArray(cars) ? cars : [];
-        buildDriverDiscordMap();
         state.leaderboard = Array.isArray(leaderboardRaw) ? leaderboardRaw.map(mapLeaderboardRow) : [];
 
-        fillSelect(el.driverSelect, state.drivers, "Bitte Fahrer wählen", "fahrer");
-        fillSelect(el.trackSelect, state.tracks, "Bitte Strecke wählen", "strecke");
-        fillSelect(el.carSelect, state.cars, "Bitte Fahrzeug wählen", "auto");
-        fillSelect(el.filterTrack, state.tracks, "Alle Strecken", "strecke");
-        fillSelect(el.filterCar, state.cars, "Alle Fahrzeuge", "auto");
-
+        buildDriverDiscordMap();
         autofillDriverDiscord();
         updateStats();
         renderGroupedLeaderboards();
@@ -1269,26 +1189,31 @@
     async function submitTime() {
       const payload = {
         discordId: el.discordIdInput.value.trim(),
-        driverName: el.driverSelect.value.trim(),
-        track: el.trackSelect.value.trim(),
-        car: el.carSelect.value.trim(),
+        driverName: el.driverInput.value.trim(),
+        track: el.trackInput.value.trim(),
+        car: el.carInput.value.trim(),
         time: formatTime(el.timeInput.value),
         proof: el.proofInput.value.trim(),
         comment: el.commentInput.value.trim()
       };
 
       if (!payload.driverName) {
-        setStatus(el.submitStatus, "red", "Bitte einen Fahrer auswählen.");
+        setStatus(el.submitStatus, "red", "Bitte einen Fahrernamen eingeben.");
         return;
       }
 
       if (!payload.track) {
-        setStatus(el.submitStatus, "red", "Bitte eine Strecke auswählen.");
+        setStatus(el.submitStatus, "red", "Bitte eine Strecke eingeben.");
         return;
       }
 
       if (!payload.car) {
-        setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug auswählen.");
+        setStatus(el.submitStatus, "red", "Bitte ein Fahrzeug eingeben.");
+        return;
+      }
+
+      if (!payload.discordId) {
+        setStatus(el.submitStatus, "red", "Bitte eine Discord ID eingeben oder den exakten Fahrernamen verwenden.");
         return;
       }
 
@@ -1302,6 +1227,7 @@
 
       try {
         const formData = new FormData();
+        formData.append("action", "submitTime");
         formData.append("discordId", payload.discordId);
         formData.append("driverName", payload.driverName);
         formData.append("fahrer", payload.driverName);
@@ -1310,7 +1236,6 @@
         formData.append("car", payload.car);
         formData.append("fahrzeug", payload.car);
         formData.append("time", payload.time);
-        formData.append("besteZeit", payload.time);
         formData.append("proof", payload.proof);
         formData.append("comment", payload.comment);
 
@@ -1331,9 +1256,7 @@
         el.timeInput.value = "";
         el.proofInput.value = "";
         el.commentInput.value = "";
-        el.carSelect.selectedIndex = 0;
 
-        autofillDriverDiscord();
         await loadAllData();
       } catch (error) {
         console.error(error);
@@ -1347,11 +1270,11 @@
       loadAllData();
     });
 
-    el.driverSelect.addEventListener("change", autofillDriverDiscord);
+    el.driverInput.addEventListener("input", autofillDriverDiscord);
     el.submitBtn.addEventListener("click", submitTime);
     el.searchInput.addEventListener("input", renderGroupedLeaderboards);
-    el.filterTrack.addEventListener("change", renderGroupedLeaderboards);
-    el.filterCar.addEventListener("change", renderGroupedLeaderboards);
+    el.filterTrack.addEventListener("input", renderGroupedLeaderboards);
+    el.filterCar.addEventListener("input", renderGroupedLeaderboards);
 
     loadAllData();
   </script>
