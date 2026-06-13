@@ -893,7 +893,7 @@
   </footer>
 
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbwVk7eC1kmqFhhZipoXpo4lmwiNT4oLYACVBQkJLolJjXMAsVGCzsdr85vY-y_-kPkf/exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbxpkWkiwRpuVZiEUkRfpVt7FDpDR7cC43x-RVJHvHcOF6-86sMSMGdd9yVDwU4v1Dbr/exec";
 
     const state = {
       drivers: [],
@@ -1077,6 +1077,22 @@
       }
 
       return Array.isArray(result.data) ? result.data : [];
+    }
+
+    // Holt alles in EINER Anfrage (Fahrer, Strecken, Autos, Leaderboard)
+    async function apiGetAll() {
+      const response = await fetch(API_URL + "?type=all&_ts=" + Date.now(), {
+        cache: "no-store"
+      });
+
+      const text = await response.text();
+      const result = JSON.parse(text);
+
+      if (!result.success) {
+        throw new Error(result.message || "Serverfehler");
+      }
+
+      return result.data || {};
     }
 
     function fillSelect(select, items, placeholder, keyName) {
@@ -1288,12 +1304,11 @@
       el.groupedLeaderboard.innerHTML = `<div class="empty">Lade Daten...</div>`;
 
       try {
-        const [drivers, tracks, cars, leaderboardRaw] = await Promise.all([
-          apiGet("drivers"),
-          apiGet("tracks"),
-          apiGet("cars"),
-          apiGet("leaderboard")
-        ]);
+        const all = await apiGetAll();
+        const drivers = all.drivers || [];
+        const tracks = all.tracks || [];
+        const cars = all.cars || [];
+        const leaderboardRaw = all.leaderboard || [];
 
         state.drivers = Array.isArray(drivers) ? drivers : [];
         state.tracks = Array.isArray(tracks) ? tracks : [];
