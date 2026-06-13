@@ -3,519 +3,144 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NightStalkerZ - NFS Heat Builds Vollversion</title>
+  <title>Builds | NightStalkerZ</title>
+  <meta name="description" content="NFS Heat Build-Katalog der NightStalkerZ Community – Setups, Tuning und Fahrzeuge mit Detailansicht." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
   <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(25, 60, 140, 0.45), transparent 35%),
-        radial-gradient(circle at right, rgba(57, 230, 255, 0.10), transparent 30%),
-        linear-gradient(180deg, #050914 0%, #091327 45%, #050914 100%);
-      color: white;
-    }
-
-    .page-container {
-      max-width: 1450px;
-      margin: 0 auto;
-      padding: 30px 20px 60px;
-    }
-
-    .topbar {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .topbar h1 {
-      margin: 0 0 8px;
-      font-size: 3rem;
-      color: #39e6ff;
-      text-shadow: 0 0 18px rgba(57, 230, 255, 0.5);
-    }
-
-    .topbar p {
-      margin: 0;
-      color: #cfd8ff;
-    }
-
-    .nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 24px 0 34px;
-    }
-
-    .nav a {
-      text-decoration: none;
-      color: white;
-      background: rgba(255,255,255,0.10);
-      padding: 12px 18px;
-      border-radius: 12px;
-      transition: 0.25s ease;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 12px rgba(255,255,255,0.06);
-    }
-
-    .nav a:hover,
-    .nav a.active {
-      background: #39e6ff;
-      color: #07111f;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.45);
-    }
-
-    .hero {
-      text-align: center;
-      padding: 38px 20px;
-      margin-bottom: 26px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 0 30px rgba(0,0,0,0.22);
-    }
-
-    .hero h2 {
-      font-size: 3rem;
-      margin: 0 0 10px;
-      color: white;
-      letter-spacing: 1px;
-    }
-
-    .hero h2 span {
-      color: #39e6ff;
-      text-shadow: 0 0 18px rgba(57, 230, 255, 0.4);
-    }
-
-    .hero p {
-      color: #dce4ff;
-      margin: 0;
-      font-size: 1.05rem;
-      max-width: 980px;
-      margin-inline: auto;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr 0.8fr;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .toolbar input,
-    .toolbar select {
-      width: 100%;
-      padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      outline: none;
-      font-size: 1rem;
-    }
-
-    .toolbar select option {
-      color: black;
-    }
-
-    .toolbar input::placeholder {
-      color: #aab7ea;
-    }
-
-    .catalog-card {
-      background: rgba(255,255,255,0.07);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 0 26px rgba(0,0,0,0.22);
-      padding: 22px;
-    }
-
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .results-header h3 {
-      margin: 0;
-      color: #39e6ff;
-    }
-
-    .results-count {
-      color: #cfd8ff;
-      font-size: 0.95rem;
-    }
-
-    .car-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .car-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: 0.25s ease;
-      cursor: pointer;
-    }
-
-    .car-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(57, 230, 255, 0.45);
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.18);
-    }
-
-    .car-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .car-card-content {
-      padding: 16px;
-    }
-
-    .car-card-title {
-      font-size: 1.08rem;
-      font-weight: bold;
-      margin-bottom: 6px;
-      color: white;
-    }
-
-    .car-card-subtitle {
-      color: #cfd8ff;
-      font-size: 0.95rem;
-      margin-bottom: 12px;
-    }
-
-    .car-card-tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-size: 0.8rem;
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: #dce4ff;
-    }
-
-    .empty-state {
-      text-align: center;
-      color: #b9c5f0;
-      padding: 25px 10px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .footer-note {
-      text-align: center;
-      color: #aab7ea;
-      margin-top: 35px;
-      font-size: 0.95rem;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(3, 7, 18, 0.84);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 9999;
-      backdrop-filter: blur(6px);
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-content {
-      width: min(1280px, 100%);
-      max-height: 92vh;
-      overflow-y: auto;
-      background: linear-gradient(180deg, rgba(10, 18, 36, 0.98), rgba(8, 16, 30, 0.98));
-      border: 1px solid rgba(255,255,255,0.10);
-      border-radius: 24px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.35);
-      padding: 24px;
-      position: relative;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 42px;
-      height: 42px;
-      border: none;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.10);
-      color: white;
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: 0.25s ease;
-    }
-
-    .close-btn:hover {
-      background: #39e6ff;
-      color: #07111f;
-    }
-
-    .modal-top {
-      display: grid;
-      grid-template-columns: 390px 1fr;
-      gap: 22px;
-      margin-bottom: 20px;
-    }
-
-    .detail-image {
-      width: 100%;
-      height: 270px;
-      object-fit: cover;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.04);
-    }
-
-    .detail-panel {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .badge-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-
-    .badge {
-      display: inline-block;
-      font-size: 0.85rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(57, 230, 255, 0.14);
-      color: #8ff4ff;
-    }
-
-    .detail-panel h3 {
-      margin: 0 0 8px;
-      font-size: 2rem;
-      color: white;
-    }
-
-    .detail-panel p {
-      margin: 7px 0;
-      color: #dce4ff;
-      line-height: 1.55;
-    }
-
-    .spec-box {
-      margin-top: 14px;
-      background: rgba(255,255,255,0.04);
-      border-radius: 16px;
-      padding: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .spec-box strong {
-      display: block;
-      color: #8ff4ff;
-      margin-bottom: 10px;
-    }
-
-    .spec-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .spec-item {
-      background: rgba(255,255,255,0.04);
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    .spec-item span {
-      display: block;
-      color: #aab7ea;
-      font-size: 0.85rem;
-      margin-bottom: 4px;
-    }
-
-    .spec-item b {
-      color: white;
-      font-size: 0.98rem;
-    }
-
-    .build-selector-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 18px;
-    }
-
-    .build-selector-box h4 {
-      margin: 0 0 12px;
-      color: #39e6ff;
-      font-size: 1.05rem;
-    }
-
-    .build-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .build-tab {
-      border: 1px solid rgba(255,255,255,0.14);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border-radius: 999px;
-      padding: 10px 14px;
-      cursor: pointer;
-      transition: 0.25s ease;
-      font-size: 0.92rem;
-    }
-
-    .build-tab:hover,
-    .build-tab.active {
-      background: #39e6ff;
-      color: #07111f;
-      font-weight: bold;
-      box-shadow: 0 0 18px rgba(57, 230, 255, 0.35);
-    }
-
-    .modal-sections {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .detail-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .detail-box h4 {
-      margin: 0 0 12px;
-      color: #39e6ff;
-      font-size: 1.05rem;
-    }
-
-    .detail-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .detail-row {
-      background: rgba(255,255,255,0.04);
-      border-radius: 12px;
-      padding: 10px 12px;
-      color: #dce4ff;
-    }
-
-    .detail-row b {
-      color: white;
-    }
-
-    .tip-box {
-      background: rgba(255,255,255,0.05);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .tip-box h4 {
-      margin: 0 0 10px;
-      color: #39e6ff;
-    }
-
-    .tip-box p {
-      margin: 0;
-      color: #dce4ff;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 1200px) {
-      .car-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 950px) {
-      .toolbar,
-      .modal-top,
-      .modal-sections {
-        grid-template-columns: 1fr;
-      }
-
-      .car-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width: 700px) {
-      .car-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .spec-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .modal-content {
-        padding: 18px;
-      }
-
-      .detail-panel h3 {
-        font-size: 1.6rem;
-      }
+    /* Builds-spezifische Komponenten – Design an style.css angeglichen */
+    .page-container{ width:min(1400px,94%); margin:0 auto; }
+
+    .toolbar{
+      display:grid; grid-template-columns:1.2fr .8fr .8fr; gap:16px; margin:6px 0 24px;
+    }
+    .toolbar input, .toolbar select{
+      width:100%; padding:14px 16px; border-radius:14px;
+      border:1px solid var(--border); background:rgba(255,255,255,0.06);
+      color:var(--text); font-family:'Inter',sans-serif; font-size:1rem; outline:none; transition:.2s ease;
+    }
+    .toolbar input:focus, .toolbar select:focus{
+      border-color:rgba(0,217,255,0.5); box-shadow:0 0 0 3px rgba(0,217,255,0.12);
+    }
+    .toolbar input::placeholder{ color:#6f7aa0; }
+    .toolbar select option{ color:#0b1020; }
+
+    .catalog-card{
+      background:rgba(255,255,255,0.045); border-radius:24px;
+      border:1px solid var(--border); box-shadow:var(--shadow); padding:22px;
+    }
+    .results-header{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; }
+    .results-header h3{ margin:0; font-family:'Orbitron',sans-serif; font-size:1.05rem; text-transform:uppercase; color:#00d9ff; }
+    .results-count{ color:var(--muted); font-size:.95rem; }
+
+    .car-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+    .car-card{
+      background:rgba(255,255,255,0.05); border-radius:20px; overflow:hidden;
+      border:1px solid var(--border); transition:.25s ease; cursor:pointer;
+    }
+    .car-card:hover{ transform:translateY(-6px); border-color:rgba(0,217,255,0.45); box-shadow:var(--rainbow-shadow); }
+    .car-card img{ width:100%; height:180px; object-fit:cover; display:block; background:rgba(255,255,255,0.04); }
+    .car-card-content{ padding:16px; }
+    .car-card-title{ font-family:'Orbitron',sans-serif; font-size:1rem; font-weight:700; margin-bottom:6px; color:var(--text); line-height:1.3; }
+    .car-card-subtitle{ color:var(--muted); font-size:.92rem; margin-bottom:12px; }
+    .car-card-tags{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tag{ font-size:.78rem; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,0.08); color:var(--muted); }
+    .empty-state{
+      text-align:center; color:var(--muted); padding:28px 12px;
+      background:rgba(255,255,255,0.04); border-radius:16px; border:1px solid rgba(255,255,255,0.06);
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0; background:rgba(3,5,12,0.86); display:none;
+      align-items:center; justify-content:center; padding:20px; z-index:9999; backdrop-filter:blur(8px);
+    }
+    .modal.open{ display:flex; }
+    .modal-content{
+      width:min(1180px,100%); max-height:92vh; overflow-y:auto;
+      background:linear-gradient(180deg, rgba(12,16,28,0.98), rgba(8,12,22,0.98));
+      border:1px solid var(--border); border-radius:26px; box-shadow:var(--shadow); padding:26px; position:relative;
+    }
+    .close-btn{
+      position:absolute; top:16px; right:16px; width:42px; height:42px; border:none; border-radius:50%;
+      background:rgba(255,255,255,0.10); color:var(--text); font-size:1.3rem; cursor:pointer; transition:.25s ease;
+    }
+    .close-btn:hover{ background:#00d9ff; color:#06121d; }
+
+    .modal-top{ display:grid; grid-template-columns:390px 1fr; gap:22px; margin-bottom:20px; }
+    .detail-image{ width:100%; height:270px; object-fit:cover; border-radius:18px; border:1px solid var(--border); background:rgba(255,255,255,0.04); }
+    .detail-panel{ background:rgba(255,255,255,0.05); border-radius:18px; padding:18px; border:1px solid var(--border); }
+    .badge-row{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+    .detail-panel h3{ margin:0 0 8px; font-family:'Orbitron',sans-serif; font-size:1.8rem; color:var(--text); }
+    .detail-panel p{ margin:7px 0; color:var(--muted); line-height:1.6; }
+
+    .spec-box{ margin-top:14px; background:rgba(255,255,255,0.04); border-radius:16px; padding:14px; border:1px solid rgba(255,255,255,0.06); }
+    .spec-box strong{ display:block; color:#7ee8ff; margin-bottom:10px; }
+    .spec-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .spec-item{ background:rgba(255,255,255,0.04); border-radius:12px; padding:10px; }
+    .spec-item span{ display:block; color:var(--muted); font-size:.85rem; margin-bottom:4px; }
+    .spec-item b{ color:var(--text); font-size:.98rem; }
+
+    .build-selector-box{ background:rgba(255,255,255,0.05); border-radius:18px; padding:18px; border:1px solid var(--border); margin-bottom:18px; }
+    .build-selector-box h4{ margin:0 0 12px; font-family:'Orbitron',sans-serif; color:#00d9ff; font-size:1rem; text-transform:uppercase; }
+    .build-tabs{ display:flex; flex-wrap:wrap; gap:10px; }
+    .build-tab{
+      border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.08); color:var(--text);
+      border-radius:999px; padding:10px 14px; cursor:pointer; transition:.25s ease; font-size:.92rem; font-family:'Inter',sans-serif;
+    }
+    .build-tab:hover, .build-tab.active{ background:#00d9ff; color:#06121d; font-weight:700; box-shadow:0 0 18px rgba(0,217,255,0.35); }
+
+    .modal-sections{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+    .detail-box{ background:rgba(255,255,255,0.05); border-radius:18px; padding:18px; border:1px solid var(--border); }
+    .detail-box h4{ margin:0 0 12px; font-family:'Orbitron',sans-serif; color:#00d9ff; font-size:1rem; text-transform:uppercase; }
+    .detail-list{ display:flex; flex-direction:column; gap:10px; }
+    .detail-row{ background:rgba(255,255,255,0.04); border-radius:12px; padding:10px 12px; color:var(--muted); }
+    .detail-row b{ color:var(--text); }
+
+    .tip-box{ background:rgba(255,255,255,0.05); border-radius:18px; padding:18px; border:1px solid var(--border); }
+    .tip-box h4{ margin:0 0 10px; font-family:'Orbitron',sans-serif; color:#00d9ff; text-transform:uppercase; font-size:1rem; }
+    .tip-box p{ margin:0; color:var(--muted); line-height:1.6; }
+
+    @media (max-width:1200px){ .car-grid{ grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:950px){
+      .toolbar, .modal-top, .modal-sections{ grid-template-columns:1fr; }
+      .car-grid{ grid-template-columns:repeat(2,1fr); }
+      .modal-content{ padding:20px; }
+    }
+    @media (max-width:680px){
+      .car-grid{ grid-template-columns:1fr; }
+      .spec-grid{ grid-template-columns:1fr; }
+      .detail-panel h3{ font-size:1.5rem; }
     }
   </style>
 </head>
 <body>
-  <div class="page-container">
-    <div class="topbar">
-      <h1>NightStalkerZ</h1>
-      <p>NFS Heat Car Builds Vollversion</p>
-    </div>
 
-    <div class="nav">
-      <a href="index.html">Home</a>
-      <a href="leaderboard.html">Leaderboard</a>
-      <a href="members.html">Members</a>
-      <a href="gallery.html">Gallery</a>
-      <a href="news.html">News</a>
-      <a href="builds.html" class="active">Builds</a>
-      <a href="shop.html">Shop</a>
-      <a href="login.html">Login</a>
+  <header>
+    <div class="container nav">
+      <div class="logo-wrap">
+        <a class="logo" data-text="NightStalkerZ" href="index.html">NightStalkerZ</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="index.html">Startseite</a>
+        <a class="btn btn-secondary" href="leaderboarddashboard.html">Leaderboards</a>
+        <a class="btn btn-primary" href="https://discord.gg/xxkpH2rc5h">Discord</a>
+      </div>
     </div>
+  </header>
 
-    <div class="hero">
-      <h2>NFS HEAT <span>BUILDS VOLLVERSION</span></h2>
-      <p>Großer Build-Katalog mit mehreren Setup-Arten pro Fahrzeug. Alle Details werden erst im Popup angezeigt, damit der Katalog sauber und modern bleibt.</p>
-    </div>
+  <main class="page-container">
+    <section class="page-head">
+      <h1><span class="rainbow-text">NFS Heat Builds</span></h1>
+      <p>
+        Großer Build-Katalog mit mehreren Setup-Arten pro Fahrzeug.
+        Alle Details öffnen sich im Pop-up, damit der Katalog übersichtlich bleibt.
+      </p>
+    </section>
 
     <div class="toolbar">
       <input type="text" id="searchInput" placeholder="Auto oder Hersteller suchen..." />
@@ -540,11 +165,7 @@
       </div>
       <div class="car-grid" id="carGrid"></div>
     </div>
-
-    <div class="footer-note">
-      NightStalkerZ - NFS Heat Multi-Build Vollversion
-    </div>
-  </div>
+  </main>
 
   <div class="modal" id="carModal">
     <div class="modal-content">
@@ -610,6 +231,17 @@
       </div>
     </div>
   </div>
+
+  <footer>
+    <div class="container">
+      <div>© 2025 NightStalkerZ — NFS Heat Build-Katalog.</div>
+      <div class="footer-links">
+        <a href="https://discord.gg/xxkpH2rc5h">Discord</a>
+        <a href="https://www.tiktok.com/@nightstalkerzzz99">TikTok</a>
+        <a href="index.html">Startseite</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const placeholderImage = "images/cars/placeholder.jpg";
@@ -1719,5 +1351,6 @@
     populateBrands();
     renderGrid();
   </script>
+
 </body>
 </html>
