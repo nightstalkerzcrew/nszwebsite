@@ -205,14 +205,11 @@
   <script>
   /* ============================================================
      NightStalkerZ · NITROBAHN World Server – Live-Daten
-     Holt Status + Bestenlisten von der VPS-API.
-
-     WICHTIG: Hier die echte, öffentlich erreichbare Adresse
-     deiner API eintragen (NICHT localhost – das funktioniert
-     nur auf dem VPS selbst, nicht im Browser der Besucher).
-     Beispiel: "http://161.97.140.48:8081"
+     Holt Status + Bestenlisten von der VPS-API über die eigene
+     Domain mit gültigem HTTPS-Zertifikat (via Caddy-Reverse-Proxy
+     auf api.nightstalkerz.de -> XAMPP Port 8081).
      ============================================================ */
-  const API_BASE = "http://161.97.140.48:8081"; // <-- ANPASSEN falls Port/Domain abweicht
+  const API_BASE = "https://api.nightstalkerz.de";
 
   function escapeHtml(str){
     if(str === null || str === undefined) return "";
