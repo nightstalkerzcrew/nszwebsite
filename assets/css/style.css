@@ -323,3 +323,58 @@ footer a:hover{ text-decoration:underline; }
   .cta-box{ padding:32px 18px; }
   .page-head{ padding:40px 0 18px; }
 }
+
+/* ---------- World ---------- */
+.world-panel {
+max-width: 1200px;
+margin: 50px auto;
+padding: 30px;
+}
+
+.world-panel h2 {
+text-align: center;
+font-size: 2rem;
+margin-bottom: 25px;
+}
+
+.world-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+gap: 20px;
+}
+
+.world-card {
+background: rgba(15,15,15,.85);
+border: 1px solid rgba(0,212,255,.4);
+border-radius: 15px;
+padding: 20px;
+text-align: center;
+backdrop-filter: blur(8px);
+transition: .3s;
+}
+
+.world-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 0 20px rgba(0,212,255,.3);
+}
+
+.world-card h3 {
+color: #00d4ff;
+margin-bottom: 10px;
+}
+
+.world-buttons {
+text-align: center;
+margin-top: 25px;
+}
+
+.world-btn {
+display: inline-block;
+padding: 12px 25px;
+margin: 5px;
+border-radius: 10px;
+text-decoration: none;
+font-weight: bold;
+background: linear-gradient(135deg,#00d4ff,#0077ff);
+color: white;
+}
