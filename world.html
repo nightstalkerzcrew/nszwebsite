@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NightStalkerZ | NITROBAHN World Server</title>
+  <meta name="description" content="Der NITROBAHN World Server der NightStalkerZ: Need for Speed World mit Live-Serverstatus, Races- und Pursuit-Bestenliste." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="container nav">
+      <div class="logo-wrap">
+        <a class="logo" data-text="NightStalkerZ" href="index.html">NightStalkerZ</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn btn-secondary" href="index.html">Crew</a>
+        <a class="btn btn-secondary" href="leaderboarddashboard.html">Leaderboards</a>
+        <a class="btn btn-primary" href="https://discord.gg/xxkpH2rc5h">Discord</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <span class="eyebrow">Need for Speed World · NITROBAHN Server</span>
+      <h1>
+        Die Stadt hört nie<br>
+        auf zu <span class="rainbow-text">fahren</span>
+      </h1>
+      <p>
+        Der World Server der NightStalkerZ. Bau deinen Fahrer auf, klettere die Rep-Leiter
+        hoch und beherrsche die Bestenliste. Kein Tempolimit, keine Sperrstunde.
+      </p>
+      <div class="hero-actions">
+        <a href="#mitmachen" class="btn btn-primary btn-lg">Fahrer erstellen</a>
+        <a href="#bestenliste" class="btn btn-secondary btn-lg">Bestenliste ansehen</a>
+      </div>
+    </section>
+
+    <!-- LIVE SERVERSTATUS -->
+    <section class="section">
+      <div class="status-card" style="max-width:560px;margin:0 auto;">
+        <div class="status-head"><span class="dot" id="statusDot"></span> <span id="statusHeadText">Serverstatus · wird geladen</span></div>
+        <div class="online-num mono" id="onlineNum">–</div>
+        <div class="online-label">Fahrer gerade online</div>
+        <div class="status-stat-grid">
+          <div class="status-stat"><div class="k">Registriert</div><div class="v" id="registeredNum">–</div></div>
+          <div class="status-stat"><div class="k">Server-Adresse</div><div class="v" style="font-size:.95rem;">161.97.140.48</div></div>
+        </div>
+        <div class="status-note" id="statusNote">Live-Daten werden vom Server geladen…</div>
+      </div>
+    </section>
+
+    <!-- BEREICHE -->
+    <section class="section" id="bereiche">
+      <h2 class="section-title">World <span class="rainbow-text">Bereiche</span></h2>
+      <p class="section-subtitle">Alles, was du auf dem Server brauchst, direkt erreichbar.</p>
+      <div class="grid-4">
+        <a href="#bestenliste" class="portal-card">
+          <h3>Bestenliste</h3>
+          <p>Live-Rankings aus Races und Pursuit, direkt aus der Server-Datenbank.</p>
+        </a>
+        <a href="#mitmachen" class="portal-card">
+          <h3>Fahrerprofil</h3>
+          <p>Registriere dich und tritt mit deinem Fahrer der Strecke bei.</p>
+        </a>
+        <a href="builds.html" class="portal-card">
+          <h3>Fuhrpark</h3>
+          <p>Fahrzeuge, Tuning-Teile und eigene Builds der Crew.</p>
+        </a>
+        <a href="#events" class="portal-card">
+          <h3>Events</h3>
+          <p>Purge Night, Night Rides und Community-Treffen im Spiel.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- BESTENLISTE (LIVE) -->
+    <section class="section" id="bestenliste">
+      <h2 class="section-title">Live <span class="rainbow-text">Bestenliste</span></h2>
+      <p class="section-subtitle">
+        Direkt aus der Server-Datenbank. Race-Bestzeiten und Pursuit-Ergebnisse, pro Strecke einzeln aufklappbar.
+      </p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="races" type="button">🏁 Races</button>
+        <button class="tab-btn" data-tab="pursuit" type="button">🚨 Pursuit</button>
+      </div>
+
+      <div class="tab-panel active" id="panel-races">
+        <div id="racesBoard"><div class="board-state">Lade Bestenliste…</div></div>
+      </div>
+      <div class="tab-panel" id="panel-pursuit">
+        <div id="pursuitBoard"><div class="board-state">Lade Bestenliste…</div></div>
+      </div>
+    </section>
+
+    <!-- MITMACHEN -->
+    <section class="section" id="mitmachen">
+      <h2 class="section-title">So trittst du <span class="rainbow-text">bei</span></h2>
+      <p class="section-subtitle">In vier Schritten auf der Strecke kostenlos, dauert keine 10 Minuten.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="no">1</div>
+          <h4>Launcher laden</h4>
+          <p>Hol dir den SBRW-Launcher und installier ihn.</p>
+        </div>
+        <div class="step">
+          <div class="no">2</div>
+          <h4>Server hinzufügen</h4>
+          <p>Im Launcher auf „+" und unsere Server-Adresse eintragen:</p>
+          <code>http://161.97.140.48:8080/Engine.svc</code>
+        </div>
+        <div class="step">
+          <div class="no">3</div>
+          <h4>Registrieren</h4>
+          <p>Server auswählen, Fahrer erstellen, einloggen.</p>
+        </div>
+        <div class="step">
+          <div class="no">4</div>
+          <h4>Losfahren</h4>
+          <p>Rennen fahren, Rep sammeln, in der Bestenliste hochklettern.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EVENTS -->
+    <section class="section" id="events">
+      <h2 class="section-title">Ingame <span class="rainbow-text">Events</span></h2>
+      <p class="section-subtitle">Regelmäßige Aktionen sorgen für Bewegung auf dem Server.</p>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Aktuelle Events</h3>
+          <div class="list">
+            <div class="list-item">
+              <strong>Purge Night</strong>
+              <span>Freie Abende mit spontanen Duellen, maximaler Action und kaum Regeln.</span>
+            </div>
+            <div class="list-item">
+              <strong>Night Rides</strong>
+              <span>Gemeinsame entspannte Ausfahrten mit Street-Racing-Vibes.</span>
+            </div>
+            <div class="list-item">
+              <strong>Tuning Treffen</strong>
+              <span>Fahrzeuge zeigen, Setups vergleichen, Styles bewerten.</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Server-Specials</h3>
+          <div class="list">
+            <div class="list-item">
+              <strong>Diamond Hunt</strong>
+              <span>Täglicher Schatzfund mit fetten Cash- und Rep-Belohnungen.</span>
+            </div>
+            <div class="list-item">
+              <strong>Gift-Codes</strong>
+              <span>Aktionscodes für Tuning-Pakete — Augen auf im Discord.</span>
+            </div>
+            <div class="list-item">
+              <strong>Build of the Week</strong>
+              <span>Die Community wählt wöchentlich den besten Wagen.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="cta-box">
+        <h2><span class="rainbow-text">Steig ein in NITROBAHN</span></h2>
+        <p>
+          Werde Teil des World Servers der NightStalkerZ. Fahre Night Rides, nimm an Events teil
+          und klettere in der Bestenliste nach oben.
+        </p>
+        <div class="hero-actions">
+          <a href="#mitmachen" class="btn btn-primary btn-lg">Fahrer erstellen</a>
+          <a href="https://discord.gg/xxkpH2rc5h" class="btn btn-discord btn-lg">Discord beitreten</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>© 2025 NightStalkerZ · World Server NITROBAHN · Owner: DerProzessoor</div>
+      <div class="footer-links">
+        <a href="index.html">Crew</a>
+        <a href="https://discord.gg/xxkpH2rc5h">Discord</a>
+        <a href="https://www.tiktok.com/@nightstalkerzzz99">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  /* ============================================================
+     NightStalkerZ · NITROBAHN World Server – Live-Daten
+     Holt Status + Bestenlisten von der VPS-API.
+
+     WICHTIG: Hier die echte, öffentlich erreichbare Adresse
+     deiner API eintragen (NICHT localhost – das funktioniert
+     nur auf dem VPS selbst, nicht im Browser der Besucher).
+     Beispiel: "http://161.97.140.48:8081"
+     ============================================================ */
+  const API_BASE = "http://161.97.140.48:8081"; // <-- ANPASSEN falls Port/Domain abweicht
+
+  function escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  function formatNumber(n){
+    if(n === null || n === undefined || isNaN(n)) return "–";
+    return new Intl.NumberFormat('de-DE').format(n);
+  }
+
+  /* ---------- Serverstatus ---------- */
+  async function loadStatus(){
+    const dot = document.getElementById('statusDot');
+    const headText = document.getElementById('statusHeadText');
+    const onlineNum = document.getElementById('onlineNum');
+    const registeredNum = document.getElementById('registeredNum');
+    const note = document.getElementById('statusNote');
+
+    try{
+      const res = await fetch(`${API_BASE}/status.php`, { cache: "no-store" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+
+      if(!data.ok){
+        throw new Error(data.error || "unbekannter Fehler");
+      }
+
+      dot.classList.remove('offline');
+      headText.textContent = "Serverstatus · Live";
+      onlineNum.textContent = formatNumber(data.online);
+      registeredNum.textContent = formatNumber(data.registered);
+      note.textContent = data.updated_at
+        ? "Live-Daten · zuletzt aktualisiert " + new Date(data.updated_at).toLocaleTimeString('de-DE')
+        : "Live-Daten vom Server.";
+    }catch(err){
+      dot.classList.add('offline');
+      headText.textContent = "Serverstatus · nicht erreichbar";
+      onlineNum.textContent = "–";
+      registeredNum.textContent = "–";
+      note.textContent = "Live-Daten aktuell nicht erreichbar. Server kann trotzdem online sein.";
+    }
+  }
+
+  /* ---------- Bestenlisten (Races + Pursuit) ---------- */
+  function renderEventBoard(container, events, mode){
+    if(!events || events.length === 0){
+      container.innerHTML = '<div class="board-state">Noch keine Ergebnisse für diesen Modus.</div>';
+      return;
+    }
+
+    const isRaces = mode === "races";
+
+    const html = events.map((ev, idx) => {
+      const rows = ev.drivers.map(d => {
+        if(isRaces){
+          return `<tr>
+            <td class="rank ${d.rank===1?'rank-1':d.rank===2?'rank-2':d.rank===3?'rank-3':''}">${d.rank}</td>
+            <td>${escapeHtml(d.driver)}</td>
+            <td>${escapeHtml(d.elapsed_time_display)}</td>
+            <td class="num">${d.cost_to_state !== null ? formatNumber(d.cost_to_state) : '–'}</td>
+            <td class="num">${d.busted_count !== null ? d.busted_count : '–'}</td>
+          </tr>`;
+        }
+        return `<tr>
+          <td class="rank ${d.rank===1?'rank-1':d.rank===2?'rank-2':d.rank===3?'rank-3':''}">${d.rank}</td>
+          <td>${escapeHtml(d.driver)}</td>
+          <td class="num">${escapeHtml(d.elapsed_time_display)}</td>
+        </tr>`;
+      }).join("");
+
+      const header = isRaces
+        ? `<tr><th class="rank">#</th><th>Fahrer</th><th>Zeit</th><th class="num">Kosten f. Staat</th><th class="num">Verhaftet</th></tr>`
+        : `<tr><th class="rank">#</th><th>Fahrer</th><th class="num">Zeit</th></tr>`;
+
+      return `<details class="event-board" ${idx === 0 ? "open" : ""}>
+        <summary>${escapeHtml(ev.event_name)} <span class="count">${ev.drivers.length} Fahrer</span></summary>
+        <table>
+          <thead>${header}</thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </details>`;
+    }).join("");
+
+    container.innerHTML = html;
+  }
+
+  async function loadLeaderboard(endpoint, containerId, mode){
+    const container = document.getElementById(containerId);
+    try{
+      const res = await fetch(`${API_BASE}/${endpoint}?limit_events=12&limit_drivers=10`, { cache: "no-store" });
+      if(!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if(!data.ok) throw new Error(data.error || "unbekannter Fehler");
+      renderEventBoard(container, data.events, mode);
+    }catch(err){
+      container.innerHTML = '<div class="board-state">Bestenliste aktuell nicht erreichbar. Versuch es gleich nochmal.</div>';
+    }
+  }
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ---------- Start ---------- */
+  loadStatus();
+  loadLeaderboard('races_json.php', 'racesBoard', 'races');
+  loadLeaderboard('pursuit_json.php', 'pursuitBoard', 'pursuit');
+
+  // alle 60 Sekunden automatisch aktualisieren
+  setInterval(loadStatus, 60000);
+  </script>
+
+</body>
+</html>
